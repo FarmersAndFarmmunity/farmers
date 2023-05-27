@@ -3,9 +3,7 @@ package com.shop.farmers.entity;
 
 import com.shop.farmers.constant.ItemSellStatus;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -14,8 +12,10 @@ import java.time.LocalDateTime;
 @Entity
 //@Table(name = "item") // 어차피 알아서 Item 클래스 이름으로 생성을 해주기 때문에 주석 처리
 @Getter
-@Setter
+@Builder
 @ToString
+@AllArgsConstructor
+@RequiredArgsConstructor
 public class Item {
     @Id
     @Column(name = "item_id")
