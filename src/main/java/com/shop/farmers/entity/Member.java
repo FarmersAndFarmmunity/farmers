@@ -1,21 +1,18 @@
 package com.shop.farmers.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+import lombok.experimental.SuperBuilder;
 
 @Entity
-@Table(name = "member")
-@Getter
-@Setter
-@ToString
-public class Member {
+@SuperBuilder
+@ToString(callSuper = true)
+@NoArgsConstructor
+public class Member extends BaseEntity{
     @Id
     @Column(name = "member_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
@@ -27,10 +24,6 @@ public class Member {
 
     private String address;
 
-    @CreatedDate
-    @Column(updatable = false)
-    private String createdDate;
-
-    @LastModifiedDate
-    private String modifiedDate;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 }
