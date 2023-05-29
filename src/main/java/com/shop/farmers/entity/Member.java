@@ -1,6 +1,6 @@
 package com.shop.farmers.entity;
 
-import com.shop.farmers.constant.MemberRole;
+import com.shop.farmers.constant.Role;
 import com.shop.farmers.dto.MemberFormDto;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -38,7 +38,7 @@ public class Member {
     private String modifiedDate;
 
     @Enumerated(EnumType.STRING)
-    private MemberRole memberRole;
+    private Role memberRole;
 
     public static Member createMember(MemberFormDto memberFormDto, PasswordEncoder passwordEncoder){
         Member member = new Member();
@@ -47,7 +47,7 @@ public class Member {
         member.setAddress(memberFormDto.getAddress());
         String password = passwordEncoder.encode(memberFormDto.getPassword());
         member.setPassword(password);
-        member.setMemberRole(MemberRole.USER);
+        member.setMemberRole(Role.USER);
         return member;
     }
 }
