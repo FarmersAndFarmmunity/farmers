@@ -1,6 +1,6 @@
 package com.shop.farmers.repository;
 
-import com.shop.farmers.constant.MemberRole;
+import com.shop.farmers.constant.Role;
 import com.shop.farmers.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
