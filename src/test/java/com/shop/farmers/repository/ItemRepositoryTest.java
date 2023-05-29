@@ -27,10 +27,10 @@ class ItemRepositoryTest {
     void t001() {
         for (int i = 0; i < 10; i++) {
             Item item = Item.builder()
-                    .itemName("테스트 상품 " + i)
+                    .itemNm("테스트 상품 " + i)
                     .price(10000)
-                    .stock(100)
-                    .description("테스트 상품 상세 설명")
+                    .stockNumber(100)
+                    .itemDetail("테스트 상품 상세 설명")
                     .itemSellStatus(ItemSellStatus.SELL)
                     .build();
 
@@ -42,7 +42,7 @@ class ItemRepositoryTest {
         if (opItem.isPresent()) {
             Item item = opItem.get();
 
-            assertThat(item.getItemName()).isEqualTo("테스트 상품 0");
+            assertThat(item.getItemNm()).isEqualTo("테스트 상품 0");
         }
     }
 }
