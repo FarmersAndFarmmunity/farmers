@@ -4,12 +4,12 @@ import com.shop.farmers.constant.Role;
 import com.shop.farmers.dto.MemberFormDto;
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
-import lombok.ToString;;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Entity
 @SuperBuilder
@@ -41,14 +41,12 @@ public class Member extends BaseEntity{
     private Role role;
 
     public static Member createMember(MemberFormDto memberFormDto, PasswordEncoder passwordEncoder){
-        Member member = new Member();
-        member.setName(memberFormDto.getName());
-        member.setEmail(memberFormDto.getEmail());
-        member.setAddress(memberFormDto.getAddress());
-        String password = passwordEncoder.encode(memberFormDto.getPassword());
-        member.setPassword(password);
-        member.setMemberRole(Role.USER);
-        return member;
+        return Member.builder()
+                .name(memberFormDto.getName())
+                .email(memberFormDto.getEmail())
+                .address(memberFormDto.getAddress())
+                .password(passwordEncoder.encode(memberFormDto.getPassword()))
+                .role(Role.USER)
+                .build();
     }
-  
 }
