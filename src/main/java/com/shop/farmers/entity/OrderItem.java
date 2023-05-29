@@ -3,6 +3,7 @@ package com.shop.farmers.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
@@ -29,4 +30,8 @@ public class OrderItem extends BaseEntity{
     private int orderPrice; // 주문가격
 
     private int count; // 수량
+
+    public void registerOrder(Order order) {
+        this.order = order;
+    }
 }
