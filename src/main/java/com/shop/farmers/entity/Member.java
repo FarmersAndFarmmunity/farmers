@@ -3,23 +3,22 @@ package com.shop.farmers.entity;
 import com.shop.farmers.constant.Role;
 import com.shop.farmers.dto.MemberFormDto;
 import jakarta.persistence.*;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
+
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder
 
 @Entity
 @SuperBuilder
 @ToString(callSuper = true)
 @NoArgsConstructor
-public class Member extends BaseEntity {
+public class Member extends BaseEntity{
     @Id
     @Column(name = "member_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
@@ -49,7 +48,7 @@ public class Member extends BaseEntity {
                 .password(passwordEncoder.encode(memberFormDto.getPassword()))
                 .role(Role.USER)
                 .build();
-
         return member;
     }
+  
 }
