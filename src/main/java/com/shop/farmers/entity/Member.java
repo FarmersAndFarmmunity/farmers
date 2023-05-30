@@ -3,6 +3,7 @@ package com.shop.farmers.entity;
 import com.shop.farmers.constant.Role;
 import com.shop.farmers.dto.MemberFormDto;
 import jakarta.persistence.*;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -41,5 +42,4 @@ public class Member extends BaseEntity {
         member.setRole(Role.ADMIN);
         return member;
     }
-
 }
