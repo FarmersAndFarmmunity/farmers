@@ -44,15 +44,15 @@ class OrderTest {
     OrderItemRepository orderItemRepository;
 
     public Item createItem(){
-        return Item.builder()
-                .itemNm("테스트 상품")
-                .price(10000)
-                .itemDetail("상세설명")
-                .itemSellStatus(ItemSellStatus.SELL)
-                .stockNumber(100)
-                .regTime(LocalDateTime.now())
-                .updateTime(LocalDateTime.now())
-                .build();
+        Item item = new Item();
+        item.setItemNm("테스트 상품");
+        item.setPrice(10000);
+        item.setItemDetail("상세설명");
+        item.setItemSellStatus(ItemSellStatus.SELL);
+        item.setStockNumber(100);
+        item.setRegTime(LocalDateTime.now());
+        item.setUpdateTime(LocalDateTime.now());
+        return item;
     }
 
     @Test
@@ -64,13 +64,11 @@ class OrderTest {
         for(int i=0;i<3;i++){
             Item item = this.createItem();
             itemRepository.save(item);
-            OrderItem orderItem = OrderItem.builder()
-                    .item(item)
-                    .count(10)
-                    .orderPrice(1000)
-                    .order(order)
-                    .build();
-
+            OrderItem orderItem = new OrderItem();
+            orderItem.setItem(item);
+            orderItem.setCount(10);
+            orderItem.setOrderPrice(1000);
+            orderItem.setOrder(order);
             order.getOrderItems().add(orderItem);
         }
 
@@ -88,12 +86,11 @@ class OrderTest {
         for(int i=0;i<3;i++){
             Item item = createItem();
             itemRepository.save(item);
-            OrderItem orderItem = OrderItem.builder()
-                    .item(item)
-                    .count(10)
-                    .orderPrice(1000)
-                    .order(order)
-                    .build();
+            OrderItem orderItem = new OrderItem();
+            orderItem.setItem(item);
+            orderItem.setCount(10);
+            orderItem.setOrderPrice(1000);
+            orderItem.setOrder(order);
             order.getOrderItems().add(orderItem);
         }
 
