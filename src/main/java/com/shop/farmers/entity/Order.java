@@ -28,8 +28,8 @@ public class Order extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;  //주문상태
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL
-            , orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL,
+            orphanRemoval = true, fetch = FetchType.LAZY)
     private List<OrderItem> orderItems = new ArrayList<>();
 
     public void addOrderItem(OrderItem orderItem){
@@ -48,13 +48,13 @@ public class Order extends BaseEntity {
         return order;
     }
 
-//    public int getTotalPrice(){
-//        int totalPrice = 0;
-//        for(OrderItem orderItem : orderItems){
-//            totalPrice += orderItem.getTotalPrice();
-//        }
-//        return totalPrice;
-//    }
+    public int getTotalPrice(){
+        int totalPrice = 0;
+        for(OrderItem orderItem : orderItems){
+            totalPrice += orderItem.getTotalPrice();
+        }
+        return totalPrice;
+    }
 
 //    public void cancelOrder(){
 //        this.orderStatus = OrderStatus.CANCEL;
