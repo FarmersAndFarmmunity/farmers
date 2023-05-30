@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@ActiveProfiles("test") // application-test.yml 을 활성화 시킨다.
+//@ActiveProfiles("test") // application-test.yml 을 활성화 시킨다.
 @TestMethodOrder(MethodOrderer.MethodName.class)
 class ItemRepositoryTest {
     @Autowired

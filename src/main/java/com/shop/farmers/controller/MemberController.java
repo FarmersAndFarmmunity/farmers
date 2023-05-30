@@ -28,7 +28,6 @@ public class MemberController {
         return "member/memberForm";
     }
 
-
     @PostMapping(value = "/new")
     public String newMember(@Valid MemberFormDto memberFormDto, BindingResult bindingResult, Model model){
         if(bindingResult.hasErrors()){
