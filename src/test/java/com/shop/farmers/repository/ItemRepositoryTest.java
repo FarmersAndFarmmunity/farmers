@@ -26,13 +26,13 @@ class ItemRepositoryTest {
     @DisplayName("상품 저장 테스트")
     void t001() {
         for (int i = 0; i < 10; i++) {
-            Item item = Item.builder()
-                    .itemNm("테스트 상품 " + i)
-                    .price(10000)
-                    .stockNumber(100)
-                    .itemDetail("테스트 상품 상세 설명")
-                    .itemSellStatus(ItemSellStatus.SELL)
-                    .build();
+            Item item = new Item();
+
+            item.setItemNm("테스트 상품 " + i);
+            item.setPrice(10000);
+            item.setStockNumber(100);
+            item.setItemDetail("테스트 상품 상세 설명");
+            item.setItemSellStatus(ItemSellStatus.SELL);
 
             itemRepository.save(item);
         }
