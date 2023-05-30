@@ -8,7 +8,8 @@ import lombok.Setter;
 @Getter @Setter
 public class OrderItem extends BaseEntity {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_item_id")
     private Long id;
 
