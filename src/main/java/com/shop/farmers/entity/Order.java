@@ -46,14 +46,6 @@ public class Order extends BaseEntity{
     }
 
     public static Order createOrder(Member member, List<OrderItem> orderItemList){
-//        Order order1 = new Order();
-//        order.setMember(member);
-//        for(OrderItem orderItem : orderItemList){
-//            order.addOrderItem(orderItem);
-//        }
-//        order.setOrderStatus(OrderStatus.ORDER);
-//        order.setOrderDate(LocalDateTime.now());
-//        return order;
         Order order = Order.builder()
                 .member(member)
                 .orderStatus(OrderStatus.ORDER)
