@@ -1,5 +1,6 @@
 package com.shop.farmers.entity;
 
+import com.shop.farmers.dto.ItemFormDto;
 import com.shop.farmers.constant.ItemSellStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -33,13 +34,13 @@ public class Item extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private ItemSellStatus itemSellStatus; //상품 판매 상태
 
-//    public void updateItem(ItemFormDto itemFormDto){
-//        this.itemNm = itemFormDto.getItemNm();
-//        this.price = itemFormDto.getPrice();
-//        this.stockNumber = itemFormDto.getStockNumber();
-//        this.itemDetail = itemFormDto.getItemDetail();
-//        this.itemSellStatus = itemFormDto.getItemSellStatus();
-//    }
+    public void updateItem(ItemFormDto itemFormDto){
+        this.itemNm = itemFormDto.getItemNm();
+        this.price = itemFormDto.getPrice();
+        this.stockNumber = itemFormDto.getStockNumber();
+        this.itemDetail = itemFormDto.getItemDetail();
+        this.itemSellStatus = itemFormDto.getItemSellStatus();
+    }
 
 //    public void removeStock(int stockNumber){
 //        int restStock = this.stockNumber - stockNumber;

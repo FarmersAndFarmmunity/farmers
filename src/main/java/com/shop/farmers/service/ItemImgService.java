@@ -2,6 +2,7 @@ package com.shop.farmers.service;
 
 import com.shop.farmers.entity.ItemImg;
 import com.shop.farmers.repository.ItemImgRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,4 +38,21 @@ public class ItemImgService {
         itemImgRepository.save(itemImg);
     }
 
+
+    public void updateItemImg(Long itemImgId, MultipartFile itemImgFile)
+        throws Exception {
+        if (!itemImgFile.isEmpty()) {
+            ItemImg savedItemImg = itemImgRepository.findById(itemImgId)
+                    .orElseThrow(EntityNotFoundException::new);
+
+            if (!StringUtils.isEmpty(savedItemImg.getImgName())) {
+                fileService.deleteFile(itemImgLocation + "/" + savedItemImg.getImgName());
+            }
+
+            String oriImgName = itemImgFile.getOriginalFilename();
+            String imgName = fileService.uploadFile(itemImgLocation, oriImgName, itemImgFile.getBytes());
+            String imgUrl = "/images/item/" + imgName;
+            savedItemImg.updateItemImg(oriImgName, imgName, imgUrl);
+        }
+    }
 }
