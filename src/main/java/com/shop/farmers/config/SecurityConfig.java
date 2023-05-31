@@ -21,15 +21,17 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.formLogin()
+        http.formLogin(form -> form
                 .loginPage("/members/login")
                 .defaultSuccessUrl("/")
                 .usernameParameter("email")
-                .failureUrl("/members/login/error")
-                .and()
-                .logout()
+                .failureUrl("/members/login/error"))
+        ;
+
+        http
+                .logout(form -> form
                 .logoutRequestMatcher(new AntPathRequestMatcher("/members/logout"))
-                .logoutSuccessUrl("/")
+                .logoutSuccessUrl("/"))
         ;
 
         http
@@ -40,8 +42,8 @@ public class SecurityConfig {
                 .anyRequest().authenticated())
         ;
 
-        http.exceptionHandling()
-                .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
+        http.exceptionHandling((exceptionHandling) -> exceptionHandling
+                .authenticationEntryPoint(new CustomAuthenticationEntryPoint()))
         ;
 
         return http.build();
