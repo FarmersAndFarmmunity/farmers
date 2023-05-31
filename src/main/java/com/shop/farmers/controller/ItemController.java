@@ -60,4 +60,11 @@ public class ItemController {
 
         return "redirect:/";
     }
+
+    @GetMapping(value = "/item/{itemid}")
+    public String itemDtl(Model model, @PathVariable("itemId") Long itemid) {
+        ItemFormDto itemFormDto = itemService.getItemDtl(itemid);
+        model.addAttribute("item", itemFormDto);
+        return "item/itemDtl";
+    }
 }

@@ -1,5 +1,7 @@
 package com.shop.farmers.service;
 
+import com.shop.farmers.dto.ItemSearchDto;
+import com.shop.farmers.dto.MainItemDto;
 import jakarta.persistence.EntityNotFoundException;
 import com.shop.farmers.dto.ItemFormDto;
 import com.shop.farmers.dto.ItemImgDto;
@@ -8,6 +10,8 @@ import com.shop.farmers.entity.ItemImg;
 import com.shop.farmers.repository.ItemImgRepository;
 import com.shop.farmers.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -74,5 +78,10 @@ public class ItemService {
 
         return item.getId();
     }
+
+//    @Transactional(readOnly = true)
+//    public Page<MainItemDto> getMainItemPage(ItemSearchDto itemSearchDto, Pageable pageable) {
+//        return itemRepository.getMainItemPage(itemSearchDto, pageable);
+//    }
 }
 
