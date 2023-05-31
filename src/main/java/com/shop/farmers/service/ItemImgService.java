@@ -13,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 @Transactional
 public class ItemImgService {
-
     @Value("${custom.itemImgLocation}")
     private String itemImgLocation;
 
@@ -28,7 +27,7 @@ public class ItemImgService {
         String imgUrl = "";
 
         // 파일 업로드
-        if (!StringUtils.isEmpty(oriImgName)) { // isEmpty() -> Deprecated
+        if (!StringUtils.isEmpty(oriImgName)) { // TODO: isEmpty() -> Deprecated
             imgName = fileService.uploadFile(itemImgLocation, oriImgName, itemImgFile.getBytes());
             imgUrl = "images/item/" + imgName;
         }
