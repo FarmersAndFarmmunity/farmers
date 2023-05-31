@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Transactional
 public class ItemImgService {
 
-    @Value("${itemImgLocation}")
+    @Value("${custom.itemImgLocation}")
     private String itemImgLocation;
 
     private final ItemImgRepository itemImgRepository;
