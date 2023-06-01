@@ -71,7 +71,7 @@ public class OrderService {
     }
 
     @Transactional(readOnly = true)
-    public boolean validateOrder(Long orderId, String email) {
+    public boolean validateOrder(Long orderId, String email) { // 현재 로그인한 사용자와 주문한 사용자가 같은지 검사
         Member curMember = memberRepository.findByEmail(email);
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(EntityNotFoundException::new);
@@ -81,5 +81,11 @@ public class OrderService {
             return false;
         }
         return true;
+    }
+
+    public void cancelOrder(Long orderId) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(EntityNotFoundException::new);
+        order.cancelOrder(); // 주문 취소 하면 변경 감지 기능에 의해서 트랜잭션이 끝날 때 update 쿼리가 실행됨
     }
 }
