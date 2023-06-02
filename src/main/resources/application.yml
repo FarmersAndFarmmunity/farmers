@@ -25,6 +25,7 @@ spring:
         show_sql: true
         format_sql: true
         use_sql_comments: true
+        default_batch_fetch_size: 1000
   devtools:
     livereload:
       enabled: true
@@ -41,5 +42,5 @@ custom:
   #상품 이미지 업로드 경로
   itemImgLocation: 'C:/shop/item'
   #리소스 업로드 경로
-  uplocadPath: 'file:///C:/shop/'
+  uploadPath: 'file:///C:/shop/'
 
