@@ -1,6 +1,7 @@
 package com.shop.farmers.service;
 
 import com.shop.farmers.constant.ItemSellStatus;
+import com.shop.farmers.constant.OrderStatus;
 import com.shop.farmers.dto.OrderDto;
 import com.shop.farmers.entity.Item;
 import com.shop.farmers.entity.Member;
@@ -10,6 +11,7 @@ import com.shop.farmers.repository.ItemRepository;
 import com.shop.farmers.repository.MemberRepository;
 import com.shop.farmers.repository.OrderRepository;
 import jakarta.persistence.EntityExistsException;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
@@ -77,5 +79,24 @@ class OrderServiceTest {
         int totalPrice = orderDto.getCount() * item.getPrice(); // 계산한 총 물건의 합
 
         assertThat(totalPrice).isEqualTo(order.getTotalPrice()); // 계산한 총 물건의 합 == order.totalPrice 이 같아야 한다
+    }
+
+    @Test
+    @DisplayName("주문 취소 테스트")
+    public void cencelOrder() {
+        Item item = saveItem();
+        Member member = saveMember();
+
+        OrderDto orderDto = new OrderDto();
+        orderDto.setCount(10);
+        orderDto.setItemId(item.getId());
+        Long orderId = orderService.order(orderDto, member.getEmail()); // 주문 데이터 생성
+
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(EntityNotFoundException::new); // 생성한 주문 엔티티 조회
+        orderService.cancelOrder(orderId); // 해당 주문 취소
+
+        assertEquals(OrderStatus.CANCEL, order.getOrderStatus()); // 취소 상태라면 통과
+        assertEquals(100, item.getStockNumber()); // 취소 후 상품 재고가 처음 개수인 100개와 같으면 통과
     }
 }
