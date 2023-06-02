@@ -34,6 +34,19 @@ public class ItemController {
         return "item/itemForm";
     }
 
+    @GetMapping(value = {"/admin/items", "/admin/items/{page}"})
+    public String itemManage(ItemSearchDto itemSearchDto, @PathVariable("page") Optional<Integer> page, Model model){
+        Pageable pageable = PageRequest.of(page.isPresent()? page.get() : 0, 3);
+        model.addAttribute("itemFormDto", new ItemFormDto());
+
+        Page<Item> items = itemService.getAdminItemPage(itemSearchDto, pageable);
+        model.addAttribute("items", items);
+        model.addAttribute("itemSearchDto", itemSearchDto);
+        model.addAttribute("maxPage", 5);
+
+        return "item/itemMng";
+    }
+
     @PostMapping(value = "/admin/item/new")
     public String itemNew(@Valid ItemFormDto itemFormDto, BindingResult bindingResult, Model model, @RequestParam("itemImgFile") List<MultipartFile> itemImgFileList){
 
@@ -71,6 +84,9 @@ public class ItemController {
         return "item/itemForm";
     }
 
+
+
+    // 수정 기능
     @PostMapping(value = "/admin/item/{itemId}")
     public String itemUpdate(@Valid ItemFormDto itemFormDto, BindingResult bindingResult, @RequestParam("itemImgFile") List<MultipartFile> itemImgFileList, Model model){
 
@@ -93,14 +109,16 @@ public class ItemController {
         return "redirect:/";
     }
 
-    @GetMapping(value = {"/admin/items", "/admin/items/{page}"})
-    public String itemManage(ItemSearchDto itemSearchDto, @PathVariable("page") Optional<Integer> page, Model model){
-        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 3);
-        Page<Item> items = itemService.getAdminItemPage(itemSearchDto, pageable);
-        model.addAttribute("items", items);
-        model.addAttribute("itemSearchDto", itemSearchDto);
-        model.addAttribute("maxPage", 5);
-        return "item/itemMng";
+    // 삭제 기능
+    @PostMapping("/admin/item/delete/{itemId}")
+    public String deleteItem(@PathVariable Long itemId, Model model) throws Exception {
+        try {
+            itemService.deleteItem(itemId);
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", "상품 삭제 중 에러가 발생했습니다.");
+            return "item/itemForm";
+        }
+        return "redirect:/";
     }
 
     @GetMapping(value = "/item/{itemId}")
