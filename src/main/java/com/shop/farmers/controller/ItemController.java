@@ -30,7 +30,7 @@ public class ItemController {
     @GetMapping(value = "/admin/item/new")
     public String itemForm(Model model){
         model.addAttribute("itemFormDto", new ItemFormDto());
-        return "/item/itemForm";
+        return "item/itemForm";
     }
 
     @GetMapping(value = {"/admin/items", "/admin/items/{page}"})
@@ -43,7 +43,29 @@ public class ItemController {
         model.addAttribute("itemSearchDto", itemSearchDto);
         model.addAttribute("maxPage", 5);
 
-        return "/item/itemMng";
+        return "item/itemMng";
+    }
+
+    @PostMapping(value = "/admin/item/new")
+    public String itemNew(@Valid ItemFormDto itemFormDto, BindingResult bindingResult, Model model, @RequestParam("itemImgFile") List<MultipartFile> itemImgFileList){
+
+        if(bindingResult.hasErrors()){
+            return "item/itemForm";
+        }
+
+        if(itemImgFileList.get(0).isEmpty() && itemFormDto.getId() == null){
+            model.addAttribute("errorMessage", "첫번째 상품 이미지는 필수 입력 값 입니다.");
+            return "item/itemForm";
+        }
+
+        try {
+            itemService.saveItem(itemFormDto, itemImgFileList);
+        } catch (Exception e){
+            model.addAttribute("errorMessage", "상품 등록 중 에러가 발생하였습니다.");
+            return "item/itemForm";
+        }
+
+        return "redirect:/";
     }
 
     @GetMapping(value = "/admin/item/{itemId}")
@@ -80,9 +102,9 @@ public class ItemController {
         return "redirect:/";
     }
 
-    @GetMapping(value = "/item/{itemid}")
-    public String itemDtl(Model model, @PathVariable("itemId") Long itemid) {
-        ItemFormDto itemFormDto = itemService.getItemDtl(itemid);
+    @GetMapping(value = "/item/{itemId}")
+    public String itemDtl(Model model, @PathVariable Long itemId) {
+        ItemFormDto itemFormDto = itemService.getItemDtl(itemId);
         model.addAttribute("item", itemFormDto);
         return "item/itemDtl";
     }

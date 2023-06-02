@@ -28,9 +28,9 @@ public class ItemImgService {
         String imgUrl = "";
 
         // 파일 업로드
-        if (!StringUtils.isEmpty(oriImgName)) { // TODO: isEmpty() -> Deprecated
+        if (!(oriImgName == null || "".equals(oriImgName))) { // TODO: isEmpty() -> Deprecated
             imgName = fileService.uploadFile(itemImgLocation, oriImgName, itemImgFile.getBytes());
-            imgUrl = "images/item/" + imgName;
+            imgUrl = "/images/item/" + imgName;
         }
 
         itemImg.updateItemImg(oriImgName, imgName, imgUrl);
