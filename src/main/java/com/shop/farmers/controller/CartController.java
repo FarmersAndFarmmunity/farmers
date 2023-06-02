@@ -69,4 +69,16 @@ public class CartController {
         cartService.updateCartItemCount(cartItemId, count); // 상품의 개수 업데이트
         return new ResponseEntity<Long>(cartItemId, HttpStatus.OK);
     }
+
+    @DeleteMapping(value = "/cartItem/{cartItemId}") // 요청된 자원을 삭제하려고 Delete를 사용
+    public @ResponseBody ResponseEntity deleteCartItem(
+            @PathVariable("cartItemId") Long cartItemId, Principal principal) {
+
+        if (!cartService.validateCartItem(cartItemId, principal.getName())) {
+            return new ResponseEntity<String>("수정 권한이 없습니다.", HttpStatus.FORBIDDEN);
+        }
+
+        cartService.deleteCartItem(cartItemId);
+        return new ResponseEntity<Long>(cartItemId, HttpStatus.OK);
+    }
 }
