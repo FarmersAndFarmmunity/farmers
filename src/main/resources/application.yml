@@ -40,7 +40,7 @@ logging:
     org.hibernate.orm.jdbc.extract: TRACE
 custom:
   #상품 이미지 업로드 경로
-  itemImgLocation: '/Users/kim-youngjae/Documents/shop/item/'
+  itemImgLocation:
   #리소스 업로드 경로
-  uploadPath: '/Users/kim-youngjae/Documents/shop/'
+  uploadPath:
 
