@@ -3,7 +3,7 @@ package com.shop.farmers.boundedContext.item.dto;
 import com.shop.farmers.boundedContext.item.entity.ItemImg;
 import lombok.Getter;
 import lombok.Setter;
-import org.modelmapper.ModelMapper;
+import org.modelmapper.ModelMapper; //멤버 변수가 많아졌을 때 도와주는 라이브러리
 
 @Getter
 @Setter
@@ -17,6 +17,6 @@ public class ItemImgDto {
     private static ModelMapper modelMapper = new ModelMapper();
 
     public static ItemImgDto of(ItemImg itemImg) {
-        return modelMapper.map(itemImg, ItemImgDto.class);
+        return modelMapper.map(itemImg, ItemImgDto.class); //ItemImg 객체의 자료형과 멤버변수의 이름이 같을 때 ItemImgDto로 값 복사
     }
 }

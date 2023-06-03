@@ -32,9 +32,9 @@ public class ItemFormDto {
 
     private ItemSellStatus itemSellStatus;
 
-    private List<ItemImgDto> itemImgDtoList = new ArrayList<>();
+    private List<ItemImgDto> itemImgDtoList = new ArrayList<>(); //수정 시, 상품 이미지 정보 저장하는 리스트
 
-    private List<Long> itemImgIds = new ArrayList<>();
+    private List<Long> itemImgIds = new ArrayList<>(); //수정 시, 상품의 이미지 아이디를 저장하는 리스트
 
     private static ModelMapper modelMapper = new ModelMapper();
 

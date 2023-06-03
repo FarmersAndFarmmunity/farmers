@@ -7,6 +7,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -53,5 +54,16 @@ public class ItemImgService {
             String imgUrl = "/images/item/" + imgName;
             savedItemImg.updateItemImg(oriImgName, imgName, imgUrl);
         }
+    }
+
+
+    public void deleteItemImg(Long itemImgId) throws Exception {
+        ItemImg savedItemImg = itemImgRepository.findById(itemImgId)
+                .orElseThrow(EntityNotFoundException::new);
+
+        if (!StringUtils.isEmpty(savedItemImg.getImgName())) {
+            fileService.deleteFile(itemImgLocation + "/" + savedItemImg.getImgName());
+        }
+
     }
 }
