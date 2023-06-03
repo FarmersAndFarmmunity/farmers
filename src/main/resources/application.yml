@@ -20,7 +20,7 @@ spring:
   jpa:
 #    database: h2
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
         show_sql: true
@@ -41,6 +41,6 @@ logging:
     org.hibernate.orm.jdbc.extract: TRACE
 custom:
   #상품 이미지 업로드 경로
-  itemImgLocation: 'C:/shop/item'
+  itemImgLocation:
   #리소스 업로드 경로
-  uploadPath: '/C:/shop/'
+  uploadPath:
