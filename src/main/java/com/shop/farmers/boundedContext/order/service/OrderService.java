@@ -23,6 +23,7 @@ import org.thymeleaf.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -91,5 +92,29 @@ public class OrderService {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(EntityNotFoundException::new);
         order.cancelOrder(); // 주문 취소 하면 변경 감지 기능에 의해서 트랜잭션이 끝날 때 update 쿼리가 실행됨
+    }
+
+    // 장바구니의 상품 주문 메서드
+    public Long orders(List<OrderDto> orderDtoList, String email) { // 구매자가 가진 주문 갯수를 가져옴
+        Member member = memberRepository.findByEmail(email); // 현재 구매자의 정보를 가져옴
+
+        List<OrderItem> orderItemList = new ArrayList<>(); // 주문 상품의 정보를 담을 리스트
+
+        // 주문 상품에 대한 정보(상품 아이디, 해당 상품의 주문 갯수)에 대해 주문할 상품 리스트를 만들어 줌
+        for (OrderDto orderDto : orderDtoList) {
+            Item item = itemRepository.findById(orderDto.getItemId()).orElseThrow(EntityNotFoundException::new); // 해당 상품에 대한 갯수 정보
+
+            OrderItem orderItem = OrderItem.createOrderItem(item, orderDto.getCount()); // 주문한 제품에 대한 정보와 수량 정보를 저장, 재고 계산 후 주문 정보를 담은 객체를 반환
+
+            orderItemList.add(orderItem);
+        }
+
+        // 최종 주문을 생성
+        Order order = Order.createOrder(member, orderItemList);
+
+        // 주문 데이터를 저장
+        orderRepository.save(order);
+
+        return order.getId(); // 해당 주문이 생성되면 결과 값으로 주문에 대한 아이디 값을 반환
     }
 }
