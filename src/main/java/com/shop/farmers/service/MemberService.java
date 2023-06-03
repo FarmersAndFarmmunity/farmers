@@ -9,7 +9,10 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.oauth2.core.oidc.StandardClaimAccessor;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -24,6 +27,7 @@ public class MemberService implements UserDetailsService {
 
     private void validateDuplicateMember(Member member){
         Member findMember = memberRepository.findByEmail(member.getEmail());
+
         if(findMember != null){
             throw new IllegalStateException("이미 가입된 회원입니다.");
         }
@@ -42,5 +46,18 @@ public class MemberService implements UserDetailsService {
                 .password(member.getPassword())
                 .roles(member.getRole().toString())
                 .build();
+    }
+
+    @Transactional
+    public Member SaveMember(String name, String password) {
+        return SaveMember(name, password);
+    }
+
+    public Optional<Member> findByName(String name) {
+        return memberRepository.findByName(name);
+    }
+
+    public Member whenSocialLogin(String name) {
+            return SaveMember(name, null);
     }
 }

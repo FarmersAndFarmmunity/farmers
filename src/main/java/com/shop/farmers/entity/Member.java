@@ -6,7 +6,13 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name="member")
@@ -39,5 +45,14 @@ public class Member extends BaseEntity {
         member.setPassword(password);
         member.setRole(Role.ADMIN);
         return member;
+    }
+
+    public List<? extends GrantedAuthority> getGrantedAuthorities() {
+        List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+
+        // 모든 멤버는 member 권한을 가진다.
+        grantedAuthorities.add(new SimpleGrantedAuthority("member"));
+
+        return grantedAuthorities;
     }
 }
