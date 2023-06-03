@@ -1,11 +1,12 @@
 package com.shop.farmers.service;
 
-import com.shop.farmers.constant.ItemSellStatus;
-import com.shop.farmers.dto.ItemFormDto;
-import com.shop.farmers.entity.Item;
-import com.shop.farmers.entity.ItemImg;
-import com.shop.farmers.repository.ItemImgRepository;
-import com.shop.farmers.repository.ItemRepository;
+import com.shop.farmers.boundedContext.item.constant.ItemSellStatus;
+import com.shop.farmers.boundedContext.item.dto.ItemFormDto;
+import com.shop.farmers.boundedContext.item.entity.Item;
+import com.shop.farmers.boundedContext.item.entity.ItemImg;
+import com.shop.farmers.boundedContext.item.repository.ItemImgRepository;
+import com.shop.farmers.boundedContext.item.repository.ItemRepository;
+import com.shop.farmers.boundedContext.item.service.ItemService;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
