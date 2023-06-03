@@ -18,7 +18,6 @@ spring:
     username: root
     password:
   jpa:
-#    database: h2
     hibernate:
       ddl-auto: create
     properties:
@@ -26,7 +25,7 @@ spring:
         show_sql: true
         format_sql: true
         use_sql_comments: true
-        default_batch_fetch_size: 10
+        default_batch_fetch_size: 1000
   devtools:
     livereload:
       enabled: true
@@ -44,3 +43,4 @@ custom:
   itemImgLocation:
   #리소스 업로드 경로
   uploadPath:
+

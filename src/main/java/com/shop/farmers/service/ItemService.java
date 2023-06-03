@@ -29,7 +29,6 @@ public class ItemService {
     private final ItemImgService itemImgService;
     private final ItemImgRepository itemImgRepository;
 
-    // 등록
     public Long saveItem(ItemFormDto itemFormDto,
                          List<MultipartFile> itemImgFileList) throws Exception {
         Item item = itemFormDto.createItem();
@@ -66,7 +65,6 @@ public class ItemService {
         return itemFormDto;
     }
 
-    // 수정
     public Long updateItem (ItemFormDto itemFormDto, List<MultipartFile> itemImgFileList) throws Exception {
         Item item = itemRepository.findById(itemFormDto.getId())
                 .orElseThrow(EntityNotFoundException::new);
@@ -81,18 +79,6 @@ public class ItemService {
         return item.getId();
     }
 
-    // 삭제
-    public void deleteItem(Long itemId) throws Exception {
-        List<ItemImg> itemImgs = itemImgRepository.findByItemIdOrderByIdAsc(itemId);
-
-        for (int i = 0; i < itemImgs.size(); i++) {
-            itemImgService.deleteItemImg(itemImgs.get(i).getId());
-        }
-
-        itemRepository.deleteById(itemId);
-        itemImgRepository.deleteAllByItemId(itemId);
-    }
-
     @Transactional(readOnly = true)
     public Page<Item> getAdminItemPage(ItemSearchDto itemSearchDto, Pageable pageable) {
         return itemRepository.getAdminItemPage(itemSearchDto, pageable);
@@ -102,7 +88,5 @@ public class ItemService {
     public Page<MainItemDto> getMainItemPage(ItemSearchDto itemSearchDto, Pageable pageable) {
         return itemRepository.getMainItemPage(itemSearchDto, pageable);
     }
-
-
 }
 
