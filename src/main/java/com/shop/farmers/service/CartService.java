@@ -2,6 +2,8 @@ package com.shop.farmers.service;
 
 import com.shop.farmers.dto.CartDetailDto;
 import com.shop.farmers.dto.CartItemDto;
+import com.shop.farmers.dto.CartOrderDto;
+import com.shop.farmers.dto.OrderDto;
 import com.shop.farmers.entity.Cart;
 import com.shop.farmers.entity.CartItem;
 import com.shop.farmers.entity.Item;
@@ -18,6 +20,7 @@ import org.thymeleaf.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +29,7 @@ public class CartService {
     private final MemberRepository memberRepository;
     private final CartRepository cartRepository;
     private final CartItemRepository cartItemRepository;
+    private final OrderService orderService;
 
     // 장바구니 담기 로직
     public Long addCart(CartItemDto cartItemDto, String email) {
@@ -103,6 +107,33 @@ public class CartService {
         cartItemRepository.delete(cartItem);
     }
 
+    // 장바구니에서 주문을 하였을 때 주문 로직으로 전달이 되면 장바구니의 주문 목록을 삭제해야 함
+    public Long orderCartItem(List<CartOrderDto> cartOrderDtoList, String email) { // 사용자가 가진 장바구니의 모든 장바구니 목록을 가져와야 한다.
+        List<OrderDto> orderDtoList = new ArrayList<>(); // 주문 정보를 저장할 리스트
+
+        for (CartOrderDto cartOrderDto : cartOrderDtoList) { // 장바구니에 담긴 주문 리스트를 통해 주문 생성
+            CartItem cartItem = cartItemRepository.findById(cartOrderDto.getCartItemId())
+                    .orElseThrow(EntityNotFoundException::new); // 실제 카트 상품을 가져옴
+
+            OrderDto orderDto = new OrderDto();
+            orderDto.setItemId(cartItem.getItem().getId());
+            orderDto.setCount(cartItem.getCount());
+
+            orderDtoList.add(orderDto);
+        }
+
+        // 장바구니의 물건을 주문하기 했을 때 실제 주문 서비스에서 처리가 되어야 함 -> orderDtoList 를 사용
+        Long orderId = orderService.orders(orderDtoList, email);// 장바구니의 상품들을 주문 로직으로 넘겨줘야 함
+
+        // 주문 로직으로 넘긴 뒤 장바구니에서 주문한 목록들은 db 에서 삭제
+        for (CartOrderDto cartOrderDto : cartOrderDtoList) {
+            CartItem cartItem = cartItemRepository.findById(cartOrderDto.getCartItemId())
+                    .orElseThrow(EntityNotFoundException::new);
+            cartItemRepository.delete(cartItem); // 장바구니에서 삭제
+        }
+
+        return orderId;
+    }
 
 }
 
