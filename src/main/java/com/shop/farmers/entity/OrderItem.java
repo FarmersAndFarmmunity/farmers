@@ -28,11 +28,11 @@ public class OrderItem extends BaseEntity {
 
     public static OrderItem createOrderItem(Item item, int count){
         OrderItem orderItem = new OrderItem();
-        orderItem.setItem(item);
-        orderItem.setCount(count);
-        orderItem.setOrderPrice(item.getPrice());
+        orderItem.setItem(item); // 주문한 아이템을 지정
+        orderItem.setCount(count); // 주문한 아이템을 몇 개를 살지
+        orderItem.setOrderPrice(item.getPrice()); // 해당 상품의 가격을 저장
 
-        item.removeStock(count);
+        item.removeStock(count); // 총 아이템의 재고 갯수에서 주문한 상품의 갯수 만큼 제거
         return orderItem;
     }
 

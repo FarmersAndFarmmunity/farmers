@@ -26,6 +26,7 @@ public class CartService {
     private final MemberRepository memberRepository;
     private final CartRepository cartRepository;
     private final CartItemRepository cartItemRepository;
+
     // 장바구니 담기 로직
     public Long addCart(CartItemDto cartItemDto, String email) {
         // 먼저 장바구니에 담을 아이템이 있는지 조회
@@ -101,5 +102,7 @@ public class CartService {
 
         cartItemRepository.delete(cartItem);
     }
+
+
 }
 
