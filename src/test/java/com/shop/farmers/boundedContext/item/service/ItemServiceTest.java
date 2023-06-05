@@ -1,4 +1,4 @@
-package com.shop.farmers.service;
+package com.shop.farmers.boundedContext.item.service;
 
 import com.shop.farmers.boundedContext.item.constant.ItemSellStatus;
 import com.shop.farmers.boundedContext.item.dto.ItemFormDto;
