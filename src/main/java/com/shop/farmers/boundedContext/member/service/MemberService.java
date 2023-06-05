@@ -1,7 +1,5 @@
 package com.shop.farmers.boundedContext.member.service;
 
-import com.shop.farmers.boundedContext.item.dto.ItemSearchDto;
-import com.shop.farmers.boundedContext.item.entity.Item;
 import com.shop.farmers.boundedContext.member.dto.MemberSearchDto;
 import com.shop.farmers.boundedContext.member.entity.Member;
 import com.shop.farmers.boundedContext.member.repository.MemberRepository;
