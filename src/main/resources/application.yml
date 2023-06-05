@@ -26,6 +26,7 @@ spring:
         format_sql: true
         use_sql_comments: true
         default_batch_fetch_size: 1000
+    database: mysql
   devtools:
     livereload:
       enabled: true
