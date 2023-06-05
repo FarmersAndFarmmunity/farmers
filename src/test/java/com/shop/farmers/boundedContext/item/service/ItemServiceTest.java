@@ -1,4 +1,4 @@
-package com.shop.farmers.service;
+package com.shop.farmers.boundedContext.item.service;
 
 import com.shop.farmers.boundedContext.item.constant.ItemSellStatus;
 import com.shop.farmers.boundedContext.item.dto.ItemFormDto;
@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @Transactional
-@ActiveProfiles("test")
+@TestPropertySource(locations = "classpath:application-test.yml")
 public class ItemServiceTest {
     @Autowired
     ItemService itemService;
