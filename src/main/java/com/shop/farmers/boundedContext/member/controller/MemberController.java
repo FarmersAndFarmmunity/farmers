@@ -1,8 +1,5 @@
 package com.shop.farmers.boundedContext.member.controller;
 
-import com.shop.farmers.boundedContext.item.dto.ItemFormDto;
-import com.shop.farmers.boundedContext.item.dto.ItemSearchDto;
-import com.shop.farmers.boundedContext.item.entity.Item;
 import com.shop.farmers.boundedContext.member.dto.MemberFormDto;
 import com.shop.farmers.boundedContext.member.dto.MemberSearchDto;
 import com.shop.farmers.boundedContext.member.entity.Member;
@@ -19,12 +16,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Optional;
 
 
-//@RequestMapping("/members")
 @Controller
 @RequiredArgsConstructor
 public class MemberController {
