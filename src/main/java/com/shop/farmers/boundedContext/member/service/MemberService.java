@@ -13,6 +13,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -29,6 +31,10 @@ public class MemberService implements UserDetailsService {
         if(findMember != null){
             throw new IllegalStateException("이미 가입된 회원입니다.");
         }
+    }
+
+    public Optional<Member> getMemberById(Long id){
+        return memberRepository.findById(id);
     }
 
     @Override

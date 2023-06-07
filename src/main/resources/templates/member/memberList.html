@@ -3,6 +3,10 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout1}">
 
+<head>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+</head>
 <!-- 사용자 스크립트 추가 -->
 <th:block layout:fragment="script">
     <script th:inline="javascript">
@@ -40,7 +44,6 @@
 
 <div layout:fragment="content">
 
-    <form th:action="@{'/admin/member/' + ${members.number}}" role="form" method="get" th:object="${members}">
         <table class="table">
             <thead>
             <tr>
@@ -54,7 +57,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="member, status: ${members.getContent()}">
+            <tr th:each="member, status: ${members.getContent()}" th:object="${members}">
                 <td th:text="${member.id}"></td>
                 <td>
                     <span th:text="${member.name}"></span>
@@ -69,19 +72,28 @@
                     <span th:case="${T(com.shop.farmers.boundedContext.member.constant.Role).ADMIN}">관리자</span>
                 </td>
                 <td>
-                    <select class="form-control" style="width:auto;">
-                        <option value="USER">일반 회원</option>
-                        <option value="VENDOR">판매자</option>
-                        <option value="ADMIN">관리자</option>
+                    <form th:action="@{'/admin/member/update/' + ${member.id}}" method="post" id="roleForm" name="roleForm">
+                    <select class="form-control" th:name="paramRole" style="width:auto;">
+                        <option th:selected="${member.role}==${T(com.shop.farmers.boundedContext.member.constant.Role).USER}" th:value="USER">일반 회원</option>
+                        <option th:selected="${member.role}==${T(com.shop.farmers.boundedContext.member.constant.Role).VENDOR}"  th:value="VENDOR">판매자</option>
+                        <option th:selected="${member.role}==${T(com.shop.farmers.boundedContext.member.constant.Role).ADMIN}"  th:value="ADMIN">관리자</option>
                     </select>
-<!--                    <button type="button" class="btn btn-outline-secondary" th:onclick="@{'/admin/member/update/' + ${memberFormDto.id}">등급 변경</button>-->
+                    <button type="submit" class="btn btn-outline-secondary">
+                        <span aria-hidden="true">등급 변경</span>
+                    </button>
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                    </form>
                 </td>
                 <td th:text="${#strings.substring(member.regTime, 0, 19)}"></td>
                 <td th:text="${member.address}"></td>
             </tr>
             </tbody>
         </table>
+        <div class="d-flex flex-row-reverse">
+<!--            <button type="submit" class="btn btn-outline-secondary">등급 변경</button>-->
+        </div>
 
+    <form th:action="@{'/admin/member/' + ${members.number}}" role="form" method="get">
         <div th:with="start=${(members.number/maxPage)*maxPage + 1}, end=(${(members.totalPages == 0) ? 1 : (start + (maxPage - 1) < members.totalPages ? start + (maxPage - 1) : members.totalPages)})" >
             <ul class="pagination justify-content-center">
 
