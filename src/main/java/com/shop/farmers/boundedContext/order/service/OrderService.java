@@ -11,6 +11,7 @@ import com.shop.farmers.boundedContext.order.dto.OrderHistDto;
 import com.shop.farmers.boundedContext.order.dto.OrderItemDto;
 import com.shop.farmers.boundedContext.order.entity.Order;
 import com.shop.farmers.boundedContext.order.entity.OrderItem;
+import com.shop.farmers.boundedContext.order.repository.OrderItemRepository;
 import com.shop.farmers.boundedContext.order.repository.OrderRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +35,7 @@ public class OrderService {
     private final MemberRepository memberRepository;
     private final OrderRepository orderRepository;
     private final ItemImgRepository itemImgRepository;
+    private final OrderItemRepository orderItemRepository;
 
     public Long order(OrderDto orderDto, String email) {
         Item item = itemRepository.findById(orderDto.getItemId()) // 주문할 상품 조회
