@@ -6,13 +6,36 @@
 <head>
     <meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
 </head>
 
 <!-- 사용자 스크립트 추가 -->
 <th:block layout:fragment="script">
-
+    <script src="https://js.tosspayments.com/v1"></script>
     <script th:inline="javascript">
+        const orderId = /*[[ ${order.orderId} ]]*/ null;
+        const customerName = /*[[ ${order.customerName} ]]*/ null;
+        const orderName = /*[[ ${order.orderName} ]]*/ null;
+        const totalPrice = /*[[ ${order.totalPrice} ]]*/ null;
+    </script>
 
+    <script>
+        const tossPayments = TossPayments('test_ck_P24xLea5zVAdZojP0zy3QAMYNwW6');
+
+        function payment() {
+            const method = '카드'; // "카드" 혹은 "가상계좌"
+
+            const paymentData = {
+                amount: totalPrice,
+                orderId: "order__" + orderId + "__" + (Math.random() + "").substring(2), // orderId는 6자 이상이여야 함
+                orderName: orderName,
+                customerName: customerName,
+                successUrl: 'http://localhost:8080/success',
+                failUrl: 'http://localhost:8080/fail',
+            };
+
+            tossPayments.requestPayment(method, paymentData);
+        }
     </script>
 
 </th:block>
@@ -74,7 +97,7 @@
         </h2>
 
         <div class="text-center mt-3">
-            <button type="button" class="btn btn-primary btn-lg" onclick="orders()">주문하기</button>
+            <button type="button" class="btn btn-primary btn-lg" onclick="payment()">주문하기</button>
         </div>
 
 </div>
