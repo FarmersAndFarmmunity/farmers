@@ -42,6 +42,7 @@ spring:
         format_sql: true
         use_sql_comments: true
         default_batch_fetch_size: 1000
+    database: mysql
   devtools:
     livereload:
       enabled: true
@@ -59,4 +60,3 @@ custom:
   itemImgLocation: 'C:/shop/item'
   #리소스 업로드 경로
   uploadPath: 'file:///C:/shop/'
-
