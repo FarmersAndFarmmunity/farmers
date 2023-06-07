@@ -10,6 +10,7 @@
 
 <!-- 사용자 스크립트 추가 -->
 <th:block layout:fragment="script">
+
     <script th:inline="javascript">
         $(document).ready(function(){
 
@@ -52,7 +53,7 @@
                 cache   : false,
                 success  : function(result, status){
                     alert("주문이 완료 되었습니다.");
-                    location.href='/';
+                    location.href = '/order/' + result;
                 },
                 error : function(jqXHR, status, error){
 
