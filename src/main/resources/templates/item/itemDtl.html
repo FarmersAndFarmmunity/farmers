@@ -52,7 +52,7 @@
                 dataType : "json",
                 cache   : false,
                 success  : function(result, status){
-                    alert("주문이 완료 되었습니다.");
+                    alert("주문 상세 페이지로 이동합니다.");
                     location.href = '/order/' + result;
                 },
                 error : function(jqXHR, status, error){
