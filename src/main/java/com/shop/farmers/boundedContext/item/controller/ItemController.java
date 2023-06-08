@@ -1,5 +1,6 @@
 package com.shop.farmers.boundedContext.item.controller;
 
+import com.shop.farmers.base.mvcConfig.WebMvcConfig;
 import com.shop.farmers.boundedContext.item.dto.ItemFormDto;
 import com.shop.farmers.boundedContext.item.dto.ItemSearchDto;
 import com.shop.farmers.boundedContext.item.entity.Item;
@@ -7,6 +8,7 @@ import com.shop.farmers.boundedContext.item.service.ItemService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -19,24 +21,27 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
 public class ItemController {
+    @Value("${custom.postForPage}")
+    private int postForPage;
 
     private final ItemService itemService;
 
-    @GetMapping(value = "/admin/item/new")
+    @GetMapping(value = "/vendor/item/new")
     public String itemForm(Model model){
         model.addAttribute("itemFormDto", new ItemFormDto());
         return "item/itemForm";
     }
 
     @GetMapping(value = {"/admin/items", "/admin/items/{page}"})
-    public String itemManage(ItemSearchDto itemSearchDto, @PathVariable("page") Optional<Integer> page, Model model){
-        Pageable pageable = PageRequest.of(page.isPresent()? page.get() : 0, 10); // 한 페이지에 표시될 수 지정
+    public String adminItemManage(ItemSearchDto itemSearchDto, @PathVariable("page") Optional<Integer> page, Model model){
+        Pageable pageable = PageRequest.of(page.isPresent()? page.get() : 0, postForPage); // 한 페이지에 표시될 수 지정
         model.addAttribute("itemFormDto", new ItemFormDto());
 
         Page<Item> items = itemService.getAdminItemPage(itemSearchDto, pageable);
@@ -47,7 +52,20 @@ public class ItemController {
         return "item/itemMng";
     }
 
-    @PostMapping(value = "/admin/item/new")
+    @GetMapping(value = {"/vendor/items", "/vendor/items/{page}"})
+    public String myItemManage(ItemSearchDto itemSearchDto, @PathVariable("page") Optional<Integer> page, Model model, Principal principal){
+        Pageable pageable = PageRequest.of(page.isPresent()? page.get() : 0, postForPage);
+        model.addAttribute("itemFormDto", new ItemFormDto());
+
+        Page<Item> items = itemService.getMyItemPage(itemSearchDto, pageable, principal);
+        model.addAttribute("items", items);
+        model.addAttribute("itemSearchDto", itemSearchDto);
+        model.addAttribute("maxPage", 5);
+
+        return "item/itemMng";
+    }
+
+    @PostMapping(value = "/vendor/item/new")
     public String itemNew(@Valid ItemFormDto itemFormDto, BindingResult bindingResult, Model model, @RequestParam("itemImgFile") List<MultipartFile> itemImgFileList){
 
         if(bindingResult.hasErrors()){
@@ -69,7 +87,7 @@ public class ItemController {
         return "redirect:/";
     }
 
-    @GetMapping(value = "/admin/item/{itemId}")
+    @GetMapping(value = "/vendor/item/{itemId}")
     public String itemDtl(@PathVariable("itemId") Long itemId, Model model){
 
         try {
@@ -87,7 +105,7 @@ public class ItemController {
 
 
     // 수정 기능
-    @PostMapping(value = "/admin/item/{itemId}")
+    @PostMapping(value = "/vendor/item/{itemId}")
     public String itemUpdate(@Valid ItemFormDto itemFormDto, BindingResult bindingResult, @RequestParam("itemImgFile") List<MultipartFile> itemImgFileList, Model model){
 
         if(bindingResult.hasErrors()){
@@ -110,7 +128,7 @@ public class ItemController {
     }
 
     // 삭제 기능
-    @PostMapping("/admin/item/delete/{itemId}")
+    @PostMapping("/vendor/item/delete/{itemId}")
     public String deleteItem(@PathVariable Long itemId, Model model) throws Exception {
         try {
             itemService.deleteItem(itemId);
