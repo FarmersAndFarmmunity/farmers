@@ -39,37 +39,6 @@ public class ItemController {
         return "item/itemForm";
     }
 
-    //관리자용 전체 상품 관리 페이지
-    @GetMapping(value = {"/admin/items", "/admin/items/{page}"})
-    public String adminItemManage(ItemSearchDto itemSearchDto, @PathVariable("page") Optional<Integer> page, Model model){
-        Pageable pageable = PageRequest.of(page.isPresent()? page.get() : 0, postForPage); // 한 페이지에 표시될 수 지정
-        model.addAttribute("itemFormDto", new ItemFormDto());
-
-        Page<Item> items = itemService.getAdminItemPage(itemSearchDto, pageable);
-
-        model.addAttribute("items", items);
-        model.addAttribute("itemSearchDto", itemSearchDto);
-        model.addAttribute("maxPage", 5);
-
-        return "item/itemMng";
-    }
-
-    //판매자용 내 상품 관리 페이지
-    @GetMapping(value = {"/vendor/items", "/vendor/items/{page}"})
-    public String myItemManage(ItemSearchDto itemSearchDto, @PathVariable("page") Optional<Integer> page, Model model, Principal principal){
-        String email = principal.getName();
-
-        Pageable pageable = PageRequest.of(page.isPresent()? page.get() : 0, postForPage);
-        model.addAttribute("itemFormDto", new ItemFormDto());
-        Page<Item> items = itemService.getMyItemPage(itemSearchDto, pageable, email);
-        model.addAttribute("items", items);
-        model.addAttribute("itemSearchDto", itemSearchDto);
-        model.addAttribute("maxPage", 5);
-
-        return "item/itemMng";
-    }
-
-
     @PostMapping(value = "/vendor/item/new")
     public String itemNew(@Valid ItemFormDto itemFormDto, BindingResult bindingResult, Model model, @RequestParam("itemImgFile") List<MultipartFile> itemImgFileList){
 
@@ -105,6 +74,40 @@ public class ItemController {
         }
 
         return "item/itemForm";
+    }
+
+
+    //관리자용 전체 상품 관리 페이지 조회
+    @GetMapping(value = {"/admin/items", "/admin/items/{page}"})
+    public String adminItemManage(ItemSearchDto itemSearchDto, @PathVariable("page") Optional<Integer> page, Model model){
+        String email = "ADMIN"; // 관리자의 경우 이메일 조회 없이 넘김
+        Pageable pageable = PageRequest.of(page.isPresent()? page.get() : 0, postForPage); // 한 페이지에 표시될 수 지정
+        model.addAttribute("itemFormDto", new ItemFormDto());
+
+        Page<Item> items = itemService.getAdminItemPage(itemSearchDto, pageable);
+
+        model.addAttribute("items", items);
+        model.addAttribute("itemSearchDto", itemSearchDto);
+        model.addAttribute("maxPage", 5);
+
+        return "item/itemMng";
+    }
+
+    //판매자용 내 상품 관리 페이지 조회
+    @GetMapping(value = {"/vendor/items", "/vendor/items/{page}"})
+    public String myItemManage(ItemSearchDto itemSearchDto, @PathVariable("page") Optional<Integer> page, Model model, Principal principal){
+        String email = principal.getName(); // 유저의 이메일 정보
+
+        Pageable pageable = PageRequest.of(page.isPresent()? page.get() : 0, postForPage);
+        model.addAttribute("itemFormDto", new ItemFormDto());
+
+        Page<Item> items = itemService.getMyItemPage(itemSearchDto, pageable, email);
+
+        model.addAttribute("items", items);
+        model.addAttribute("itemSearchDto", itemSearchDto);
+        model.addAttribute("maxPage", 5);
+
+        return "item/itemMng";
     }
 
 
