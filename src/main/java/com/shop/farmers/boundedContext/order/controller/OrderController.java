@@ -1,5 +1,7 @@
 package com.shop.farmers.boundedContext.order.controller;
 
+import com.shop.farmers.boundedContext.order.dto.OrderDtlDto;
+import com.shop.farmers.boundedContext.order.dto.OrderItemDtlDto;
 import com.shop.farmers.boundedContext.order.dto.OrderDto;
 import com.shop.farmers.boundedContext.order.dto.OrderHistDto;
 import com.shop.farmers.boundedContext.order.service.OrderService;
@@ -25,6 +27,18 @@ import java.util.Optional;
 public class OrderController {
 
     private final OrderService orderService;
+
+    @GetMapping("/order/{orderId}")
+    public String orderDtl(@PathVariable("orderId") Long orderId, Principal principal, Model model) {
+        if (!orderService.validateOrder(orderId, principal.getName())) { // 현재 로그인한 회원이랑 주문한 회원 비교
+            return "/";
+        }
+
+        OrderDtlDto orderDtlDto = orderService.getOrderDtl(orderId);
+
+        model.addAttribute("order", orderDtlDto);
+        return "order/orderDtl";
+    }
 
     @PostMapping(value = "/order")
     // 자바 객체를 HTTP 요청의 body로 전달

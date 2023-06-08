@@ -26,14 +26,16 @@ public class Order extends BaseEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    private LocalDateTime orderDate;  //주문일
+    private LocalDateTime orderDate;  // 주문일
 
     @Enumerated(EnumType.STRING)
-    private OrderStatus orderStatus;  //주문상태
+    private OrderStatus orderStatus;  // 주문상태
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL,
             orphanRemoval = true, fetch = FetchType.LAZY)
     private List<OrderItem> orderItems = new ArrayList<>();
+
+    private boolean isPaid; // 결제 여부
 
     public void addOrderItem(OrderItem orderItem){
         orderItems.add(orderItem);
@@ -65,6 +67,23 @@ public class Order extends BaseEntity {
         for(OrderItem orderItem : orderItems){
             orderItem.cancel();
         }
+    }
+
+    public boolean isPayable() {
+        if ( isPaid ) return false;
+        if ( this.orderStatus == OrderStatus.CANCEL ) return false;
+
+        return true;
+    }
+
+    public String makeName() {
+        String name = orderItems.get(0).getItem().getItemNm();
+
+        if (orderItems.size() > 1) {
+            name += " 외 %d건".formatted(orderItems.size() - 1);
+        }
+
+        return name;
     }
 
 }
