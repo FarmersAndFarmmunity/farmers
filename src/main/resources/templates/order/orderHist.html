@@ -116,7 +116,7 @@
                             <span th:text="${orderItem.orderPrice} +'원'"></span>
                             <span th:text="${orderItem.count} +'개'"></span>
                         </div>
-                        <a th:href="@{|/items/${orderItem.itemId}/reviews/new|}" th:text="리뷰작성"></a>
+                        <a th:href="@{|/reviews/new?orderId=${orderItem.orderId}&itemId=${orderItem.itemId}|}" th:text="리뷰작성"></a>
                     </div>
                 </div>
             </div>
