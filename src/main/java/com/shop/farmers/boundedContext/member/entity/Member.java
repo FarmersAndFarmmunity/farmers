@@ -41,4 +41,8 @@ public class Member extends BaseEntity {
         member.setRole(Role.ADMIN); // 현재는 멤버의 롤이 기본적으로 ADMIN 으로 설정되어 있다.
         return member;
     }
+
+    public void updateRole(Role role){
+        this.role = role;
+    }
 }
