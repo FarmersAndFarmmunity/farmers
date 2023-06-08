@@ -20,7 +20,7 @@ import java.util.Map;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Slf4j
-public class AdminOAuth2UserService extends DefaultOAuth2UserService {
+public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     private final MemberService memberService;
 
     // 카카오톡 로그인이 성공할 때 마다 실행.
@@ -29,20 +29,23 @@ public class AdminOAuth2UserService extends DefaultOAuth2UserService {
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2User oAuth2User = super.loadUser(userRequest);
 
-        String oauthId = oAuth2User.getName();
-
         String providerTypeCode = userRequest.getClientRegistration().getRegistrationId().toUpperCase();
+
+        String oauthId = switch (providerTypeCode) {
+            case "NAVER" -> ((Map<String, String>) oAuth2User.getAttributes().get("response")).get("id");
+            default -> oAuth2User.getName();
+        };
 
         String name = providerTypeCode + "__%s".formatted(oauthId);
 
         Member member = memberService.whenSocialLogin(providerTypeCode, name);
 
-        return new AdminOAuth2User(member.getUsername(), member.getPassword(), member.getGrantedAuthorities());
+        return new CustomOAuth2User(member.getUsername(), member.getPassword(), member.getGrantedAuthorities());
     }
 }
 
-class AdminOAuth2User extends User implements OAuth2User {
-    public AdminOAuth2User(String username, String password, Collection<? extends GrantedAuthority> authorities) {
+class CustomOAuth2User extends User implements OAuth2User {
+    public CustomOAuth2User(String username, String password, Collection<? extends GrantedAuthority> authorities) {
         super(username, password, authorities);
     }
 
