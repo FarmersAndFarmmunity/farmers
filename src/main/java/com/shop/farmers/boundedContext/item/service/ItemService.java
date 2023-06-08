@@ -100,8 +100,7 @@ public class ItemService {
     }
 
     @Transactional(readOnly = true)
-    public Page<Item> getMyItemPage(ItemSearchDto itemSearchDto, Pageable pageable, Principal principal) {
-        String email = principal.getName();
+    public Page<Item> getMyItemPage(ItemSearchDto itemSearchDto, Pageable pageable, String email) {
         return itemRepository.getMyItemPage(itemSearchDto, pageable, email);
     }
 
