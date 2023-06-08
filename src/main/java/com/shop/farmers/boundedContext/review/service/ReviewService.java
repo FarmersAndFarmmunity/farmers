@@ -61,8 +61,8 @@ public class ReviewService {
         return true;
     }
 
-    public Long saveReview(ReviewFormDto reviewFormDto) {
-        Review review = reviewFormDto.createReview();
+    public Long saveReview(ReviewFormDto reviewFormDto, Member member) {
+        Review review = reviewFormDto.createReview(member);
         reviewRepository.save(review);
 
         return review.getId();

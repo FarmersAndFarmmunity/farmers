@@ -1,5 +1,6 @@
 package com.shop.farmers.boundedContext.review.controller;
 
+import com.shop.farmers.boundedContext.item.dto.ItemFormDto;
 import com.shop.farmers.boundedContext.item.entity.Item;
 import com.shop.farmers.boundedContext.item.service.ItemService;
 import com.shop.farmers.boundedContext.member.entity.Member;
@@ -14,9 +15,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.security.Principal;
+import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -36,22 +40,29 @@ public class ReviewController {
             return "redirect:/orders"; // 권한이 없으면 구매이력으로 매핑
         }
 
+        ItemFormDto itemFormDto = itemService.getItemDtl(itemId);
+        model.addAttribute("item", itemFormDto);
         model.addAttribute("reviewFormDto", new ReviewFormDto());
 
         return "review/reviewForm";
     }
 
     @Transactional
-    @PostMapping(value = {"/reviews/new"})
+    @PostMapping(value = {"/reviews/new/{itemId}"})
     public String createReview(@Valid ReviewFormDto reviewFormDto, BindingResult bindingResult,
-                               Principal principal, Model model){
+                               Principal principal, Model model, @PathVariable Long itemId){
+        String email = principal.getName();
+        Member member = memberService.findByEmail(email);
+
+        Item item = itemService.findById(itemId).orElseThrow(EntityNotFoundException::new);
+        reviewFormDto.setItem(item);
 
         if(bindingResult.hasErrors()){
             return "review/reviewForm";
         }
 
         try {
-            reviewService.saveReview(reviewFormDto);
+            reviewService.saveReview(reviewFormDto, member);
         } catch (Exception e){
             model.addAttribute("errorMessage", "리뷰 등록 중 에러가 발생하였습니다.");
             return "review/reviewForm";
