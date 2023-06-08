@@ -14,6 +14,7 @@ public class OrderItemDto {
         this.orderPrice = orderItem.getOrderPrice();
         this.imgUrl = imgUrl;
         this.itemId = orderItem.getItem().getId();
+        this.orderId = orderItem.getOrder().getId();
     }
 
     private String itemNm; //상품명
@@ -25,4 +26,6 @@ public class OrderItemDto {
     private String imgUrl;  //상품 이미지 경로
 
     private Long itemId; // 상품 id
+
+    private Long orderId;
 }

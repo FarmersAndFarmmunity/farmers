@@ -75,14 +75,4 @@ public class OrderController {
 
         return new ResponseEntity<Long>(orderId, HttpStatus.OK);
     }
-
-    @GetMapping(value = {"/review", "/review/{itemId}"})
-    public String showReview(@PathVariable("itemId") Long itemId, Principal principal, Model model) {
-
-        // 주문 번호를 통해 주문한 상품의 item_id에 접근해야 함
-
-
-        return "item/itemDtl";
-    }
-
 }

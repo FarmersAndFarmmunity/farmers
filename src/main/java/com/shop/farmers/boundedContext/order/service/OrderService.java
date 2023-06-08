@@ -35,6 +35,7 @@ public class OrderService {
     private final MemberRepository memberRepository;
     private final OrderRepository orderRepository;
     private final ItemImgRepository itemImgRepository;
+
     private final OrderItemRepository orderItemRepository;
 
     public Long order(OrderDto orderDto, String email) {
@@ -87,6 +88,16 @@ public class OrderService {
         if (!StringUtils.equals(curMember.getEmail(), savedMember.getEmail())) {
             return false;
         }
+        return true;
+    }
+
+    public boolean findOrder(Long ItemId, String email) {
+        Optional<OrderItem> opOrderItem = orderItemRepository.findByItemIdAndCreatedBy(ItemId, email);
+
+        if (!(opOrderItem.isPresent())) {
+            return false;
+        }
+
         return true;
     }
 
