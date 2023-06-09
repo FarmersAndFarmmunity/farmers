@@ -14,6 +14,8 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ReviewService {
@@ -66,5 +68,9 @@ public class ReviewService {
         reviewRepository.save(review);
 
         return review.getId();
+    }
+
+    public List<Review> getList(Long itemId) {
+        return reviewRepository.findByItemIdLike(itemId);
     }
 }
