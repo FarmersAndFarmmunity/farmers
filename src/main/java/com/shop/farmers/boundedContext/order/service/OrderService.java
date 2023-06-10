@@ -6,9 +6,7 @@ import com.shop.farmers.boundedContext.item.repository.ItemImgRepository;
 import com.shop.farmers.boundedContext.item.repository.ItemRepository;
 import com.shop.farmers.boundedContext.member.entity.Member;
 import com.shop.farmers.boundedContext.member.repository.MemberRepository;
-import com.shop.farmers.boundedContext.order.dto.OrderDto;
-import com.shop.farmers.boundedContext.order.dto.OrderHistDto;
-import com.shop.farmers.boundedContext.order.dto.OrderItemDto;
+import com.shop.farmers.boundedContext.order.dto.*;
 import com.shop.farmers.boundedContext.order.entity.Order;
 import com.shop.farmers.boundedContext.order.entity.OrderItem;
 import com.shop.farmers.boundedContext.order.repository.OrderItemRepository;
@@ -24,7 +22,6 @@ import org.thymeleaf.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -51,6 +48,26 @@ public class OrderService {
         orderRepository.save(order); // 생성한 주문 엔티티를 저장
 
         return order.getId();
+    }
+
+    @Transactional(readOnly = true)
+    public OrderDtlDto getOrderDtl(Long orderId) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(EntityNotFoundException::new);
+
+        List<OrderItem> orderItems = order.getOrderItems();
+
+        OrderDtlDto orderDtlDto = new OrderDtlDto(order);
+
+        for (OrderItem orderItem : orderItems) {
+            ItemImg itemImg = itemImgRepository.findByItemIdAndRepimgYn
+                    (orderItem.getItem().getId(), "Y");
+            OrderItemDtlDto orderItemDtlDto =
+                    new OrderItemDtlDto(orderItem, itemImg.getImgUrl());
+            orderDtlDto.addOrderItemDto(orderItemDtlDto);
+        }
+
+        return orderDtlDto;
     }
 
     @Transactional(readOnly = true)
