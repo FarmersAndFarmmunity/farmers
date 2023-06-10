@@ -85,6 +85,30 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
         return new PageImpl<>(content, pageable, total);
     }
 
+    @Override
+    public Page<Item> getMyItemPage(ItemSearchDto itemSearchDto, Pageable pageable, String email) {
+        List<Item> content = queryFactory
+                .selectFrom(QItem.item)
+                .where(QItem.item.createdBy.eq(email),
+                        regDtsAfter(itemSearchDto.getSearchDateType()),
+                        searchSellStatusEq(itemSearchDto.getSearchSellStatus()),
+                        searchByLike(itemSearchDto.getSearchBy(),
+                                itemSearchDto.getSearchQuery()))
+                .orderBy(QItem.item.id.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        long total = queryFactory.select(Wildcard.count).from(QItem.item)
+                .where(regDtsAfter(itemSearchDto.getSearchDateType()),
+                        searchSellStatusEq(itemSearchDto.getSearchSellStatus()),
+                        searchByLike(itemSearchDto.getSearchBy(), itemSearchDto.getSearchQuery()))
+                .fetchOne()
+                ;
+
+        return new PageImpl<>(content, pageable, total);
+    }
+
     private BooleanExpression itemNmLike(String searchQuery){
         return StringUtils.isEmpty(searchQuery) ? null : QItem.item.itemNm.like("%" + searchQuery + "%");
     }
