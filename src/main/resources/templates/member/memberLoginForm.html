@@ -27,17 +27,15 @@
     <button class="btn btn-primary">로그인</button>
     <button type="button" class="btn btn-primary" onClick="location.href='/members/new'">회원가입</button>
     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-  </form>
 
-  <br>
-  <div>
-    <a class="btn btn-link" href="/oauth2/authorization/kakao">
+    <br>
+    <a href="/oauth2/authorization/kakao" class="btn btn-block btn-outline gap-1">
       <img src="https://user-images.githubusercontent.com/109645958/244287034-c9912ae7-1bf4-45c7-89b7-35cc54252b45.png">
     </a>
-    <a class="btn btn-link" href="/oauth2/authorization/naver">
+    <a href="/oauth2/authorization/naver" class="btn btn-block btn-outline gap-1">
       <img src="https://user-images.githubusercontent.com/109645958/244287053-d4e247c9-c7ca-41dd-9864-9672d664752d.png" width="183px" height="45px">
     </a>
-  </div>
+  </form>
 
 </div>
 

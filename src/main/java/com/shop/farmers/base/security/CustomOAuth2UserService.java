@@ -31,14 +31,15 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         String providerTypeCode = userRequest.getClientRegistration().getRegistrationId().toUpperCase();
 
+        //네이버 로그인 시, 아이디 값만 깔끔히 받아오기 위한 코드
         String oauthId = switch (providerTypeCode) {
             case "NAVER" -> ((Map<String, String>) oAuth2User.getAttributes().get("response")).get("id");
             default -> oAuth2User.getName();
         };
 
-        String name = providerTypeCode + "__%s".formatted(oauthId);
+        String username = providerTypeCode + "__%s".formatted(oauthId);
 
-        Member member = memberService.whenSocialLogin(providerTypeCode, name);
+        Member member = memberService.whenSocialLogin(providerTypeCode, username);
 
         return new CustomOAuth2User(member.getUsername(), member.getPassword(), member.getGrantedAuthorities());
     }
