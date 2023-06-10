@@ -45,15 +45,22 @@
                 <td>리뷰 번호</td>
                 <td>리뷰 내용</td>
                 <td>등록일</td>
+                <td>리뷰 관리</td>
             </tr>
             </thead>
             <tbody>
             <tr th:each="review, status: ${reviews.getContent()}">
                 <td th:text="${review.id}"></td>
+
                 <td>
                     <a th:href="'/item/'+ ${review.item.id}" th:text="${review.contents}"></a>
                 </td>
+
                 <td th:text="${#temporals.format(review.regTime, 'yyyy-MM-dd HH:mm')}"></td>
+
+                <td>
+                    <a th:href="'/reviews/delete/'+ ${review.id}" th:text="삭제"></a>
+                </td>
             </tr>
             </tbody>
         </table>

@@ -18,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -81,5 +82,13 @@ public class ReviewService {
         Member member = memberService.findByEmail(email);
         Long id = member.getId();
         return reviewRepository.getMyReviewPage(reviewSearchDto, pageable, id);
+    }
+
+    public void deleteReview(Long reviewId) {
+        Optional<Review> opReview = reviewRepository.findById(reviewId);
+
+        if (opReview.isPresent()) {
+            reviewRepository.delete(opReview.get());
+        }
     }
 }

@@ -11,6 +11,7 @@ import com.shop.farmers.boundedContext.review.entity.Review;
 import com.shop.farmers.boundedContext.review.service.ReviewService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -89,5 +90,12 @@ public class ReviewController {
         model.addAttribute("maxPage", 5);
 
         return "review/reviewMng";
+    }
+
+    @Transactional
+    @GetMapping("/reviews/delete/{reviewId}")
+    public String deleteReview(@PathVariable("reviewId") Long reviewId) {
+        reviewService.deleteReview(reviewId);
+        return "redirect:/reviews";
     }
 }
