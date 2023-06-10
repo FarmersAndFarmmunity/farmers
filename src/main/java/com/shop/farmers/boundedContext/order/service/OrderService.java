@@ -21,6 +21,7 @@ import org.thymeleaf.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -133,5 +134,9 @@ public class OrderService {
         orderRepository.save(order);
 
         return order.getId(); // 해당 주문이 생성되면 결과 값으로 주문에 대한 아이디 값을 반환
+    }
+
+    public Optional<Order> findOrderById(Long id) {
+        return orderRepository.findById(id);
     }
 }

@@ -1,11 +1,9 @@
 package com.shop.farmers.boundedContext.order.dto;
 
-import com.shop.farmers.boundedContext.order.constant.OrderStatus;
 import com.shop.farmers.boundedContext.order.entity.Order;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +13,7 @@ public class OrderDtlDto {
     public OrderDtlDto(Order order){
         this.orderId = order.getId();
         this.customerName = order.getMember().getName();
+        this.customerEmail = order.getMember().getEmail();
         this.orderName = order.makeName();
         this.totalPrice = order.getTotalPrice();
     }
@@ -22,6 +21,8 @@ public class OrderDtlDto {
     private Long orderId; //주문아이디
 
     private String customerName; // 주문자 이름
+
+    private String customerEmail; // 주문자 이메일
 
     private String orderName; // 주문명
 

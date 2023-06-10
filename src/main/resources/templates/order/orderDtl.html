@@ -15,8 +15,19 @@
     <script th:inline="javascript">
         const orderId = /*[[ ${order.orderId} ]]*/ null;
         const customerName = /*[[ ${order.customerName} ]]*/ null;
+        const customerEmail = /*[[ ${order.customerEmail} ]]*/ null;
         const orderName = /*[[ ${order.orderName} ]]*/ null;
         const totalPrice = /*[[ ${order.totalPrice} ]]*/ null;
+    </script>
+
+    <script>
+        var urlParams = new URLSearchParams(window.location.search);
+        var msg = urlParams.get('msg');
+
+        if (msg) {
+            alert(decodeURIComponent(msg));
+            window.location.href = '/orders';
+        }
     </script>
 
     <script>
@@ -30,8 +41,9 @@
                 orderId: "order__" + orderId + "__" + (Math.random() + "").substring(2), // orderId는 6자 이상이여야 함
                 orderName: orderName,
                 customerName: customerName,
-                successUrl: 'http://localhost:8080/success',
-                failUrl: 'http://localhost:8080/fail',
+                customerEmail: customerEmail,
+                successUrl: 'http://localhost:8080/' + orderId +'/success',
+                failUrl: 'http://localhost:8080/' + orderId +'/fail',
             };
 
             tossPayments.requestPayment(method, paymentData);
