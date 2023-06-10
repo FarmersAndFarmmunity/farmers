@@ -8,10 +8,13 @@ import com.shop.farmers.boundedContext.order.entity.Order;
 import com.shop.farmers.boundedContext.order.entity.OrderItem;
 import com.shop.farmers.boundedContext.order.service.OrderService;
 import com.shop.farmers.boundedContext.review.dto.ReviewFormDto;
+import com.shop.farmers.boundedContext.review.dto.ReviewSearchDto;
 import com.shop.farmers.boundedContext.review.entity.Review;
 import com.shop.farmers.boundedContext.review.repository.ReviewRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,7 +27,6 @@ public class ReviewService {
     private final MemberService memberService;
 
     private final OrderService orderService;
-    private final ItemService itemService;
 
     public ItemFormDto registerReview(Long itemId, String memberEmail, String contents){
         /*
@@ -72,5 +74,12 @@ public class ReviewService {
 
     public List<Review> getList(Long itemId) {
         return reviewRepository.findByItemIdLike(itemId);
+    }
+
+    // 리뷰 관리 페이지에서 리뷰를 가져오는 로직
+    public Page<Review> getReviewPage(ReviewSearchDto reviewSearchDto, Pageable pageable, String email) {
+        Member member = memberService.findByEmail(email);
+        Long id = member.getId();
+        return reviewRepository.getMyReviewPage(reviewSearchDto, pageable, id);
     }
 }

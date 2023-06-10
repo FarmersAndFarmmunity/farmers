@@ -1,6 +1,5 @@
 package com.shop.farmers.boundedContext.review.entity;
 
-import com.shop.farmers.base.baseEntity.BaseEntity;
 import com.shop.farmers.base.baseEntity.BaseTimeEntity;
 import com.shop.farmers.boundedContext.item.entity.Item;
 import com.shop.farmers.boundedContext.member.entity.Member;

@@ -6,10 +6,15 @@ import com.shop.farmers.boundedContext.item.service.ItemService;
 import com.shop.farmers.boundedContext.member.entity.Member;
 import com.shop.farmers.boundedContext.member.service.MemberService;
 import com.shop.farmers.boundedContext.review.dto.ReviewFormDto;
+import com.shop.farmers.boundedContext.review.dto.ReviewSearchDto;
+import com.shop.farmers.boundedContext.review.entity.Review;
 import com.shop.farmers.boundedContext.review.service.ReviewService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -17,7 +22,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.security.Principal;
 import java.util.Optional;
@@ -69,5 +73,21 @@ public class ReviewController {
         }
 
         return "redirect:/";
+    }
+
+    @Transactional(readOnly = true)
+    @GetMapping(value = {"/reviews", "/reviews/{page}"})
+    public String showAllReview(ReviewSearchDto reviewSearchDto, @PathVariable("page") Optional<Integer> page, Model model, Principal principal){
+        Pageable pageable = PageRequest.of(page.isPresent()? page.get() : 0, 3);
+        model.addAttribute("itemFormDto", new ItemFormDto());
+
+        String email = principal.getName();
+
+        Page<Review> reviews = reviewService.getReviewPage(reviewSearchDto, pageable, email);
+        model.addAttribute("reviews", reviews);
+        model.addAttribute("reviewSearchDto", reviewSearchDto);
+        model.addAttribute("maxPage", 5);
+
+        return "review/reviewMng";
     }
 }
