@@ -35,8 +35,8 @@ public class ItemController {
 
     private final ItemService itemService;
 
-
     private final ReviewService reviewService;
+
     @GetMapping(value = "/vendor/item/new")
     public String itemForm(Model model){
         model.addAttribute("itemFormDto", new ItemFormDto());
