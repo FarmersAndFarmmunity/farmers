@@ -2,6 +2,7 @@ package com.shop.farmers.boundedContext.item.dto;
 
 import com.shop.farmers.boundedContext.item.constant.ItemSellStatus;
 import com.shop.farmers.boundedContext.item.entity.Item;
+import com.shop.farmers.boundedContext.review.entity.Review;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;

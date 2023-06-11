@@ -38,7 +38,7 @@ public class OrderItem extends BaseEntity {
         return orderItem;
     }
 
-    public int getTotalPrice(){
+    public int getTotalPrice() {
         return orderPrice*count;
     }
 
