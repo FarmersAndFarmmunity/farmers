@@ -29,6 +29,8 @@ public class OrderItem extends BaseEntity {
     private int count;  //수량
 
     public static OrderItem createOrderItem(Item item, int count){
+
+        item.checkRestStock(count); // 주문 전에 상품 재고 체크부터
         OrderItem orderItem = new OrderItem();
         orderItem.setItem(item); // 주문한 아이템을 지정
         orderItem.setCount(count); // 주문한 아이템을 몇 개를 살지
