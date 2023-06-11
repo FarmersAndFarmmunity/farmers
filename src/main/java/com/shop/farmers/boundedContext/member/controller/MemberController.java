@@ -9,6 +9,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -32,6 +34,8 @@ import java.util.Optional;
 public class MemberController {
     private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
+    @Value("${custom.postForPage}")
+    private int postForPage;
 
     @GetMapping(value = "/members/new")
     public String memberForm(Model model){
@@ -71,7 +75,7 @@ public class MemberController {
 
     @GetMapping(value = {"/admin/member", "/admin/member/{page}"})
     public String memberList(MemberSearchDto memberSearchDto, @PathVariable("page") Optional<Integer> page, Model model) throws Exception {
-        Pageable pageable = PageRequest.of(page.isPresent()? page.get() : 0, 10); // 페이지에 표시될 최대 숫자
+        Pageable pageable = PageRequest.of(page.isPresent()? page.get() : 0, postForPage); // 페이지에 표시될 최대 숫자
 
         Page<Member> members = memberService.getAdminMemberPage(memberSearchDto, pageable);
         model.addAttribute("members", members);
@@ -82,7 +86,6 @@ public class MemberController {
     }
 
     // 멤버 등급 수정
-
     @Transactional
     @PostMapping(value = "/admin/member/update/{id}")
     public String memberUpdate(@PathVariable("id") Long id, HttpServletRequest request, Model model) {
