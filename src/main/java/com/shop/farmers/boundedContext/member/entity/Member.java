@@ -5,10 +5,20 @@ import com.shop.farmers.boundedContext.member.constant.Role;
 import com.shop.farmers.boundedContext.member.dto.MemberFormDto;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+@NoArgsConstructor
+@SuperBuilder
 @Entity
 @Table(name="member")
 @Getter @Setter
@@ -19,7 +29,10 @@ public class Member extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private String providerTypeCode;
+
+    @Column(unique = true)
+    private String username;
 
     @Column(unique = true)
     private String email;
@@ -33,13 +46,22 @@ public class Member extends BaseEntity {
 
     public static Member createMember(MemberFormDto memberFormDto, PasswordEncoder passwordEncoder){
         Member member = new Member();
-        member.setName(memberFormDto.getName());
+        member.setUsername(memberFormDto.getName());
         member.setEmail(memberFormDto.getEmail());
         member.setAddress(memberFormDto.getAddress());
         String password = passwordEncoder.encode(memberFormDto.getPassword());
         member.setPassword(password);
         member.setRole(Role.ADMIN); // 현재는 멤버의 롤이 기본적으로 ADMIN 으로 설정되어 있다.
         return member;
+    }
+
+    public List<? extends GrantedAuthority> getGrantedAuthorities() {
+        List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+
+        // 모든 멤버는 ADMIN 권한을 가진다.
+        grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+
+        return grantedAuthorities;
     }
 
     public void updateRole(Role role){

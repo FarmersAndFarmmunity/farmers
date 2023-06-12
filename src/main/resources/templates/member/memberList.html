@@ -44,6 +44,7 @@
 
 <div layout:fragment="content">
 
+    <form th:action="@{'/admin/member/' + ${members.number}}" role="form" method="get" th:object="${members}">
         <table class="table">
             <thead>
             <tr>

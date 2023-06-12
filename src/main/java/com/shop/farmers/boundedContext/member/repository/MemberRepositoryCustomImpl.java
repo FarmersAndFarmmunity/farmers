@@ -50,7 +50,7 @@ public class MemberRepositoryCustomImpl implements MemberRepositoryCustom {
     private BooleanExpression searchByLike(String searchBy, String searchQuery){
 
         if(StringUtils.equals("name", searchBy)){
-            return QMember.member.name.like("%" + searchQuery + "%");
+            return QMember.member.username.like("%" + searchQuery + "%");
         } else if(StringUtils.equals("email", searchBy)){
             return QMember.member.email.like("%" + searchQuery + "%");
         }

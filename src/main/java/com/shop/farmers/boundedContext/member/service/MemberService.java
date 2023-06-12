@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,7 +20,7 @@ import java.util.Optional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class MemberService implements UserDetailsService {
+public class MemberService {
     private final MemberRepository memberRepository;
 
     public Member saveMember(Member member){
@@ -29,28 +30,53 @@ public class MemberService implements UserDetailsService {
 
     private void validateDuplicateMember(Member member){
         Member findMember = memberRepository.findByEmail(member.getEmail());
+
         if(findMember != null){
             throw new IllegalStateException("이미 가입된 회원입니다.");
         }
+    }
+
+    @Transactional
+    // 일반 회원가입
+    public Member join(String email, String password) {
+        return join("Farmers", email, password);
     }
 
     public Optional<Member> getMemberById(Long id){
         return memberRepository.findById(id);
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Member member = memberRepository.findByEmail(email);
-
-        if(member == null){
-            throw new UsernameNotFoundException(email);
+    // 소셜 로그인
+    private Member join(String providerTypeCode, String username, String password)  throws UsernameNotFoundException {
+        if(findByUsername(username).isPresent()){
+            throw new UsernameNotFoundException(username);
         }
 
-        return User.builder()
-                .username(member.getEmail())
-                .password(member.getPassword())
-                .roles(member.getRole().toString())
+        Member member = Member
+                .builder()
+                .providerTypeCode(providerTypeCode)
+                .username(username)
+                .password(password)
+                .role(Role.ADMIN)
                 .build();
+
+        return memberRepository.save(member);
+    }
+
+    public Optional<Member> findByUsername(String username) {
+        return memberRepository.findByUsername(username);
+    }
+
+    @Transactional
+    // 소셜 로그인 시 실행되는 함수
+    public Member whenSocialLogin(String providerTypeCode, String username) {
+        Optional<Member> opMember = findByUsername(username);
+
+        if (opMember.isPresent())
+            return opMember.get();
+
+        // 소셜 로그인를 통한 가입 시 비밀번호는 없다.
+        return join(providerTypeCode, username, ""); // 최초 로그인 시 딱 한번 실행
     }
 
     public Member findByEmail(String email) {
