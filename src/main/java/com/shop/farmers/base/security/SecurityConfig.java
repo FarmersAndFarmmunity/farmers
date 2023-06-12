@@ -9,6 +9,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.endpoint.OAuth2AccessTokenResponseClient;
+import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
@@ -28,6 +30,14 @@ public class SecurityConfig {
                                 .defaultSuccessUrl("/")
                                 .usernameParameter("email")
                                 .failureUrl("/members/login/error")
+                )
+        ;
+
+        http
+                .oauth2Login(
+                        oauth2Login -> oauth2Login
+                                .loginPage("/members/login")
+                                .defaultSuccessUrl("/")
                 )
         ;
 
@@ -56,5 +66,4 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 }

@@ -31,6 +31,7 @@ public class Member extends BaseEntity {
 
     private String providerTypeCode;
 
+    @Column(unique = true)
     private String username;
 
     @Column(unique = true)
@@ -57,8 +58,8 @@ public class Member extends BaseEntity {
     public List<? extends GrantedAuthority> getGrantedAuthorities() {
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
 
-        // 모든 멤버는 member 권한을 가진다.
-        grantedAuthorities.add(new SimpleGrantedAuthority("member"));
+        // 모든 멤버는 ADMIN 권한을 가진다.
+        grantedAuthorities.add(new SimpleGrantedAuthority("ADMIN"));
 
         return grantedAuthorities;
     }

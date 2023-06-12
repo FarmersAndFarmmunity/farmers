@@ -4,14 +4,8 @@ import com.shop.farmers.boundedContext.member.entity.Member;
 import com.shop.farmers.boundedContext.member.repository.MemberRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.oauth2.core.oidc.StandardClaimAccessor;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -34,11 +28,11 @@ public class MemberService {
 
     @Transactional
     // 일반 회원가입
-    public Member join(String email, String password) {
-        return join("Farmers", email, password);
+    public Member login(String email, String password) {
+        return login("Farmers", email, password);
     }
 
-    private Member join(String providerTypeCode, String email, String password)  throws UsernameNotFoundException {
+    private Member login(String providerTypeCode, String email, String password)  throws UsernameNotFoundException {
         Member findMember = memberRepository.findByEmail(email);
 
         if(findMember == null){
@@ -52,9 +46,7 @@ public class MemberService {
                 .password(password)
                 .build();
 
-        memberRepository.save(member);
-
-        return member;
+        return memberRepository.save(member);
     }
 
     // 소셜 로그인 시 실행되는 함수
@@ -66,6 +58,6 @@ public class MemberService {
             throw new IllegalStateException("이미 가입된 회원입니다.");
 
         // 소셜 로그인를 통한 가입 시 비밀번호는 없다.
-        return join(providerTypeCode, email, ""); // 최초 로그인 시 딱 한번 실행
+        return login(providerTypeCode, email, ""); // 최초 로그인 시 딱 한번 실행
     }
 }
