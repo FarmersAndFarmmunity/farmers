@@ -53,27 +53,28 @@ public class Order extends BaseEntity {
         return order;
     }
 
-    public int getTotalPrice(){
-        int totalPrice = 0;
+    public Long getTotalPrice(){
+        long totalPrice = 0;
         for(OrderItem orderItem : orderItems){
             totalPrice += orderItem.getTotalPrice();
         }
         return totalPrice;
     }
 
-    public void cancelOrder(){
+    public void cancelOrder() {
         this.orderStatus = OrderStatus.CANCEL;
 
-        for(OrderItem orderItem : orderItems){
+        for (OrderItem orderItem : orderItems) {
             orderItem.cancel();
         }
     }
 
-    public boolean isPayable() {
-        if ( isPaid ) return false;
-        if ( this.orderStatus == OrderStatus.CANCEL ) return false;
+    public void payDone() {
 
-        return true;
+        for (OrderItem orderItem : orderItems) {
+            orderItem.payDone();
+        }
+        this.setPaid(true);
     }
 
     public String makeName() {
