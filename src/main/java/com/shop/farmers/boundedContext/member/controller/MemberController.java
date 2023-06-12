@@ -14,6 +14,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,6 +33,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -91,9 +100,13 @@ public class MemberController {
     public String memberUpdate(@PathVariable("id") Long id, HttpServletRequest request, Model model) {
         Member member = memberService.getMemberById(id).get();
         String paramRole = request.getParameter("paramRole");
+        Role role = (paramRole.equals("ADMIN"))? Role.ADMIN : (paramRole.equals("VENDOR"))? Role.VENDOR : Role.USER;
+
         try {
-            Role role = (paramRole.equals("ADMIN"))? Role.ADMIN : (paramRole.equals("VENDOR"))? Role.VENDOR : Role.USER;
-            member.updateRole(role);
+            member.updateRole(role); // db상 권한 갱신
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication(); // 유저의 인증정보를 가져와서 저장(GET)
+            User user = (User) auth.getPrincipal(); // 유저의 정보를 저장
+            SecurityContextHolder.getContext().setAuthentication(createNewAuthentication(auth, user.getUsername())); // 새 정보를 가져와서 갱신(SET)
         } catch (IllegalStateException e){
             model.addAttribute("errorMessage", e.getMessage());
             return "redirect:/";
@@ -101,4 +114,12 @@ public class MemberController {
 
         return "redirect:/";
     }
+
+    protected Authentication createNewAuthentication(Authentication currentAuth, String username) {
+        UserDetails newPrincipal = memberService.loadUserByUsername(username);
+        UsernamePasswordAuthenticationToken newAuth = new UsernamePasswordAuthenticationToken(newPrincipal, currentAuth.getCredentials(), newPrincipal.getAuthorities());
+        newAuth.setDetails(currentAuth.getDetails());
+        return newAuth;
+    }
+
 }

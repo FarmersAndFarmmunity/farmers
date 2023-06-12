@@ -56,7 +56,7 @@ public class MemberService implements UserDetailsService {
     public Member findByEmail(String email) {
         return memberRepository.findByEmail(email);
     }
-
+  
     @Transactional(readOnly = true)
     public Page<Member> getAdminMemberPage(MemberSearchDto memberSearchDto, Pageable pageable) {
         return memberRepository.getAdminMemberPage(memberSearchDto, pageable);
