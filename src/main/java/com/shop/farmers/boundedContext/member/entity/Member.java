@@ -59,7 +59,7 @@ public class Member extends BaseEntity {
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
 
         // 모든 멤버는 ADMIN 권한을 가진다.
-        grantedAuthorities.add(new SimpleGrantedAuthority("ADMIN"));
+        grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
 
         return grantedAuthorities;
     }
