@@ -1,5 +1,6 @@
 package com.shop.farmers.boundedContext.member.controller;
 
+import com.shop.farmers.base.security.CustomUserDetailsService;
 import com.shop.farmers.boundedContext.member.dto.MemberFormDto;
 import com.shop.farmers.boundedContext.member.entity.Member;
 import com.shop.farmers.boundedContext.member.service.MemberService;

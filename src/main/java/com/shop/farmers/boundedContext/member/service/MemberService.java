@@ -28,14 +28,14 @@ public class MemberService {
 
     @Transactional
     // 일반 회원가입
-    public Member login(String email, String password) {
-        return login("Farmers", email, password);
+    public Member join(String email, String password) {
+        return join("Farmers", email, password);
     }
 
-    private Member login(String providerTypeCode, String email, String password)  throws UsernameNotFoundException {
+    private Member join(String providerTypeCode, String email, String password)  throws UsernameNotFoundException {
         Member findMember = memberRepository.findByEmail(email);
 
-        if(findMember == null){
+        if(findMember != null){
             throw new UsernameNotFoundException(email);
         }
 
@@ -52,12 +52,12 @@ public class MemberService {
     // 소셜 로그인 시 실행되는 함수
     @Transactional
     public Member whenSocialLogin(String providerTypeCode, String email) {
-        Member opMember = memberRepository.findByEmail(email);
+        Member findMember = memberRepository.findByEmail(email);
 
-        if (opMember != null)
-            throw new IllegalStateException("이미 가입된 회원입니다.");
+        if (findMember != null)
+            return findMember;
 
         // 소셜 로그인를 통한 가입 시 비밀번호는 없다.
-        return login(providerTypeCode, email, ""); // 최초 로그인 시 딱 한번 실행
+        return join(providerTypeCode, email, ""); // 최초 로그인 시 딱 한번 실행
     }
 }

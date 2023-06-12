@@ -1,5 +1,6 @@
 package com.shop.farmers.boundedContext.member.service;
 
+import com.shop.farmers.base.security.CustomUserDetailsService;
 import com.shop.farmers.boundedContext.member.dto.MemberFormDto;
 import com.shop.farmers.boundedContext.member.entity.Member;
 import jakarta.transaction.Transactional;
