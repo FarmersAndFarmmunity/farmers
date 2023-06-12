@@ -63,4 +63,8 @@ public class Member extends BaseEntity {
 
         return grantedAuthorities;
     }
+
+    public void updateRole(Role role){
+        this.role = role;
+    }
 }

@@ -4,10 +4,14 @@ import com.shop.farmers.base.baseEntity.BaseEntity;
 import com.shop.farmers.base.exception.OutOfStockException;
 import com.shop.farmers.boundedContext.item.constant.ItemSellStatus;
 import com.shop.farmers.boundedContext.item.dto.ItemFormDto;
+import com.shop.farmers.boundedContext.review.entity.Review;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name="item")
@@ -36,6 +40,9 @@ public class Item extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private ItemSellStatus itemSellStatus; //상품 판매 상태
 
+//    @OneToMany(mappedBy = "review", cascade = CascadeType.REMOVE)
+//    private List<Review> reviewList;
+
     public void updateItem(ItemFormDto itemFormDto){
         this.itemNm = itemFormDto.getItemNm();
         this.price = itemFormDto.getPrice();
@@ -46,11 +53,16 @@ public class Item extends BaseEntity {
 
     // 재고 수량을 계산 (주문이 들어올 때에 주문 수량만큼 재고 수량을 빼줌)
     public void removeStock(int stockNumber) {
+
+        checkRestStock(stockNumber);
+        this.stockNumber -= stockNumber;
+    }
+
+    public void checkRestStock(int stockNumber) {
         int restStock = this.stockNumber - stockNumber;
         if (restStock < 0) {
             throw new OutOfStockException("상품의 재고가 부족 합니다. (현재 재고 수량: " + this.stockNumber + ")");
         }
-        this.stockNumber = restStock;
     }
 
     // 주문 취소 시 주문 수량 만큼 상품 재고를 증가

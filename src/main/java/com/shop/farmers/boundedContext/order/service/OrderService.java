@@ -6,11 +6,10 @@ import com.shop.farmers.boundedContext.item.repository.ItemImgRepository;
 import com.shop.farmers.boundedContext.item.repository.ItemRepository;
 import com.shop.farmers.boundedContext.member.entity.Member;
 import com.shop.farmers.boundedContext.member.repository.MemberRepository;
-import com.shop.farmers.boundedContext.order.dto.OrderDto;
-import com.shop.farmers.boundedContext.order.dto.OrderHistDto;
-import com.shop.farmers.boundedContext.order.dto.OrderItemDto;
+import com.shop.farmers.boundedContext.order.dto.*;
 import com.shop.farmers.boundedContext.order.entity.Order;
 import com.shop.farmers.boundedContext.order.entity.OrderItem;
+import com.shop.farmers.boundedContext.order.repository.OrderItemRepository;
 import com.shop.farmers.boundedContext.order.repository.OrderRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +34,8 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final ItemImgRepository itemImgRepository;
 
+    private final OrderItemRepository orderItemRepository;
+
     public Long order(OrderDto orderDto, String email) {
         Item item = itemRepository.findById(orderDto.getItemId()) // 주문할 상품 조회
                 .orElseThrow(EntityNotFoundException::new);
@@ -48,6 +49,26 @@ public class OrderService {
         orderRepository.save(order); // 생성한 주문 엔티티를 저장
 
         return order.getId();
+    }
+
+    @Transactional(readOnly = true)
+    public OrderDtlDto getOrderDtl(Long orderId) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(EntityNotFoundException::new);
+
+        List<OrderItem> orderItems = order.getOrderItems();
+
+        OrderDtlDto orderDtlDto = new OrderDtlDto(order);
+
+        for (OrderItem orderItem : orderItems) {
+            ItemImg itemImg = itemImgRepository.findByItemIdAndRepimgYn
+                    (orderItem.getItem().getId(), "Y");
+            OrderItemDtlDto orderItemDtlDto =
+                    new OrderItemDtlDto(orderItem, itemImg.getImgUrl());
+            orderDtlDto.addOrderItemDto(orderItemDtlDto);
+        }
+
+        return orderDtlDto;
     }
 
     @Transactional(readOnly = true)
@@ -88,6 +109,16 @@ public class OrderService {
         return true;
     }
 
+    public boolean findOrder(Long ItemId, String email) {
+        Optional<OrderItem> opOrderItem = orderItemRepository.findByItemIdAndCreatedBy(ItemId, email);
+
+        if (!(opOrderItem.isPresent())) {
+            return false;
+        }
+
+        return true;
+    }
+
     public void cancelOrder(Long orderId) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(EntityNotFoundException::new);
@@ -116,5 +147,9 @@ public class OrderService {
         orderRepository.save(order);
 
         return order.getId(); // 해당 주문이 생성되면 결과 값으로 주문에 대한 아이디 값을 반환
+    }
+
+    public Optional<Order> findById(Long orderId) {
+        return orderRepository.findById(orderId);
     }
 }

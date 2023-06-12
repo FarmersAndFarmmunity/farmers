@@ -6,10 +6,12 @@
 <head>
     <meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+<!--    <link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">-->
 </head>
 
 <!-- 사용자 스크립트 추가 -->
 <th:block layout:fragment="script">
+
     <script th:inline="javascript">
         $(document).ready(function(){
 
@@ -51,8 +53,7 @@
                 dataType : "json",
                 cache   : false,
                 success  : function(result, status){
-                    alert("주문이 완료 되었습니다.");
-                    location.href='/';
+                    location.href = '/order/' + result;
                 },
                 error : function(jqXHR, status, error){
 
@@ -194,6 +195,25 @@
 
     <div th:each="itemImg : ${item.itemImgDtoList}" class="text-center">
         <img th:if="${not #strings.isEmpty(itemImg.imgUrl)}" th:src="${itemImg.imgUrl}" class="rounded mgb-15" width="800">
+    </div>
+
+
+    <div class="container my-3">
+        <table class="table">
+            <thead class="table-dark">
+            <h5 th:text="|${#lists.size(reviews)}개의 후기|"></h5>
+            <tr>
+                <th>내용</th>
+                <th>작성일시</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="review : ${reviews}">
+                <td th:text="${review.contents}"></td>
+                <td th:text="${#temporals.format(review.regTime, 'yyyy-MM-dd HH:mm')}"></td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 
 </div>

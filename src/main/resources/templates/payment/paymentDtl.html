@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
+</head>
+
+<th:block layout:fragment="script">
+</th:block>
+
+<!-- 사용자 CSS 추가 -->
+<th:block layout:fragment="css">
+</th:block>
+
+<div layout:fragment="content" class="content-mg">
+
+    <h2 class="mb-4">
+        결재 내역
+    </h2>
+
+    <table>
+        <tr>
+            <th>주문 번호</th>
+            <td th:text="${payment.getOrderId()}"></td>
+        </tr>
+        <tr>
+            <th>거래 일시</th>
+            <td th:text="${#temporals.format(payment.getRegTime(), 'yyyy-MM-dd')}"></td>
+        </tr>
+        <tr>
+            <th>주문 이름</th>
+            <td th:text="${payment.getOrderName()}"></td>
+        </tr>
+        <tr>
+            <th>결제 금액</th>
+            <td th:text="${payment.getAmount()} +'원'"></td>
+        </tr>
+        <tr>
+            <th>결재 수단</th>
+            <td th:text="${payment.getPayType()}"></td>
+        </tr>
+        <tr>
+            <th>주문자 성함</th>
+            <td th:text="${payment.getCustomerName()}"></td>
+        </tr>
+        <tr>
+            <th>주문자 이메일</th>
+            <td th:text="${payment.getCustomerEmail()}"></td>
+        </tr>
+    </table>
+    <button onclick="window.close()">확인</button>
+</div>
+
+</html>
