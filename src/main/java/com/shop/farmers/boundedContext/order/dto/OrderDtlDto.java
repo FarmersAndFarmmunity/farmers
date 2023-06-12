@@ -12,7 +12,7 @@ public class OrderDtlDto {
 
     public OrderDtlDto(Order order){
         this.orderId = order.getId();
-        this.customerName = order.getMember().getName();
+        this.customerName = order.getMember().getUsername();
         this.customerEmail = order.getMember().getEmail();
         this.orderName = order.makeName();
         this.totalPrice = order.getTotalPrice();

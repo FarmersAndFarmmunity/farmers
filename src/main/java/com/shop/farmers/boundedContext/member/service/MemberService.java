@@ -1,5 +1,6 @@
 package com.shop.farmers.boundedContext.member.service;
 
+import com.shop.farmers.boundedContext.member.constant.Role;
 import com.shop.farmers.boundedContext.member.dto.MemberSearchDto;
 import com.shop.farmers.boundedContext.member.entity.Member;
 import com.shop.farmers.boundedContext.member.repository.MemberRepository;

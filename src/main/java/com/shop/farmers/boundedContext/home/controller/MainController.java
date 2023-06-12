@@ -1,5 +1,6 @@
 package com.shop.farmers.boundedContext.home.controller;
 
+import com.shop.farmers.base.security.CustomUserDetailsService;
 import com.shop.farmers.boundedContext.item.dto.ItemSearchDto;
 import com.shop.farmers.boundedContext.item.dto.MainItemDto;
 import com.shop.farmers.boundedContext.item.service.ItemService;
@@ -22,6 +23,7 @@ import java.util.Optional;
 @Controller
 @RequiredArgsConstructor
 public class MainController {
+    private final CustomUserDetailsService customUserDetailsService;
     private final ItemService itemService;
     private final MemberService memberService;
 
@@ -43,7 +45,7 @@ public class MainController {
 
     // 권한 조회
     protected Authentication createNewAuthentication(Authentication currentAuth, String username) {
-        UserDetails newPrincipal = memberService.loadUserByUsername(username);
+        UserDetails newPrincipal = customUserDetailsService.loadUserByUsername(username);
         UsernamePasswordAuthenticationToken newAuth = new UsernamePasswordAuthenticationToken(newPrincipal, currentAuth.getCredentials(), newPrincipal.getAuthorities());
         newAuth.setDetails(currentAuth.getDetails());
         return newAuth;
