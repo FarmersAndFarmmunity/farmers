@@ -1,14 +1,20 @@
 package com.shop.farmers.boundedContext.member.service;
 
+import com.shop.farmers.boundedContext.member.dto.MemberSearchDto;
 import com.shop.farmers.boundedContext.member.entity.Member;
 import com.shop.farmers.boundedContext.member.repository.MemberRepository;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -28,6 +34,10 @@ public class MemberService implements UserDetailsService {
         }
     }
 
+    public Optional<Member> getMemberById(Long id){
+        return memberRepository.findById(id);
+    }
+
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Member member = memberRepository.findByEmail(email);
@@ -41,5 +51,14 @@ public class MemberService implements UserDetailsService {
                 .password(member.getPassword())
                 .roles(member.getRole().toString())
                 .build();
+    }
+
+    public Member findByEmail(String email) {
+        return memberRepository.findByEmail(email);
+    }
+  
+    @Transactional(readOnly = true)
+    public Page<Member> getAdminMemberPage(MemberSearchDto memberSearchDto, Pageable pageable) {
+        return memberRepository.getAdminMemberPage(memberSearchDto, pageable);
     }
 }
