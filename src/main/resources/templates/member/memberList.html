@@ -25,9 +25,9 @@
             var searchQuery = $("#searchQuery").val();
 
             location.href="/admin/member/" + page + "?searchDateType=" + searchDateType
-            + "&searchRole=" + searchRole
-            + "&searchBy=" + searchBy
-            + "&searchQuery=" + searchQuery;
+                + "&searchRole=" + searchRole
+                + "&searchBy=" + searchBy
+                + "&searchQuery=" + searchQuery;
         }
 
     </script>
@@ -44,36 +44,35 @@
 
 <div layout:fragment="content">
 
-    <form th:action="@{'/admin/member/' + ${members.number}}" role="form" method="get" th:object="${members}">
-        <table class="table">
-            <thead>
-            <tr>
-                <td>고객 회원번호</td>
-                <td>이름</td>
-                <td>이메일</td>
-                <td>등급</td>
-                <td>등급 변경</td>
-                <td>가입일자</td>
-                <td>주소</td>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="member, status: ${members.getContent()}" th:object="${members}">
-                <td th:text="${member.id}"></td>
-                <td>
-                    <span th:text="${member.name}"></span>
-                </td>
-                <td>
-                    <span th:text="${member.email}"></span>
-                </td>
+    <table class="table">
+        <thead>
+        <tr>
+            <td>고객 회원번호</td>
+            <td>이름</td>
+            <td>이메일</td>
+            <td>등급</td>
+            <td>등급 변경</td>
+            <td>가입일자</td>
+            <td>주소</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="member, status: ${members.getContent()}" th:object="${members}">
+            <td th:text="${member.id}"></td>
+            <td>
+                <span th:text="${member.username}"></span>
+            </td>
+            <td>
+                <span th:text="${member.email}"></span>
+            </td>
 
-                <td th:switch="${member.role}">
-                    <span th:case="${T(com.shop.farmers.boundedContext.member.constant.Role).USER}">일반 회원</span>
-                    <span th:case="${T(com.shop.farmers.boundedContext.member.constant.Role).VENDOR}">판매자</span>
-                    <span th:case="${T(com.shop.farmers.boundedContext.member.constant.Role).ADMIN}">관리자</span>
-                </td>
-                <td>
-                    <form th:action="@{'/admin/member/update/' + ${member.id}}" method="post" id="roleForm" name="roleForm">
+            <td th:switch="${member.role}">
+                <span th:case="${T(com.shop.farmers.boundedContext.member.constant.Role).USER}">일반 회원</span>
+                <span th:case="${T(com.shop.farmers.boundedContext.member.constant.Role).VENDOR}">판매자</span>
+                <span th:case="${T(com.shop.farmers.boundedContext.member.constant.Role).ADMIN}">관리자</span>
+            </td>
+            <td>
+                <form th:action="@{'/admin/member/update/' + ${member.id}}" method="post" id="roleForm" name="roleForm">
                     <select class="form-control" th:name="paramRole" style="width:auto;">
                         <option th:selected="${member.role}==${T(com.shop.farmers.boundedContext.member.constant.Role).USER}" th:value="USER">일반 회원</option>
                         <option th:selected="${member.role}==${T(com.shop.farmers.boundedContext.member.constant.Role).VENDOR}"  th:value="VENDOR">판매자</option>
@@ -82,17 +81,17 @@
                     <button type="submit" class="btn btn-outline-secondary">
                         <span aria-hidden="true">등급 변경</span>
                     </button>
-                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-                    </form>
-                </td>
-                <td th:text="${#strings.substring(member.regTime, 0, 19)}"></td>
-                <td th:text="${member.address}"></td>
-            </tr>
-            </tbody>
-        </table>
-        <div class="d-flex flex-row-reverse">
-<!--            <button type="submit" class="btn btn-outline-secondary">등급 변경</button>-->
-        </div>
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                </form>
+            </td>
+            <td th:text="${#strings.substring(member.regTime, 0, 19)}"></td>
+            <td th:text="${member.address}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="d-flex flex-row-reverse">
+        <!--            <button type="submit" class="btn btn-outline-secondary">등급 변경</button>-->
+    </div>
 
     <form th:action="@{'/admin/member/' + ${members.number}}" role="form" method="get">
         <div th:with="start=${(members.number/maxPage)*maxPage + 1}, end=(${(members.totalPages == 0) ? 1 : (start + (maxPage - 1) < members.totalPages ? start + (maxPage - 1) : members.totalPages)})" >

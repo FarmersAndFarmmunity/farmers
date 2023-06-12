@@ -21,7 +21,7 @@ import java.util.Optional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class MemberService {
+public class MemberService implements UserDetailsService {
     private final MemberRepository memberRepository;
 
     public Member saveMember(Member member){
@@ -39,8 +39,8 @@ public class MemberService {
 
     @Transactional
     // 일반 회원가입
-    public Member join(String email, String password) {
-        return join("Farmers", email, password);
+    public Member join(String username, String email, String password) {
+        return join("Farmers", username, email, password);
     }
 
     public Optional<Member> getMemberById(Long id){
@@ -48,7 +48,7 @@ public class MemberService {
     }
 
     // 소셜 로그인
-    private Member join(String providerTypeCode, String username, String password)  throws UsernameNotFoundException {
+    private Member join(String providerTypeCode, String username, String email, String password)  throws UsernameNotFoundException {
         if(findByUsername(username).isPresent()){
             throw new UsernameNotFoundException(username);
         }
@@ -57,6 +57,7 @@ public class MemberService {
                 .builder()
                 .providerTypeCode(providerTypeCode)
                 .username(username)
+                .email(email)
                 .password(password)
                 .role(Role.ADMIN)
                 .build();
@@ -70,14 +71,14 @@ public class MemberService {
 
     @Transactional
     // 소셜 로그인 시 실행되는 함수
-    public Member whenSocialLogin(String providerTypeCode, String username) {
+    public Member whenSocialLogin(String providerTypeCode, String email, String username) {
         Optional<Member> opMember = findByUsername(username);
 
         if (opMember.isPresent())
             return opMember.get();
 
         // 소셜 로그인를 통한 가입 시 비밀번호는 없다.
-        return join(providerTypeCode, username, ""); // 최초 로그인 시 딱 한번 실행
+        return join(providerTypeCode, username, email, ""); // 최초 로그인 시 딱 한번 실행
     }
 
     public Member findByEmail(String email) {
@@ -87,5 +88,20 @@ public class MemberService {
     @Transactional(readOnly = true)
     public Page<Member> getAdminMemberPage(MemberSearchDto memberSearchDto, Pageable pageable) {
         return memberRepository.getAdminMemberPage(memberSearchDto, pageable);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Member member = memberRepository.findByEmail(email);
+
+        if(member == null){
+            throw new UsernameNotFoundException(email);
+        }
+
+        return User.builder()
+                .username(member.getEmail())
+                .password(member.getPassword())
+                .roles(member.getRole().toString())
+                .build();
     }
 }

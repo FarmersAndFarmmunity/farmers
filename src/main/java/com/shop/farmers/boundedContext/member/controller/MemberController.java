@@ -1,6 +1,5 @@
 package com.shop.farmers.boundedContext.member.controller;
 
-import com.shop.farmers.base.security.CustomUserDetailsService;
 import com.shop.farmers.boundedContext.member.constant.Role;
 import com.shop.farmers.boundedContext.member.dto.MemberFormDto;
 import com.shop.farmers.boundedContext.member.dto.MemberSearchDto;
@@ -42,7 +41,6 @@ import java.util.Optional;
 @Controller
 @RequiredArgsConstructor
 public class MemberController {
-    private final CustomUserDetailsService customUserDetailsService;
     private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
     @Value("${custom.postForPage}")
@@ -118,7 +116,7 @@ public class MemberController {
     }
 
     protected Authentication createNewAuthentication(Authentication currentAuth, String username) {
-        UserDetails newPrincipal = customUserDetailsService.loadUserByUsername(username);
+        UserDetails newPrincipal = memberService.loadUserByUsername(username);
         UsernamePasswordAuthenticationToken newAuth = new UsernamePasswordAuthenticationToken(newPrincipal, currentAuth.getCredentials(), newPrincipal.getAuthorities());
         newAuth.setDetails(currentAuth.getDetails());
         return newAuth;
