@@ -63,6 +63,8 @@ public class ReviewController {
         reviewFormDto.setItem(item);
 
         if(bindingResult.hasErrors()){
+            ItemFormDto itemFormDto = itemService.getItemDtl(itemId);
+            model.addAttribute("item", itemFormDto);
             return "review/reviewForm";
         }
 

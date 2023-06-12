@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.security.Principal;
 import java.util.Optional;
 
 @Controller
@@ -26,17 +27,19 @@ public class MainController {
     private final MemberService memberService;
 
     @GetMapping(value = "/")
-    public String main(ItemSearchDto itemSearchDto, Optional<Integer> page, Model model){
+    public String main(ItemSearchDto itemSearchDto, Optional<Integer> page, Model model, Principal principal){
         Pageable pageable = PageRequest.of(page.isPresent()? page.get() : 0, 6);
         Page<MainItemDto> items = itemService.getMainItemPage(itemSearchDto, pageable);
         model.addAttribute("items", items);
         model.addAttribute("itemSearchDto", itemSearchDto);
         model.addAttribute("maxPage", 5);
 
-        // 유저의 권한을 체크
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication(); // 유저의 인증정보를 가져와서 저장(GET)
-        User user = (User) auth.getPrincipal(); // 유저의 정보를 저장
-        SecurityContextHolder.getContext().setAuthentication(createNewAuthentication(auth, user.getUsername())); // 새 정보를 가져와서 갱신(SET)
+        if(principal != null) {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication(); // 유저의 인증정보를 가져와서 저장(GET)
+            User user = (User) auth.getPrincipal(); // 유저의 정보를 저장
+            SecurityContextHolder.getContext().setAuthentication(createNewAuthentication(auth, user.getUsername())); // 새 정보를 가져와서 갱신(SET)
+        }
+
         return "main";
 
     }
