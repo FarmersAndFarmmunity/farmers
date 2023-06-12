@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -52,6 +53,10 @@ public class MemberService implements UserDetailsService {
                 .build();
     }
 
+    public Member findByEmail(String email) {
+        return memberRepository.findByEmail(email);
+    }
+  
     @Transactional(readOnly = true)
     public Page<Member> getAdminMemberPage(MemberSearchDto memberSearchDto, Pageable pageable) {
         return memberRepository.getAdminMemberPage(memberSearchDto, pageable);

@@ -5,6 +5,8 @@ import com.shop.farmers.boundedContext.item.dto.ItemFormDto;
 import com.shop.farmers.boundedContext.item.dto.ItemSearchDto;
 import com.shop.farmers.boundedContext.item.entity.Item;
 import com.shop.farmers.boundedContext.item.service.ItemService;
+import com.shop.farmers.boundedContext.review.entity.Review;
+import com.shop.farmers.boundedContext.review.service.ReviewService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +34,8 @@ public class ItemController {
     private int postForPage;
 
     private final ItemService itemService;
+
+    private final ReviewService reviewService;
 
     @GetMapping(value = "/vendor/item/new")
     public String itemForm(Model model){
@@ -150,6 +154,9 @@ public class ItemController {
     @GetMapping(value = "/item/{itemId}")
     public String itemDtl(Model model, @PathVariable Long itemId) {
         ItemFormDto itemFormDto = itemService.getItemDtl(itemId);
+        List<Review> reviewList = reviewService.getList(itemId);
+
+        model.addAttribute("reviews", reviewList);
         model.addAttribute("item", itemFormDto);
         return "item/itemDtl";
     }
