@@ -28,7 +28,7 @@ public class OrderDtlDto {
 
     private List<OrderItemDtlDto> orderItemDtlDtos = new ArrayList<>(); //주문상품리스트
 
-    private int totalPrice; // 총주문 금액
+    private Long totalPrice; // 총주문 금액
 
     public void addOrderItemDto(OrderItemDtlDto orderItemDtlDto){
         orderItemDtlDtos.add(orderItemDtlDto);
