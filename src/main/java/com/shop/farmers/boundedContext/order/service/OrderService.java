@@ -149,7 +149,7 @@ public class OrderService {
         return order.getId(); // 해당 주문이 생성되면 결과 값으로 주문에 대한 아이디 값을 반환
     }
 
-    public Optional<Order> findOrderById(Long id) {
-        return orderRepository.findById(id);
+    public Optional<Order> findById(Long orderId) {
+        return orderRepository.findById(orderId);
     }
 }
