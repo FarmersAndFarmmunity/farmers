@@ -1,11 +1,16 @@
 package com.shop.farmers.boundedContext.member.service;
 
+import com.shop.farmers.boundedContext.member.constant.Role;
 import com.shop.farmers.boundedContext.member.entity.Member;
 import com.shop.farmers.boundedContext.member.repository.MemberRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -32,32 +37,37 @@ public class MemberService {
         return join("Farmers", email, password);
     }
 
-    private Member join(String providerTypeCode, String email, String password)  throws UsernameNotFoundException {
-        Member findMember = memberRepository.findByEmail(email);
-
-        if(findMember != null){
-            throw new UsernameNotFoundException(email);
+    // 소셜 로그인
+    private Member join(String providerTypeCode, String username, String password)  throws UsernameNotFoundException {
+        if(findByUsername(username).isPresent()){
+            throw new UsernameNotFoundException(username);
         }
 
         Member member = Member
                 .builder()
                 .providerTypeCode(providerTypeCode)
-                .username(email)
+                .username(username)
                 .password(password)
+                .role(Role.ADMIN)
                 .build();
 
         return memberRepository.save(member);
     }
 
-    // 소셜 로그인 시 실행되는 함수
-    @Transactional
-    public Member whenSocialLogin(String providerTypeCode, String email) {
-        Member findMember = memberRepository.findByEmail(email);
+    public Optional<Member> findByUsername(String username) {
+        return memberRepository.findByUsername(username);
+    }
 
-        if (findMember != null)
-            return findMember;
+    @Transactional
+    // 소셜 로그인 시 실행되는 함수
+    public Member whenSocialLogin(String providerTypeCode, String username) {
+        Optional<Member> opMember = findByUsername(username);
+
+        if (opMember.isPresent())
+            return opMember.get();
 
         // 소셜 로그인를 통한 가입 시 비밀번호는 없다.
-        return join(providerTypeCode, email, ""); // 최초 로그인 시 딱 한번 실행
+        return join(providerTypeCode, username, ""); // 최초 로그인 시 딱 한번 실행
     }
+
 }

@@ -53,14 +53,6 @@
             <button type="submit" class="btn btn-primary" style="">Submit</button>
         </div>
 
-        <br>
-        <a href="/oauth2/authorization/kakao" class="btn btn-block btn-outline gap-1">
-            <span>카카오 회원가입</span>
-        </a>
-        <a href="/oauth2/authorization/naver" class="btn btn-block btn-outline gap-1">
-            <span>네이버 회원가입</span>
-        </a>
-
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
     </form>
 
