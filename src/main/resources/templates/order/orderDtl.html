@@ -18,6 +18,7 @@
         const customerEmail = /*[[ ${order.customerEmail} ]]*/ null;
         const orderName = /*[[ ${order.orderName} ]]*/ null;
         const totalPrice = /*[[ ${order.totalPrice} ]]*/ null;
+        const CLIENT_KEY = /*[[ ${order.CLIENT_KEY} ]]*/ null;
     </script>
 
     <script>
@@ -31,7 +32,7 @@
     </script>
 
     <script>
-        const tossPayments = TossPayments('test_ck_P24xLea5zVAdZojP0zy3QAMYNwW6');
+        const tossPayments = TossPayments(CLIENT_KEY);
 
         function payment() {
             const method = '카드'; // "카드" 혹은 "가상계좌"

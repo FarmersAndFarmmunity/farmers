@@ -28,7 +28,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     @Transactional
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2User oAuth2User = super.loadUser(userRequest);
-
         String providerTypeCode = userRequest.getClientRegistration().getRegistrationId().toUpperCase();
 
         //네이버 로그인 시, 아이디 값만 깔끔히 받아오기 위한 코드
@@ -38,10 +37,9 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         };
 
         String username = providerTypeCode + "__%s".formatted(oauthId);
-
         Member member = memberService.whenSocialLogin(providerTypeCode, username);
 
-        return new CustomOAuth2User(member.getUsername(), member.getPassword(), member.getGrantedAuthorities());
+        return new CustomOAuth2User(member.getEmail(), member.getPassword(), member.getGrantedAuthorities(member.getRole()));
     }
 }
 

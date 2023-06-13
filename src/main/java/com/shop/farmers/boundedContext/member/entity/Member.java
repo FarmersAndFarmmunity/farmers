@@ -31,7 +31,6 @@ public class Member extends BaseEntity {
 
     private String providerTypeCode;
 
-    @Column(unique = true)
     private String username;
 
     @Column(unique = true)
@@ -46,20 +45,32 @@ public class Member extends BaseEntity {
 
     public static Member createMember(MemberFormDto memberFormDto, PasswordEncoder passwordEncoder){
         Member member = new Member();
-        member.setUsername(memberFormDto.getName());
+        member.setUsername(memberFormDto.getUsername());
         member.setEmail(memberFormDto.getEmail());
         member.setAddress(memberFormDto.getAddress());
         String password = passwordEncoder.encode(memberFormDto.getPassword());
         member.setPassword(password);
+        member.setProviderTypeCode("Farmers");
         member.setRole(Role.ADMIN); // 현재는 멤버의 롤이 기본적으로 ADMIN 으로 설정되어 있다.
         return member;
     }
 
-    public List<? extends GrantedAuthority> getGrantedAuthorities() {
+    public static Member createSocialMember(String providerTypeCode, String username){
+        Member member = new Member();
+        member.setUsername(username);
+        member.setEmail(username.split("__")[1] + "@" + providerTypeCode.toLowerCase() + ".com");
+        member.setAddress("");
+        member.setPassword("");
+        member.setProviderTypeCode(providerTypeCode);
+        member.setRole(Role.ADMIN); // 현재는 멤버의 롤이 기본적으로 ADMIN 으로 설정되어 있다.
+        return member;
+    }
+
+    public List<? extends GrantedAuthority> getGrantedAuthorities(Role role) {
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
 
         // 모든 멤버는 ADMIN 권한을 가진다.
-        grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + role));
 
         return grantedAuthorities;
     }

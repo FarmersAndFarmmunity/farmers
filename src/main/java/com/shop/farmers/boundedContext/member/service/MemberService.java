@@ -1,19 +1,19 @@
 package com.shop.farmers.boundedContext.member.service;
 
+import com.shop.farmers.boundedContext.member.constant.Role;
 import com.shop.farmers.boundedContext.member.dto.MemberSearchDto;
 import com.shop.farmers.boundedContext.member.entity.Member;
 import com.shop.farmers.boundedContext.member.repository.MemberRepository;
+
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -36,29 +36,16 @@ public class MemberService {
         }
     }
 
-    @Transactional
-    // 일반 회원가입
-    public Member join(String email, String password) {
-        return join("Farmers", email, password);
-    }
-
     public Optional<Member> getMemberById(Long id){
         return memberRepository.findById(id);
     }
 
     // 소셜 로그인
-    private Member join(String providerTypeCode, String username, String password)  throws UsernameNotFoundException {
+    private Member join(String providerTypeCode, String username, String password) throws UsernameNotFoundException {
         if(findByUsername(username).isPresent()){
             throw new UsernameNotFoundException(username);
         }
-
-        Member member = Member
-                .builder()
-                .providerTypeCode(providerTypeCode)
-                .username(username)
-                .password(password)
-                .role(Role.ADMIN)
-                .build();
+        Member member = Member.createSocialMember(providerTypeCode, username);
 
         return memberRepository.save(member);
     }
@@ -87,4 +74,5 @@ public class MemberService {
     public Page<Member> getAdminMemberPage(MemberSearchDto memberSearchDto, Pageable pageable) {
         return memberRepository.getAdminMemberPage(memberSearchDto, pageable);
     }
+
 }

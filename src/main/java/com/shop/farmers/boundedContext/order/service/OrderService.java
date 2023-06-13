@@ -13,6 +13,7 @@ import com.shop.farmers.boundedContext.order.repository.OrderItemRepository;
 import com.shop.farmers.boundedContext.order.repository.OrderRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -33,8 +34,10 @@ public class OrderService {
     private final MemberRepository memberRepository;
     private final OrderRepository orderRepository;
     private final ItemImgRepository itemImgRepository;
-
     private final OrderItemRepository orderItemRepository;
+
+    @Value("${custom.toss_client}")
+    private String CLIENT_KEY; // 수정
 
     public Long order(OrderDto orderDto, String email) {
         Item item = itemRepository.findById(orderDto.getItemId()) // 주문할 상품 조회
@@ -58,7 +61,7 @@ public class OrderService {
 
         List<OrderItem> orderItems = order.getOrderItems();
 
-        OrderDtlDto orderDtlDto = new OrderDtlDto(order);
+        OrderDtlDto orderDtlDto = new OrderDtlDto(order, CLIENT_KEY);
 
         for (OrderItem orderItem : orderItems) {
             ItemImg itemImg = itemImgRepository.findByItemIdAndRepimgYn
