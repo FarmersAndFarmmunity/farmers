@@ -4,6 +4,7 @@ import com.shop.farmers.boundedContext.member.constant.Role;
 import com.shop.farmers.boundedContext.member.dto.MemberSearchDto;
 import com.shop.farmers.boundedContext.member.entity.Member;
 import com.shop.farmers.boundedContext.member.repository.MemberRepository;
+
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -70,5 +71,6 @@ public class MemberService {
     public Page<Member> getAdminMemberPage(MemberSearchDto memberSearchDto, Pageable pageable) {
         return memberRepository.getAdminMemberPage(memberSearchDto, pageable);
     }
+
 
 }
