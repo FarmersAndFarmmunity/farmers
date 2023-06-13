@@ -1,13 +1,14 @@
 package com.shop.farmers.boundedContext.home.controller;
 
+import com.shop.farmers.base.security.CustomUserDetailsService;
 import com.shop.farmers.boundedContext.item.dto.ItemSearchDto;
 import com.shop.farmers.boundedContext.item.dto.MainItemDto;
 import com.shop.farmers.boundedContext.item.service.ItemService;
-import com.shop.farmers.boundedContext.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.CachingUserDetailsService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,7 +25,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MainController {
     private final ItemService itemService;
-    private final MemberService memberService;
+    private final CustomUserDetailsService customUserDetailsService;
 
     @GetMapping(value = "/")
     public String main(ItemSearchDto itemSearchDto, Optional<Integer> page, Model model, Principal principal){
@@ -46,7 +47,7 @@ public class MainController {
 
     // 권한 조회
     protected Authentication createNewAuthentication(Authentication currentAuth, String username) {
-        UserDetails newPrincipal = memberService.loadUserByUsername(username);
+        UserDetails newPrincipal = customUserDetailsService.loadUserByUsername(username);
         UsernamePasswordAuthenticationToken newAuth = new UsernamePasswordAuthenticationToken(newPrincipal, currentAuth.getCredentials(), newPrincipal.getAuthorities());
         newAuth.setDetails(currentAuth.getDetails());
         return newAuth;

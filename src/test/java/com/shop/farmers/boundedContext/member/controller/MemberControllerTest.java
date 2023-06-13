@@ -1,6 +1,5 @@
 package com.shop.farmers.boundedContext.member.controller;
 
-import com.shop.farmers.base.security.CustomUserDetailsService;
 import com.shop.farmers.boundedContext.member.dto.MemberFormDto;
 import com.shop.farmers.boundedContext.member.entity.Member;
 import com.shop.farmers.boundedContext.member.service.MemberService;
@@ -34,8 +33,8 @@ public class MemberControllerTest {
     public Member createMember(String email, String password){
         MemberFormDto memberFormDto = new MemberFormDto();
         memberFormDto.setEmail(email);
-        memberFormDto.setName("홍길동");
-        memberFormDto.setAddress("서울시 마포구 합정동");
+        memberFormDto.setUsername("TEST");
+        memberFormDto.setAddress("TEST ADDRESS");
         memberFormDto.setPassword(password);
         Member member = Member.createMember(memberFormDto, passwordEncoder);
         return memberService.saveMember(member);

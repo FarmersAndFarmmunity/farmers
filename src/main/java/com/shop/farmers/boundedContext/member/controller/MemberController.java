@@ -1,5 +1,6 @@
 package com.shop.farmers.boundedContext.member.controller;
 
+import com.shop.farmers.base.security.CustomUserDetailsService;
 import com.shop.farmers.boundedContext.member.constant.Role;
 import com.shop.farmers.boundedContext.member.dto.MemberFormDto;
 import com.shop.farmers.boundedContext.member.dto.MemberSearchDto;
@@ -10,15 +11,11 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,18 +26,13 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.security.Principal;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 
 @Controller
 @RequiredArgsConstructor
 public class MemberController {
+    private final CustomUserDetailsService customUserDetailsService;
     private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
     @Value("${custom.postForPage}")
@@ -98,11 +90,11 @@ public class MemberController {
     @Transactional
     @PostMapping(value = "/admin/member/update/{id}")
     public String memberUpdate(@PathVariable("id") Long id, HttpServletRequest request, Model model) {
-        Member member = memberService.getMemberById(id).get();
         String paramRole = request.getParameter("paramRole");
         Role role = (paramRole.equals("ADMIN"))? Role.ADMIN : (paramRole.equals("VENDOR"))? Role.VENDOR : Role.USER;
 
         try {
+            Member member = memberService.getMemberById(id).get();
             member.updateRole(role); // db상 권한 갱신
             Authentication auth = SecurityContextHolder.getContext().getAuthentication(); // 유저의 인증정보를 가져와서 저장(GET)
             User user = (User) auth.getPrincipal(); // 유저의 정보를 저장
@@ -116,7 +108,7 @@ public class MemberController {
     }
 
     protected Authentication createNewAuthentication(Authentication currentAuth, String username) {
-        UserDetails newPrincipal = memberService.loadUserByUsername(username);
+        UserDetails newPrincipal = customUserDetailsService.loadUserByUsername(username);
         UsernamePasswordAuthenticationToken newAuth = new UsernamePasswordAuthenticationToken(newPrincipal, currentAuth.getCredentials(), newPrincipal.getAuthorities());
         newAuth.setDetails(currentAuth.getDetails());
         return newAuth;

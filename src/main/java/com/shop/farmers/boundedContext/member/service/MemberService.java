@@ -8,20 +8,15 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class MemberService implements UserDetailsService {
+public class MemberService {
     private final MemberRepository memberRepository;
 
     public Member saveMember(Member member){
@@ -37,30 +32,16 @@ public class MemberService implements UserDetailsService {
         }
     }
 
-    @Transactional
-    // 일반 회원가입
-    public Member join(String username, String email, String password) {
-        return join("Farmers", username, email, password);
-    }
-
     public Optional<Member> getMemberById(Long id){
         return memberRepository.findById(id);
     }
 
     // 소셜 로그인
-    private Member join(String providerTypeCode, String username, String email, String password)  throws UsernameNotFoundException {
+    private Member join(String providerTypeCode, String username, String password) throws UsernameNotFoundException {
         if(findByUsername(username).isPresent()){
             throw new UsernameNotFoundException(username);
         }
-
-        Member member = Member
-                .builder()
-                .providerTypeCode(providerTypeCode)
-                .username(username)
-                .email(email)
-                .password(password)
-                .role(Role.ADMIN)
-                .build();
+        Member member = Member.createSocialMember(providerTypeCode, username);
 
         return memberRepository.save(member);
     }
@@ -71,14 +52,14 @@ public class MemberService implements UserDetailsService {
 
     @Transactional
     // 소셜 로그인 시 실행되는 함수
-    public Member whenSocialLogin(String providerTypeCode, String email, String username) {
+    public Member whenSocialLogin(String providerTypeCode, String username) {
         Optional<Member> opMember = findByUsername(username);
 
         if (opMember.isPresent())
             return opMember.get();
 
         // 소셜 로그인를 통한 가입 시 비밀번호는 없다.
-        return join(providerTypeCode, username, email, ""); // 최초 로그인 시 딱 한번 실행
+        return join(providerTypeCode, username, ""); // 최초 로그인 시 딱 한번 실행
     }
 
     public Member findByEmail(String email) {
@@ -90,18 +71,4 @@ public class MemberService implements UserDetailsService {
         return memberRepository.getAdminMemberPage(memberSearchDto, pageable);
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Member member = memberRepository.findByEmail(email);
-
-        if(member == null){
-            throw new UsernameNotFoundException(email);
-        }
-
-        return User.builder()
-                .username(member.getEmail())
-                .password(member.getPassword())
-                .roles(member.getRole().toString())
-                .build();
-    }
 }
