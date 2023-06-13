@@ -2,6 +2,7 @@ package com.shop.farmers.boundedContext.item.entity;
 
 import com.shop.farmers.base.baseEntity.BaseEntity;
 import com.shop.farmers.base.exception.OutOfStockException;
+import com.shop.farmers.boundedContext.item.constant.ItemCategory;
 import com.shop.farmers.boundedContext.item.constant.ItemSellStatus;
 import com.shop.farmers.boundedContext.item.dto.ItemFormDto;
 import com.shop.farmers.boundedContext.review.entity.Review;
@@ -39,6 +40,9 @@ public class Item extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private ItemSellStatus itemSellStatus; //상품 판매 상태
+
+    @Enumerated(EnumType.STRING)
+    private ItemCategory itemCategory; //상품 카테고리
 
 //    @OneToMany(mappedBy = "review", cascade = CascadeType.REMOVE)
 //    private List<Review> reviewList;
