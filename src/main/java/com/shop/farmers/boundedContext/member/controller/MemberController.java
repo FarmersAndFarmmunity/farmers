@@ -63,13 +63,13 @@ public class MemberController {
 
     @GetMapping(value = "/members/login")
     public String loginMember(){
-        return "/member/memberLoginForm";
+        return "member/memberLoginForm";
     }
 
     @GetMapping(value = "/members/login/error")
     public String loginError(Model model){
         model.addAttribute("loginErrorMsg", "아이디 또는 비밀번호를 확인해주세요.");
-        return "/member/memberLoginForm";
+        return "member/memberLoginForm";
     }
 
     // 멤버 관리 기능
