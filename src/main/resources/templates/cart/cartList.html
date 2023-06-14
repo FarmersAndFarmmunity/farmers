@@ -50,6 +50,45 @@
             getOrderTotalPrice();
         }
 
+        // 장바구니 페이지가 처음 로딩 되었을 때 모든 체크박스가 체크 되어 있도록 하기 위한 코드
+        window.addEventListener('DOMContentLoaded', (event) => { // DOMContentLoaded 이벤트를 기다리고 이벤트가 발생하면 체크박스의 상태를 변경
+            // DOM이 로드될 때 실행되는 코드
+            document.getElementById('checkall').click();
+            getCheckedCnt();
+            getAllItemCount();
+            getOrderTotalPrice();
+        });
+
+        function getCheckedCnt()  {
+            // 선택된 목록 가져오기
+            const query = 'input[name="cartChkBox"]:checked';
+            const selectedElements =
+                document.querySelectorAll(query);
+
+            // 선택된 목록의 갯수 세기
+            const selectedElementsCnt =
+                selectedElements.length;
+
+            // 출력
+            document.getElementById('result').innerText
+                = selectedElementsCnt;
+        }
+
+        function getAllItemCount() {
+            const query = 'input[name="cartChkBox"]:checked';
+            const selectedElements =
+                document.querySelectorAll(query);
+
+            // 선택된 목록의 갯수 세기
+            const selectedElementsCnt =
+                selectedElements.length;
+
+            // 출력
+            document.getElementById('totalItemCnt').innerText
+                = selectedElementsCnt;
+        }
+
+
         function updateCartItemCount(cartItemId, count){
             var token = $("meta[name='_csrf']").attr("content");
             var header = $("meta[name='_csrf_header']").attr("content");
@@ -193,9 +232,13 @@
 
 <div layout:fragment="content" class="content-mg">
 
-    <h2 class="mb-4">
-        장바구니 목록
-    </h2>
+    <div class="name-box flex flex-row justify-center">
+        <h2 class="mb-4">
+            장바구니 목록 (
+        </h2>
+        <div id='result'></div>/
+        <div id="totalItemCnt"></div>)
+    </div>
 
     <div>
 
@@ -208,7 +251,7 @@
             <thead>
             <tr class="text-center">
                 <td>
-                    <input type="checkbox" id="checkall" onclick="checkAll()"> 전체선택
+                    <input type="checkbox" id="checkall" onclick="checkAll()">전체선택
                 </td>
                 <td>상품정보</td>
                 <td>상품금액</td>
@@ -217,7 +260,7 @@
             <tbody>
             <tr th:each="cartItem : ${cartItems}">
                 <td class="text-center align-middle">
-                    <input type="checkbox" name="cartChkBox" th:value="${cartItem.cartItemId}">
+                    <input type="checkbox" name="cartChkBox" th:value="${cartItem.cartItemId}" onclick='getCheckedCnt();'>
                 </td>
                 <td class="d-flex">
                     <div class="repImgDiv align-self-center">
