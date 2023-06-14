@@ -211,7 +211,7 @@
             width:100px;
         }
         .item-name{
-            width:100px;
+            width:200px;
             padding-right:5px;
             text-overflow : ellipsis;
         }
@@ -235,7 +235,7 @@
             <div id="totalItemCnt"></div>)
         </div>
 
-        <div class="cart-list-box flex-col" style="width:800px;">
+        <div class="cart-list-box flex-col" style="width:900px;">
 
             <table class="table">
                 <thead class="text-base">
@@ -274,7 +274,7 @@
                             <div class="item-detail flex items-center justify-between">
                                 <!--상품 이름-->
                                 <div class="item-name flex items-center">
-                                    <span th:text="${cartItem.itemNm}" class="text-lg font-bold"></span>
+                                    <div th:text="${cartItem.itemNm}" class="text-lg font-bold truncate"></div>
                                 </div>
                                 <!--가격&장바구니상품갯수-->
                                 <div class="flex">
