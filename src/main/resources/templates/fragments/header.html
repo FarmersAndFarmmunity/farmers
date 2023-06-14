@@ -3,6 +3,23 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
+<th:block layout:fragment="script">
+    <script th:inline="javascript">
+        $(document).ready(function(){
+            $("#searchBtn").on("click",function(e) {
+                e.preventDefault();
+                page(0);
+            });
+        });
+
+        function page(page){
+            var classifyItem = $("#classifyItem").val();
+
+            location.href="/" + page + "?classifyItem=" + classifyItem;
+        }
+    </script>
+</th:block>
+
     <div th:fragment="header">
         <!-- 네비게이션 바 구현 -->
         <nav class="navbar navbar-expand-sm bg-primary navbar-dark">
@@ -49,12 +66,22 @@
                     <li class="nav-item" sec:authorize="isAuthenticated()">
                         <a class="nav-link" href="/reviews">리뷰 관리</a>
                     </li>
+
+                    <li class="nav-item" sec:authorize="isAuthenticated()">
+                        <a class="nav-link" th:href="@{/classify/AGRICULTURE}">농산물</a>
+                    </li>
+                    <li class="nav-item" sec:authorize="isAuthenticated()">
+                        <a class="nav-link" th:href="@{/classify/SEAFOOD}">수산물</a>
+                    </li>
+                    <li class="nav-item" sec:authorize="isAuthenticated()">
+                        <a class="nav-link" th:href="@{/classify/LIVESTOCK}">축산물</a>
+                    </li>
+
                 </ul>
 
                 <form class="form-inline my-2 ly-lg-0" th:action="@{/}" method="get">
                     <input name="searchQuery" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-
                 </form>
             </div>
         </nav>

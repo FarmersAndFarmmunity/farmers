@@ -1,6 +1,8 @@
 package com.shop.farmers.boundedContext.home.controller;
 
 import com.shop.farmers.base.security.CustomUserDetailsService;
+import com.shop.farmers.boundedContext.item.constant.ItemClassifyStatus;
+import com.shop.farmers.boundedContext.item.dto.ItemClassifyDto;
 import com.shop.farmers.boundedContext.item.dto.ItemSearchDto;
 import com.shop.farmers.boundedContext.item.dto.MainItemDto;
 import com.shop.farmers.boundedContext.item.service.ItemService;
@@ -17,6 +19,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.security.Principal;
 import java.util.Optional;
@@ -26,12 +29,25 @@ import java.util.Optional;
 public class MainController {
     private final ItemService itemService;
     private final CustomUserDetailsService customUserDetailsService;
+    private ItemClassifyStatus itemClassifyStatus;
 
-    @GetMapping(value = "/")
-    public String main(ItemSearchDto itemSearchDto, Optional<Integer> page, Model model, Principal principal){
+    @GetMapping(value = {"/", "/item/{itemClassifyStatus}"})
+    public String main(ItemClassifyDto itemClassifyDto, ItemSearchDto itemSearchDto, Optional<Integer> page, Model model, Principal principal){
+        itemClassifyDto = new ItemClassifyDto();
+        if (itemClassifyStatus != null) {
+            if (itemClassifyStatus.equals("AGRICULTURE")) {
+                itemClassifyDto.setItemClassifyStatus(ItemClassifyStatus.AGRICULTURE);
+            } else if (itemClassifyStatus.equals("MARINE")) {
+                itemClassifyDto.setItemClassifyStatus(ItemClassifyStatus.MARINE);
+            } else if (itemClassifyStatus.equals("LIVESTOCK")) {
+                itemClassifyDto.setItemClassifyStatus(ItemClassifyStatus.LIVESTOCK);
+            }
+        }
+
         Pageable pageable = PageRequest.of(page.isPresent()? page.get() : 0, 6);
-        Page<MainItemDto> items = itemService.getMainItemPage(itemSearchDto, pageable);
+        Page<MainItemDto> items = itemService.getMainItemPage(itemClassifyDto, itemSearchDto, pageable);
         model.addAttribute("items", items);
+        model.addAttribute("itemClassifyDto", itemClassifyDto);
         model.addAttribute("itemSearchDto", itemSearchDto);
         model.addAttribute("maxPage", 5);
 

@@ -1,5 +1,5 @@
 package com.shop.farmers.boundedContext.item.constant;
 
-public enum ItemCategory {
+public enum ItemClassifyStatus {
     AGRICULTURE, MARINE, LIVESTOCK
 }

@@ -59,6 +59,29 @@
     </div>
   </div>
 
+  <div class="center">
+    <p class="h3 font-weight-bold" th:text="'농산물'" th:if="${itemClassifyDto.itemClassifyStatus == 'AGRICULTURE'}"></p>
+    <p class="h3 font-weight-bold" th:text="'수산물'" th:if="${itemClassifyDto.itemClassifyStatus == 'MARINE'}"></p>
+    <p class="h3 font-weight-bold" th:text="'축산물'" th:if="${itemClassifyDto.itemClassifyStatus == 'LIVESTOCK'}"></p>
+  </div>
+
+  <div class="row">
+    <th:block th:each="item, status: ${items.getContent()}" th:if="${item.itemClassifyStatus == itemClassifyDto.itemClassifyStatus}">
+      <div class="col-md-4 margin">
+        <div class="card">
+          <a th:href="'/item/'+${item.id}" class="text-dark">
+            <img th:src="${item.imgUrl}" class="card-img-top" th:alt="${item.itemNm}" height="400">
+            <div class="card-body">
+              <h4 class="card-title" th:text="${item.itemNm}"></h4>
+              <p class="card-text" th:text="${item.itemDetail}"></p>
+              <h3 class="card-title text-danger" th:text="${item.price} + '원'"></h3>
+            </div>
+          </a>
+        </div>
+      </div>
+    </th:block>
+  </div>
+
   <input type="hidden" name="searchQuery" th:value="${itemSearchDto.searchQuery}">
   <div th:if="${not #strings.isEmpty(itemSearchDto.searchQuery)}" class="center">
     <p class="h3 font-weight-bold" th:text="${itemSearchDto.searchQuery} + '검색 결과'"></p>

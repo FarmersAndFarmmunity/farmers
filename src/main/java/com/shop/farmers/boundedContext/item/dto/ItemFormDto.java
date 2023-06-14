@@ -1,9 +1,8 @@
 package com.shop.farmers.boundedContext.item.dto;
 
-import com.shop.farmers.boundedContext.item.constant.ItemCategory;
+import com.shop.farmers.boundedContext.item.constant.ItemClassifyStatus;
 import com.shop.farmers.boundedContext.item.constant.ItemSellStatus;
 import com.shop.farmers.boundedContext.item.entity.Item;
-import com.shop.farmers.boundedContext.review.entity.Review;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -34,7 +33,7 @@ public class ItemFormDto {
 
     private ItemSellStatus itemSellStatus;
 
-    private ItemCategory itemCategory;
+    private ItemClassifyStatus itemClassifyStatus;
 
     private List<ItemImgDto> itemImgDtoList = new ArrayList<>(); //수정 시, 상품 이미지 정보 저장하는 리스트
 

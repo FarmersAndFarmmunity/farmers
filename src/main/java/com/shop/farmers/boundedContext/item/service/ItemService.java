@@ -1,9 +1,6 @@
 package com.shop.farmers.boundedContext.item.service;
 
-import com.shop.farmers.boundedContext.item.dto.ItemFormDto;
-import com.shop.farmers.boundedContext.item.dto.ItemImgDto;
-import com.shop.farmers.boundedContext.item.dto.ItemSearchDto;
-import com.shop.farmers.boundedContext.item.dto.MainItemDto;
+import com.shop.farmers.boundedContext.item.dto.*;
 import com.shop.farmers.boundedContext.item.entity.Item;
 import com.shop.farmers.boundedContext.item.entity.ItemImg;
 import com.shop.farmers.boundedContext.item.repository.ItemImgRepository;
@@ -106,10 +103,9 @@ public class ItemService {
     }
 
     @Transactional(readOnly = true)
-    public Page<MainItemDto> getMainItemPage(ItemSearchDto itemSearchDto, Pageable pageable) {
-        return itemRepository.getMainItemPage(itemSearchDto, pageable);
+    public Page<MainItemDto> getMainItemPage(ItemClassifyDto itemClassifyDto, ItemSearchDto itemSearchDto, Pageable pageable) {
+        return itemRepository.getMainItemPage(itemClassifyDto, itemSearchDto, pageable);
     }
-
 
     public Optional<Item> findById(Long itemId) {
         return itemRepository.findById(itemId);
