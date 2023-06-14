@@ -3,15 +3,10 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout1}">
 
+
 <!-- 사용자 CSS 추가 -->
 <th:block layout:fragment="css">
   <style>
-    .carousel-inner > .item {
-      height: 350px;
-    }
-    .margin{
-      margin-bottom:30px;
-    }
     .banner{
       height: 300px;
       position: absolute; top:0; left: 0;
@@ -34,39 +29,36 @@
 
 <div layout:fragment="content">
 
-  <div id="carouselControls" class="carousel slide margin" data-ride="carousel">
-    <div class="carousel-inner">
-      <div class="carousel-item active item">
-        <img class="d-block w-100 banner" src="https://media.discordapp.net/attachments/1108208708019834982/1115598295339909180/prince-abid-iY1k44Aa4uQ-unsplash.jpg?width=1202&height=676" alt="First slide">
+  <div class="carousel-box w-full" th:if="${!(itemSearchDto.searchQuery != '')}" >
+    <div class="carousel w-full h-96">
+      <div id="item1" class="carousel-item flex justify-center w-full">
+        <img src="https://user-images.githubusercontent.com/15629036/245516874-c43aecbb-6cd0-4c37-8087-ca7577b1ff67.png" alt="First slide">
       </div>
-
-      <div class="carousel-item item">
-        <img class="d-block w-100 banner" src="https://media.discordapp.net/attachments/1108208708019834982/1115598628220841984/main_image.jpeg?width=1014&height=676" alt="Second slide">
+      <div id="item2" class="carousel-item flex justify-center w-full">
+        <img src="https://user-images.githubusercontent.com/15629036/245517670-04ba7ce8-ed40-4083-b0ec-b086fa4fdddb.png" alt="Second slide">
       </div>
-
-      <div class="carousel-item item">
-        <img class="d-block w-100 banner" src="https://media.discordapp.net/attachments/1108208708019834982/1115598227941629972/phuc-long-aqrIcYonB-o-unsplash.jpg?width=1202&height=676" alt="Third slide">
+      <div id="item3" class="carousel-item flex justify-center w-full">
+        <img src="https://user-images.githubusercontent.com/15629036/245511690-c2dc0b1f-d755-4695-b53f-2a4236c3104b.png" alt="Third slide">
       </div>
-
-      <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-      </a>
-      <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-      </a>
+    </div>
+    <div class="flex justify-center w-full py-2 gap-2" style="margin-top: -40px;">
+      <a href="#item1" class="btn btn-circle" style="width:10px; height:10px; min-height:unset;"></a>
+      <a href="#item2" class="btn btn-circle" style="width:10px; height:10px; min-height:unset;"></a>
+      <a href="#item3" class="btn btn-circle" style="width:10px; height:10px; min-height:unset;"></a>
     </div>
   </div>
 
   <input type="hidden" name="searchQuery" th:value="${itemSearchDto.searchQuery}">
   <div th:if="${not #strings.isEmpty(itemSearchDto.searchQuery)}" class="center">
-    <p class="h3 font-weight-bold" th:text="${itemSearchDto.searchQuery} + '검색 결과'"></p>
+    <p class="h3 font-weight-bold text-3xl" style="font-family: KCCImkwontaek, serif;" th:text="'\'' + ${itemSearchDto.searchQuery} + '\' 검색 결과'"></p>
   </div>
 
-  <div class="row">
+  <div class="item-box-title mt-10 mb-4" th:if="${!(itemSearchDto.searchQuery != '')}" >
+    <span style="font-family: KCCImkwontaek, serif;" class="text-3xl mx-6">새로 입고된 신선한 상품들을 만나보세요!</span>
+  </div>
+  <div class="item-box-new grid grid-cols-4 gap-5">
     <th:block th:each="item, status: ${items.getContent()}">
-      <div class="col-md-4 margin">
+      <div class="item-new">
         <div class="card">
           <a th:href="'/item/' +${item.id}" class="text-dark">
             <img th:src="${item.imgUrl}" class="card-img-top" th:alt="${item.itemNm}" height="400">
@@ -82,21 +74,21 @@
   </div>
 
   <div th:with="start=${(items.number/maxPage)*maxPage + 1}, end=(${(items.totalPages == 0) ? 1 : (start + (maxPage - 1) < items.totalPages ? start + (maxPage - 1) : items.totalPages)})" >
-    <ul class="pagination justify-content-center">
+    <ul class="flex join justify-center">
 
-      <li class="page-item" th:classappend="${items.number eq 0}?'disabled':''">
-        <a th:href="@{'/' + '?searchQuery=' + ${itemSearchDto.searchQuery} + '&page=' + ${items.number-1}}" aria-label='Previous' class="page-link">
-          <span aria-hidden='true'>Previous</span>
+      <li class="join-item btn" th:classappend="${items.number eq 0}? 'disabled':''">
+        <a th:href="@{'/' + '?searchQuery=' + ${itemSearchDto.searchQuery} + '&page=' + ${items.number-1}}" aria-label='이전' class="page-link">
+          <span aria-hidden='true'>이전</span>
         </a>
       </li>
 
-      <li class="page-item" th:each="page: ${#numbers.sequence(start, end)}" th:classappend="${items.number eq page-1}?'active':''">
+      <li class="join-item btn" th:each="page: ${#numbers.sequence(start, end)}" th:classappend="${items.number eq page-1}?'active':''">
         <a th:href="@{'/' +'?searchQuery=' + ${itemSearchDto.searchQuery} + '&page=' + ${page-1}}" th:inline="text" class="page-link">[[${page}]]</a>
       </li>
 
-      <li class="page-item" th:classappend="${items.number+1 ge items.totalPages}?'disabled':''">
-        <a th:href="@{'/' +'?searchQuery=' + ${itemSearchDto.searchQuery} + '&page=' + ${items.number+1}}" aria-label='Next' class="page-link">
-          <span aria-hidden='true'>Next</span>
+      <li class="join-item btn" th:classappend="${items.number+1 ge items.totalPages}?'disabled':''">
+        <a th:href="@{'/' +'?searchQuery=' + ${itemSearchDto.searchQuery} + '&page=' + ${items.number+1}}" aria-label='다음' class="page-link">
+          <span aria-hidden='true'>다음</span>
         </a>
       </li>
 
