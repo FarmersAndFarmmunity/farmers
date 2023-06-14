@@ -1,12 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-
-<head>
-    <meta name="_csrf" th:content="${_csrf.token}"/>
-    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
-
-</head>
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout2}">
 
 <th:block layout:fragment="script">
 </th:block>
@@ -14,56 +9,56 @@
 <!-- 사용자 CSS 추가 -->
 <th:block layout:fragment="css">
     <style>
-        body, .content-mg {
-            min-height:100%;
-            font-family: 'Pretendard-Regular', serif;
-        }
-        @font-face {
-            font-family: 'Pretendard-Regular';
-            src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
-            font-weight: 400;
-            font-style: normal;
+        tr {
+            height: 2.5rem;
+            border-bottom: 1px solid #efefef;
         }
     </style>
 </th:block>
 
-<div layout:fragment="content" class="content-mg">
-
-    <h2 class="mb-4">
-        결제 내역
-    </h2>
-
-    <table>
-        <tr>
-            <th>주문 번호</th>
-            <td th:text="${payment.getOrderId()}"></td>
-        </tr>
-        <tr>
-            <th>거래 일시</th>
-            <td th:text="${#temporals.format(payment.getRegTime(), 'yyyy-MM-dd')}"></td>
-        </tr>
-        <tr>
-            <th>주문 이름</th>
-            <td th:text="${payment.getOrderName()}"></td>
-        </tr>
-        <tr>
-            <th>결제 금액</th>
-            <td th:text="${payment.getAmount()} +'원'"></td>
-        </tr>
-        <tr>
-            <th>결제 수단</th>
-            <td th:text="${payment.getPayType()}"></td>
-        </tr>
-        <tr>
-            <th>주문자 성함</th>
-            <td th:text="${payment.getCustomerName()}"></td>
-        </tr>
-        <tr>
-            <th>주문자 이메일</th>
-            <td th:text="${payment.getCustomerEmail()}"></td>
-        </tr>
-    </table>
-    <button onclick="window.close()">확인</button>
-</div>
+<div layout:fragment="content">
+    <div class="flex justify-center w-full">
+        <div class="card bg-base-100 shadow-xl" style="width:90%;">
+            <div class="card-body">
+                <div class="card-title">
+                    <p class="text-3xl font-bold my-4 ml-3">
+                        결제 내역
+                    </p>
+                </div>
+                <table>
+                    <tr>
+                        <th style="width:150px;">주문 번호</th>
+                        <td th:text="${payment.getOrderId()}"></td>
+                    </tr>
+                    <tr>
+                        <th>거래 일시</th>
+                        <td th:text="${#temporals.format(payment.getRegTime(), 'yyyy-MM-dd')}"></td>
+                    </tr>
+                    <tr>
+                        <th>주문 이름</th>
+                        <td th:text="${payment.getOrderName()}"></td>
+                    </tr>
+                    <tr>
+                        <th>결제 금액</th>
+                        <td th:text="${payment.getAmount()} +'원'"></td>
+                    </tr>
+                    <tr>
+                        <th>결제 수단</th>
+                        <td th:text="${payment.getPayType()}"></td>
+                    </tr>
+                    <tr>
+                        <th>주문자 성함</th>
+                        <td th:text="${payment.getCustomerName()}"></td>
+                    </tr>
+                    <tr>
+                        <th>주문자 이메일</th>
+                        <td th:text="${payment.getCustomerEmail()}"></td>
+                    </tr>
+                </table>
+                <button class="btn btn-accent" onclick="window.close()">확인</button>
+            </div>
+        </div>
+    </div>
+    </div>
 
 </html>

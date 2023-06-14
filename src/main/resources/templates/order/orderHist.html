@@ -120,7 +120,8 @@
                                     <div th:text="${'주문 개수 : ' + orderItem.count} +'개'"></div>
                                     <div th:text="${'주문 번호 : ' + order.getOrderId() + '번'}"></div>
                                 </div>
-                                <a class="btn btn-accent" th:href="@{|/reviews/new?orderId=${orderItem.orderId}&itemId=${orderItem.itemId}|}" th:text="리뷰작성"></a>
+                                <a class="btn btn-accent" th:href="@{|/reviews/new?orderId=${orderItem.orderId}&itemId=${orderItem.itemId}|}" th:if="${order.orderStatus == T(com.shop.farmers.boundedContext.order.constant.OrderStatus).ORDER}" th:text="|리뷰작성|"></a>
+                                <a class="btn btn-error" th:unless="${order.orderStatus == T(com.shop.farmers.boundedContext.order.constant.OrderStatus).ORDER}" th:text="|리뷰작성불가|"></a>
                             </div>
                         </div>
                     </div>
@@ -131,7 +132,7 @@
                             <button type="button" class="btn btn-error" th:value="${order.orderId}" onclick="cancelOrder(this.value)">주문취소</button>
                         </th:block>
                         <th:block th:unless="${order.orderStatus == T(com.shop.farmers.boundedContext.order.constant.OrderStatus).ORDER}">
-                            <h4>(취소 완료)</h4>
+                            <h4 class="text-2xl text-error font-bold">취소 완료</h4>
                         </th:block>
                     </div>
                 </div>

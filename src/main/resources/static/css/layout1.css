@@ -22,8 +22,7 @@ body {
 
 .header-box {
     width: 100%;
-    display: flex;
-    justify-content: center;
+    padding-bottom: 10px;
 }
 .content {
     margin-bottom:100px;
