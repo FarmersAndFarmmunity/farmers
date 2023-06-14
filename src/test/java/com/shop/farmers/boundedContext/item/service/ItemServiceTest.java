@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @Transactional
-@TestPropertySource(locations = "classpath:application-test.yml")
+@ActiveProfiles("test")
 public class ItemServiceTest {
     @Autowired
     ItemService itemService;
