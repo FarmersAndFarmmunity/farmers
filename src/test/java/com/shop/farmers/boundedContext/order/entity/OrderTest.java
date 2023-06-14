@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 @SpringBootTest
-@TestPropertySource(locations = "classpath:application-test.yml")
+@ActiveProfiles("test")
 @Transactional
 class OrderTest {
     @Autowired

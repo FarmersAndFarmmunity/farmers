@@ -27,12 +27,12 @@ spring:
             scope:
             client-name: Naver
             authorization-grant-type: authorization_code
-            redirect-uri: http://localhost:8080/login/oauth2/code/naver
+            redirect-uri: '${custom.site.baseUrl}/{action}/oauth2/code/{registrationId}'
           kakao:
             scope:
             client-name: Kakao
             authorization-grant-type: authorization_code
-            redirect-uri: http://localhost:8080/login/oauth2/code/kakao
+            redirect-uri: '${custom.site.baseUrl}/{action}/oauth2/code/{registrationId}'
             client-authentication-method: POST
         provider:
           naver:
@@ -54,7 +54,6 @@ spring:
         format_sql: true
         use_sql_comments: true
         default_batch_fetch_size: 1000
-    database: mysql
   devtools:
     livereload:
       enabled: true
@@ -74,4 +73,6 @@ custom:
   uploadPath: 'file:///C:/shop/'
   #회원/상품관리 페이지에서 한 페이지에 표시할 게시글 갯수
   postForPage: 10
+  site:
+    baseUrl: http://localhost:8080
 
