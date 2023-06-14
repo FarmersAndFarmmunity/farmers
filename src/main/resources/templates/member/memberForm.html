@@ -8,6 +8,11 @@
     <style>
         .fieldError {
             color: #bd2130;
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+            width:100%;
+            padding-top: 0.5rem;
+            padding-left: 0.5rem;
         }
         .detail-line {
             border-bottom: 1px solid #efefef;
@@ -56,7 +61,7 @@
                             <label th:for="username">이름</label>
                         </dt>
                         <dd class="detail-content">
-                            <input type="text" th:field="*{username}" class="input input-bordered w-full max-w-xs" placeholder="이름을 입력해주세요">
+                            <input type="text" th:field="*{username}" class="input input-bordered w-full" placeholder="이름을 입력해주세요">
                             <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="fieldError">Incorrect data</p>
                         </dd>
                     </dl>
@@ -65,7 +70,7 @@
                             <label th:for="email">이메일주소</label>
                         </dt>
                         <dd class="detail-content">
-                            <input type="email" th:field="*{email}" class="input input-bordered w-full max-w-xs" placeholder="이메일을 입력해주세요">
+                            <input type="email" th:field="*{email}" class="input input-bordered w-full" placeholder="이메일을 입력해주세요">
                             <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="fieldError">Incorrect data</p>
                         </dd>
                     </dl>
@@ -74,7 +79,7 @@
                             <label th:for="password">비밀번호</label>
                         </dt>
                         <dd class="detail-content">
-                            <input type="password" th:field="*{password}" class="input input-bordered w-full max-w-xs" placeholder="비밀번호를 입력해주세요">
+                            <input type="password" th:field="*{password}" class="input input-bordered w-full" placeholder="비밀번호를 입력해주세요">
                             <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="fieldError">Incorrect data</p>
                         </dd>
                     </dl>
@@ -83,7 +88,7 @@
                             <label th:for="address">주소</label>
                         </dt>
                         <dd class="detail-content">
-                            <input type="text" th:field="*{address}" class="input input-bordered w-full max-w-xs" placeholder="주소를 입력해주세요">
+                            <input type="text" th:field="*{address}" class="input input-bordered w-full" placeholder="주소를 입력해주세요">
                             <p th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="fieldError">Incorrect data</p>
                         </dd>
                     </dl>
