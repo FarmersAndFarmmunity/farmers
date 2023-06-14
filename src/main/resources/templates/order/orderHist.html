@@ -100,13 +100,12 @@
         지난 구매 이력
     </p>
 
-    <div class="flex w-full justify-center">
-        <div class="order-box card bg-base-100 shadow-xl">
-            <div class="card-body">
-                <!-- 주문명 구현 예정 : 주문 상품이 1개일 때 -->
-
-                <!-- 주문명 구현 예정 : 주문 상품이 2개 이상일 때 -->
-                <div th:each="order, orderStat : ${orders}">
+    <div class="flex flex-col items-center w-full justify-center gap-5">
+        <!-- 주문명 구현 예정 : 주문 상품이 1개일 때 -->
+        <!-- 주문명 구현 예정 : 주문 상품이 2개 이상일 때 -->
+        <div th:each="order, orderStat : ${orders}">
+            <div class="order-box card bg-base-100 shadow-xl">
+                <div class="card-body">
                     <h4 class="card-title text-3xl mb-10" th:text="|${order.orderDate} 주문건|"></h4>
                     <div class="flex flex-col">
                         <div th:each="orderItem : ${order.orderItemDtoList}" class="flex mb-3">
@@ -135,9 +134,9 @@
                             <h4 class="text-2xl text-error font-bold">취소 완료</h4>
                         </th:block>
                     </div>
-                </div>
-            </div>
-        </div>
+               </div>
+          </div>
+       </div>
     </div>
 
     <div th:with="start=${(orders.number/maxPage)*maxPage + 1}, end=(${(orders.totalPages == 0) ? 1 : (start + (maxPage - 1) < orders.totalPages ? start + (maxPage - 1) : orders.totalPages)})" >
