@@ -14,12 +14,12 @@
         </div>
 
         <!-- 2번째 블럭 시작 프로덕트 로고, 검색창, 장바구니 -->
-        <div class="middle-search-box flex shrink-0 justify-items-center justify-around">
-            <a class="title text-3xl mx-5" href="/">Farmers</a>
+        <div class="middle-search-box flex shrink-0 items-center justify-around">
+            <a class="title text-3xl mx-5" href="/" style="font-family: 'SEBANG_Gothic_Bold'; font-size: 2em;">Farmers</a>
             <div class="search-box flex shrink-0">
-                <form class="mx-10" th:action="@{/}" method="get">
+                <form class="mx-10" action="/" method="get">
                     <div class="join">
-                        <input name="searchQuery" type="search" placeholder="Search" aria-label="Search" class="input input-bordered join-item md:w-80" />
+                        <input name="searchQuery" type="search" placeholder="Search" aria-label="Search" class="input input-bordered join-item md:w-80">
                         <button type="submit" class="btn join-item rounded-r-full">
                             <div tabindex="0">
                                 <span class="material-symbols-outlined">search</span>
@@ -29,7 +29,7 @@
                 </form>
             </div>
             <!-- 장바구니-->
-            <div class="flex items-center hover:text-green-500" sec:authorize="isAuthenticated()">
+            <div class="flex items-center hover:text-green-500">
                 <a href="/cart"><span class="material-symbols-outlined">shopping_cart</span></a>
             </div>
         </div>
