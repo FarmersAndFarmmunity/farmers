@@ -79,6 +79,9 @@
         .order-box{
             width:500px;
         }
+        .order-line{
+            border-bottom: 1px solid #efefef;
+        }
     </style>
 </th:block>
 
@@ -93,7 +96,7 @@
                 <div class="order-box card bg-base-100 shadow-xl">
                     <div class="card-body">
                         <h3 class="card-title text-2xl" th:text="${'주문명 : ' + order.getOrderName()}"></h3>
-                        <div th:each="orderItem : ${order.getOrderItemDtlDtos()}" class="d-flex mb-3">
+                        <div th:each="orderItem : ${order.getOrderItemDtlDtos()}" class="flex mb-3 order-line">
                             <div class="flex">
                                 <div class="repImgDiv">
                                     <img th:src="${orderItem.imgUrl}" class = "rounded repImg" th:alt="${orderItem.itemNm}">

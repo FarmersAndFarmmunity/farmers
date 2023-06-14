@@ -13,6 +13,18 @@
 
 <!-- 사용자 CSS 추가 -->
 <th:block layout:fragment="css">
+    <style>
+        body, .content-mg {
+            min-height:100%;
+            font-family: 'Pretendard-Regular', serif;
+        }
+        @font-face {
+            font-family: 'Pretendard-Regular';
+            src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+            font-weight: 400;
+            font-style: normal;
+        }
+    </style>
 </th:block>
 
 <div layout:fragment="content" class="content-mg">
