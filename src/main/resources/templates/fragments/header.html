@@ -5,7 +5,7 @@
 
 <div th:fragment="header">
     <!-- 네비게이션 바 구현 -->
-    <div class="container-box flex-col mx-10">
+    <div class="container-box flex-col mx-10" style="width: 1000px;">
         <!-- 1번째 블럭 시작 회원가입, 로그인-->
         <div class="sign-in-up-box flex justify-end mb-5">
             <button class="btn btn-xs btn-ghost shrink flex-none hover:text-yellow-500" sec:authorize="isAnonymous()" onclick="location.href='/members/new'">회원가입</button>
@@ -30,7 +30,7 @@
             </div>
             <!-- 장바구니-->
             <div class="flex items-center hover:text-green-500">
-                <a href="/cart"><span class="material-symbols-outlined">shopping_cart</span></a>
+                <a class="btn btn-circle" href="/cart"><span class="material-symbols-outlined">shopping_cart</span></a>
             </div>
         </div>
 

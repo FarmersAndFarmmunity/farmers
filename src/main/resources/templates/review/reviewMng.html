@@ -39,11 +39,14 @@
 
 <div layout:fragment="content">
 
+    <p class="text-3xl font-bold my-4 ml-3 pb-3">
+        리뷰 관리
+    </p>
     <form th:action="@{'/reviews/' + ${reviews.number}}" role="form" method="get" th:object="${reviews}">
-        <table class="table">
+        <table class="table w-full">
             <thead>
             <tr>
-                <td>리뷰 번호</td>
+                <td style="width: 30px;">리뷰 번호</td>
                 <td>리뷰 내용</td>
                 <td>등록일</td>
                 <td>리뷰 관리</td>
@@ -67,40 +70,40 @@
         </table>
 
         <div th:with="start=${(reviews.number/maxPage)*maxPage + 1}, end=(${(reviews.totalPages == 0) ? 1 : (start + (maxPage - 1) < reviews.totalPages ? start + (maxPage - 1) : reviews.totalPages)})" >
-            <ul class="pagination justify-content-center">
+            <ul class="flex join justify-center mt-5">
 
-                <li class="page-item" th:classappend="${reviews.first}?'disabled'">
-                    <a th:onclick="'javascript:page(' + ${reviews.number - 1} + ')'" aria-label='Previous' class="page-link">
-                        <span aria-hidden='true'>Previous</span>
+                <li class="join-item btn" th:classappend="${reviews.first}?'disabled'">
+                    <a th:onclick="'javascript:page(' + ${reviews.number - 1} + ')'" aria-label='이전' class="page-link">
+                        <span aria-hidden='true'>이전</span>
                     </a>
                 </li>
 
-                <li class="page-item" th:each="page: ${#numbers.sequence(start, end)}" th:classappend="${reviews.number eq page-1}?'active':''">
+                <li class="join-item btn" th:each="page: ${#numbers.sequence(start, end)}" th:classappend="${reviews.number eq page-1}?'active':''">
                     <a th:onclick="'javascript:page(' + ${page - 1} + ')'" th:inline="text" class="page-link">[[${page}]]</a>
                 </li>
 
-                <li class="page-item" th:classappend="${reviews.last}?'disabled'">
-                    <a th:onclick="'javascript:page(' + ${reviews.number + 1} + ')'" aria-label='Next' class="page-link">
-                        <span aria-hidden='true'>Next</span>
+                <li class="join-item btn" th:classappend="${reviews.last}?'disabled'">
+                    <a th:onclick="'javascript:page(' + ${reviews.number + 1} + ')'" aria-label='다음' class="page-link">
+                        <span aria-hidden='true'>다음</span>
                     </a>
                 </li>
 
             </ul>
         </div>
 
-        <div class="form-inline justify-content-center" th:object="${reviewSearchDto}">
-            <select th:field="*{searchDateType}" class="form-control" style="width:auto;">
+        <div class="flex justify-center flex-row mt-5" th:object="${reviewSearchDto}">
+            <select class="select select-bordered w-full max-w-xs" th:field="*{searchDateType}" style="width:auto;">
                 <option value="all">전체기간</option>
                 <option value="1d">1일</option>
                 <option value="1w">1주</option>
                 <option value="1m">1개월</option>
                 <option value="6m">6개월</option>
             </select>
-            <select th:field="*{searchBy}" class="form-control" style="width:auto;">
+            <select class="select select-bordered w-full max-w-xs" th:field="*{searchBy}" style="width:auto;">
                 <option value="contents">내용</option>
             </select>
-            <input th:field="*{searchQuery}" type="text" class="form-control" placeholder="검색어를 입력해주세요">
-            <button id="searchBtn" type="submit" class="btn btn-primary">검색</button>
+            <input th:field="*{searchQuery}" type="text" class="input input-bordered input-accent w-full max-w-xs" placeholder="검색어를 입력해주세요">
+            <button id="searchBtn" type="submit" class="btn btn-accent">검색</button>
         </div>
     </form>
 

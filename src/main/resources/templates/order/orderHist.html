@@ -93,20 +93,19 @@
     </style>
 </th:block>
 
-<div layout:fragment="content" class="content-mg">
+<div layout:fragment="content">
 
-    <h2 class="mb-4">
+    <p class="text-3xl font-bold my-4 ml-3 pb-3">
         구매 이력
-    </h2>
+    </p>
 
-    <div th:each="order : ${orders.getContent()}">
+    <div th:each="order, orderStat : ${orders}">
 
+        <div th:if="${(orderStat.size == 0)}"> 주문 이력이 없습니다. </div>
         <div class="d-flex mb-3 align-self-center">
             <h4 th:text="${order.orderDate} + ' 주문'"></h4>
             <div class="ml-3">
                 <th:block th:if="${order.orderStatus == T(com.shop.farmers.boundedContext.order.constant.OrderStatus).ORDER}">
-<!--                    <a th:href="@{'/payment/' + ${order.orderId}}" th:text="결제내역"></a>-->
-<!--                    <a type="button" th:value="${order.orderId}" th:text="결제내역" onclick="payment(this.value)"></a>-->
                     <button type="button" class="btn btn-outline-secondary" th:value="${order.orderId}" onclick="payment(this.value)">결제내역</button>
                     <button type="button" class="btn btn-outline-secondary" th:value="${order.orderId}" onclick="cancelOrder(this.value)">주문취소</button>
                 </th:block>
@@ -138,21 +137,21 @@
     </div>
 
     <div th:with="start=${(orders.number/maxPage)*maxPage + 1}, end=(${(orders.totalPages == 0) ? 1 : (start + (maxPage - 1) < orders.totalPages ? start + (maxPage - 1) : orders.totalPages)})" >
-        <ul class="pagination justify-content-center">
+        <ul class="flex join justify-center mt-5">
 
-            <li class="page-item" th:classappend="${orders.number eq 0}?'disabled':''">
-                <a th:href="@{'/orders/' + ${orders.number-1}}" aria-label='Previous' class="page-link">
-                    <span aria-hidden='true'>Previous</span>
+            <li class="join-item btn" th:classappend="${orders.number eq 0}?'disabled':''">
+                <a th:href="@{'/orders/' + ${orders.number-1}}" aria-label='이전' class="page-link">
+                    <span aria-hidden='true'>이전</span>
                 </a>
             </li>
 
-            <li class="page-item" th:each="page: ${#numbers.sequence(start, end)}" th:classappend="${orders.number eq page-1}?'active':''">
+            <li class="join-item btn" th:each="page: ${#numbers.sequence(start, end)}" th:classappend="${orders.number eq page-1}?'active':''">
                 <a th:href="@{'/orders/' + ${page-1}}" th:inline="text" class="page-link">[[${page}]]</a>
             </li>
 
-            <li class="page-item" th:classappend="${orders.number+1 ge orders.totalPages}?'disabled':''">
-                <a th:href="@{'/orders/' + ${orders.number+1}}" aria-label='Next' class="page-link">
-                    <span aria-hidden='true'>Next</span>
+            <li class="join-item btn" th:classappend="${orders.number+1 ge orders.totalPages}?'disabled':''">
+                <a th:href="@{'/orders/' + ${orders.number+1}}" aria-label='다음' class="page-link">
+                    <span aria-hidden='true'>다음</span>
                 </a>
             </li>
 

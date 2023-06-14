@@ -62,14 +62,13 @@
             margin-top:2%;
             margin-bottom:100px;
         }
-        .repImgDiv{
-            margin-right:15px;
-            margin-left:15px;
-            height:auto;
-        }
         .repImg{
             height:100px;
             width:100px;
+        }
+        .repImgDiv{
+            padding:10px;
+            text-overflow : ellipsis;
         }
         .fs18{
             font-size:18px
@@ -77,42 +76,48 @@
         .fs24{
             font-size:24px
         }
+        .order-box{
+            width:500px;
+        }
     </style>
 </th:block>
 
 <div layout:fragment="content" class="content-mg">
 
-    <h2 class="mb-4">
-        주문 상세
-    </h2>
+    <div class="flex w-full justify-center">
+        <div class="flex flex-col" style="width: 650px;">
+            <p class="text-3xl font-bold my-4 ml-3">
+                주문 상세 내역
+            </p>
+            <div class="flex w-full justify-center">
+                <div class="order-box card bg-base-100 shadow-xl">
+                    <div class="card-body">
+                        <h3 class="card-title text-2xl" th:text="${'주문명 : ' + order.getOrderName()}"></h3>
+                        <div th:each="orderItem : ${order.getOrderItemDtlDtos()}" class="d-flex mb-3">
+                            <div class="flex">
+                                <div class="repImgDiv">
+                                    <img th:src="${orderItem.imgUrl}" class = "rounded repImg" th:alt="${orderItem.itemNm}">
+                                </div>
+                                <div class="text-base repImgDiv" style="width: 350px">
+                                    <div class="font-bold" th:text="${'상품 이름 : ' + orderItem.itemNm}"></div>
+                                    <div th:text="${'상품 가격 : ' + orderItem.orderPrice} +'원'"></div>
+                                    <div th:text="${'주문 개수 : ' + orderItem.count} +'개'"></div>
+                                    <div th:text="${'주문 번호 : ' + order.getOrderId() + '번'}"></div>
+                                </div>
+                            </div>
+                        </div>
 
-    <h3 class="mb-4" th:text="${'주문명 : ' + order.getOrderName()}">
-    </h3>
-
-            <div class="card d-flex">
-                <div th:each="orderItem : ${order.getOrderItemDtlDtos()}" class="d-flex mb-3">
-                    <div class="repImgDiv">
-                        <img th:src="${orderItem.imgUrl}" class = "rounded repImg" th:alt="${orderItem.itemNm}">
-                    </div>
-                    <div class="align-self-center w-75">
-                        <span th:text="${'상품 이름 : ' + orderItem.itemNm}" class="fs24 font-weight-bold"></span>
-                        <div class="fs18 font-weight-light">
-                            <span th:text="${orderItem.orderPrice} +'원'"></span>
-                            <span th:text="${orderItem.count} +'개'"></span><br>
-                            <span th:text="${'주문 번호 : ' + order.getOrderId() + '번'}"></span>
+                        <div class="flex flex-col">
+                            <div class="text-xl font-bold text-center mb-2">
+                                총 주문 금액 : <span class="text-accent" th:text="${order.getTotalPrice() + '원'}">0원</span>
+                            </div>
+                            <button type="button" class="btn btn-accent" onclick="payment()">주문하기</button>
                         </div>
                     </div>
+                </div>
             </div>
         </div>
-
-        <h2 class="text-center">
-            총 주문 금액 : <span class="text-danger" th:text="${order.getTotalPrice() + '원'}">0원</span>
-        </h2>
-
-        <div class="text-center mt-3">
-            <button type="button" class="btn btn-primary btn-lg" onclick="payment()">주문하기</button>
-        </div>
-
+    </div>
 </div>
 
 </html>
