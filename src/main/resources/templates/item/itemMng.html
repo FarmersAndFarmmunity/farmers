@@ -26,6 +26,17 @@
             + "&searchQuery=" + searchQuery;
         }
 
+        function vendor_page(page){
+          var searchDateType = $("#searchDateType").val();
+          var searchSellStatus = $("#searchSellStatus").val();
+          var searchBy = $("#searchBy").val();
+          var searchQuery = $("#searchQuery").val();
+
+          location.href="/vendor/items/" + page + "?searchDateType=" + searchDateType
+                  + "&searchSellStatus=" + searchSellStatus
+                  + "&searchBy=" + searchBy
+                  + "&searchQuery=" + searchQuery;
+        }
     </script>
 </th:block>
 
@@ -39,7 +50,9 @@
 </th:block>
 
 <div layout:fragment="content">
-
+  <p class="text-3xl font-bold my-4 ml-3 pb-3">
+    상품 관리
+  </p>
   <form th:action="@{'/vendor/items/' + ${items.number}}" role="form" method="get" th:object="${items}">
     <table class="table w-full">
       <thead>
@@ -67,19 +80,33 @@
     <div th:with="start=${(items.number/maxPage)*maxPage + 1}, end=(${(items.totalPages == 0) ? 1 : (start + (maxPage - 1) < items.totalPages ? start + (maxPage - 1) : items.totalPages)})" >
       <ul class="flex join justify-center mt-5">
 
-        <li class="join-item btn" th:classappend="${items.first}?'disabled'">
-          <a th:onclick="'javascript:page(' + ${items.number - 1} + ')'" aria-label='이전' class="page-link">
+        <li class="join-item btn" th:classappend="${items.first}?'disabled':''">
+          <!--관리자일 경우-->
+          <a sec:authorize="hasAuthority('ROLE_ADMIN')" th:onclick="'javascript:page(' + ${items.number - 1} + ')'" aria-label='이전' class="page-link">
+            <span aria-hidden='true'>이전</span>
+          </a>
+          <!--판매자일 경우-->
+          <a sec:authorize=="hasAuthority('ROLE_VENDOR')" th:onclick="'javascript:vendor_page(' + ${items.number - 1} + ')'" aria-label='이전' class="page-link">
             <span aria-hidden='true'>이전</span>
           </a>
         </li>
 
         <li class="join-item btn" th:each="page: ${#numbers.sequence(start, end)}" th:classappend="${items.number eq page-1}?'active':''">
-          <a th:onclick="'javascript:page(' + ${page - 1} + ')'" th:inline="text" class="page-link">[[${page}]]</a>
+          <!--관리자일 경우-->
+          <a sec:authorize="hasAuthority('ROLE_ADMIN')" th:onclick="'javascript:page(' + ${page - 1} + ')'" th:inline="text" class="page-link">[[${page}]]</a>
+          <!--판매자일 경우-->
+          <a sec:authorize="hasAuthority('ROLE_VENDOR')" th:onclick="'javascript:vendor_page(' + ${page - 1} + ')'" th:inline="text" class="page-link">[[${page}]]</a>
         </li>
 
-        <li class="join-item btn" th:classappend="${items.last}?'disabled'">
-          <a th:onclick="'javascript:page(' + ${items.number + 1} + ')'" aria-label='다음' class="page-link">
+        <li class="join-item btn" th:classappend="${items.last}?'disabled':''">
+          <!--관리자일 경우-->
+          <a sec:authorize="hasAuthority('ROLE_ADMIN')" th:onclick="'javascript:page(' + ${items.number + 1} + ')'" aria-label='다음' class="page-link">
             <span aria-hidden='true'>다음</span>
+          </a>
+            <!--판매자일 경우-->
+          <a sec:authorize="hasAuthority('ROLE_VENDOR')" th:onclick="'javascript:vendor_page(' + ${items.number + 1} + ')'" aria-label='다음' class="page-link">
+            <span aria-hidden='true'>다음</span>
+          </a>
           </a>
         </li>
 

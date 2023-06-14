@@ -74,7 +74,9 @@
 </th:block>
 
 <div layout:fragment="content">
-
+    <p class="text-3xl font-bold my-4 ml-3 pb-3">
+        리뷰 작성
+    </p>
     <div class="d-flex" style="margin-left:25%;margin-right:25%">
         <div class="repImgDiv">
             <img th:src="${item.itemImgDtoList[0].imgUrl}" class = "rounded repImg" th:alt="${item.itemNm}">
@@ -100,7 +102,7 @@
     </div>
 
 
-    <form role="form" method="post" enctype="multipart/form-data" th:object="${reviewFormDto}" style="margin-left:25%;margin-right:25%">
+    <form role="form" method="post" enctype="multipart/form-data" th:object="${reviewFormDto}">
         <p class="h2">
             리뷰 등록
         </p>

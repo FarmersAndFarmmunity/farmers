@@ -13,12 +13,24 @@
 
 <!-- 사용자 CSS 추가 -->
 <th:block layout:fragment="css">
+    <style>
+        body, .content-mg {
+            min-height:100%;
+            font-family: 'Pretendard-Regular', serif;
+        }
+        @font-face {
+            font-family: 'Pretendard-Regular';
+            src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+            font-weight: 400;
+            font-style: normal;
+        }
+    </style>
 </th:block>
 
 <div layout:fragment="content" class="content-mg">
 
     <h2 class="mb-4">
-        결재 내역
+        결제 내역
     </h2>
 
     <table>
@@ -39,7 +51,7 @@
             <td th:text="${payment.getAmount()} +'원'"></td>
         </tr>
         <tr>
-            <th>결재 수단</th>
+            <th>결제 수단</th>
             <td th:text="${payment.getPayType()}"></td>
         </tr>
         <tr>

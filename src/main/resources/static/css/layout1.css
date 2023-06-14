@@ -20,6 +20,11 @@ body {
     font-family: 'SEBANG_Gothic_Bold', serif;
 }
 
+.header-box {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
 .content {
     margin-bottom:100px;
     margin-top:20px;
