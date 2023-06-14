@@ -25,7 +25,7 @@ public class ItemControllerTest {
     @DisplayName("상품 등록 페이지 권한 테스트")
     @WithMockUser(username = "admin", roles = "ADMIN")
     public void itemFormTest() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/admin/item/new"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/vendor/item/new"))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
