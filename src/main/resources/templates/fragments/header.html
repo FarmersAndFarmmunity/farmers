@@ -3,17 +3,62 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-    <div th:fragment="header">
-        <!-- 네비게이션 바 구현 -->
-        <nav class="navbar navbar-expand-sm bg-primary navbar-dark">
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03"
-                    aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
-                <span clasee="navbar-toggler-icon"></span>
-            </button>
-            <a class="navbar-brand" href="/">Shop</a>
+<div th:fragment="header">
+    <!-- 네비게이션 바 구현 -->
+    <nav class="flex w-full menu-horizontal justify-center">
+        <div>
+            <div class="dropdown z-0 ">
+                <label tabindex="0" class="btn btn-ghost btn-circle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
+                    </svg>
+                </label>
+                <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
+                    <li sec:authorize="hasAnyAuthority('ROLE_ADMIN', 'ROLE_VENDOR')">
+                        <a href="/vendor/item/new">상품 등록</a>
+                    </li>
 
-            <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
-                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                    <li sec:authorize="hasAnyAuthority('ROLE_ADMIN', 'ROLE_VENDOR')">
+                        <a href="/vendor/items">내 상품 관리</a>
+                    </li>
+
+                    <li sec:authorize="hasAnyAuthority('ROLE_ADMIN')">
+                        <a href="/admin/items">전체 상품 관리</a>
+                    </li>
+
+                    <li sec:authorize="isAuthenticated()">
+                        <a href="/cart">장바구니</a>
+                    </li>
+
+                    <li sec:authorize="isAuthenticated()">
+                        <a href="/orders">구매이력</a>
+                    </li>
+
+                    <li sec:authorize="hasAnyAuthority('ROLE_ADMIN')">
+                        <a href="/admin/member">회원 관리</a>
+                    </li>
+
+                    <li sec:authorize="isAnonymous()">
+                        <a href="/members/login">로그인</a>
+                    </li>
+
+                    <li sec:authorize="isAuthenticated()">
+                        <a href="/members/logout">로그아웃</a>
+                    </li>
+
+                    <li sec:authorize="isAuthenticated()">
+                        <a href="/reviews">리뷰 관리</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="flex w-full bg-base-100 items-center">
+            <div class="flex">
+                <a class="btn btn-ghost normal-case text-xl" href="/" style="font-family: SEBANG_Gothic_Bold, serif;">Farmers</a>
+            </div>
+
+            <div class="flex-none gap-2">
+                <ul class="menu-horizontal gap-2">
                     <li class="nav-item" sec:authorize="hasAnyAuthority('ROLE_ADMIN', 'ROLE_VENDOR')">
                         <a class="nav-link" href="/vendor/item/new">상품 등록</a>
                     </li>
@@ -50,14 +95,17 @@
                         <a class="nav-link" href="/reviews">리뷰 관리</a>
                     </li>
                 </ul>
+            </div>
 
-                <form class="form-inline my-2 ly-lg-0" th:action="@{/}" method="get">
-                    <input name="searchQuery" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <div class="flex">
+                <form class="form-inline my-2 ly-lg-0" action="/" method="get">
+                    <input name="searchQuery" class="input input-bordered w-24 md:w-auto" type="search" placeholder="Search" aria-label="Search">
+
                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-
                 </form>
             </div>
-        </nav>
-    </div>
+        </div>
+    </nav>
+</div>
 
 </html>
