@@ -63,7 +63,7 @@
                 <td th:text="${#temporals.format(review.regTime, 'yyyy-MM-dd HH:mm')}"></td>
 
                 <td>
-                    <a th:href="'/reviews/delete/'+ ${review.id}" th:text="삭제"></a>
+                    <a class="btn btn-error btn-sm" th:href="'/reviews/delete/'+ ${review.id}" th:text="삭제"></a>
                 </td>
             </tr>
             </tbody>
