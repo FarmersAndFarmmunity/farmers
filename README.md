@@ -33,7 +33,7 @@ https://www.kurly.com/main
 
 **김소영**
 
-- 웹 쇼핑몰의 기반이 되는 기본 게시판 형태 / 결제 모듈 / 회원가입과 가능하면 포인트 관리 정도? 까지 기능이 많지 않아도 확실히 알고 설명할 수 있을 정도로 구현하고 싶습니다!
+- 웹 쇼핑몰의 기반이 되는 기본 게시판 형태 / 결제 모듈 / 회원가입과 가능하면 포인트 관리까지 구현하고 싶습니다.
 
 **김연준**
 
@@ -62,6 +62,38 @@ https://www.kurly.com/main
 <img src ="https://user-images.githubusercontent.com/62341313/246035274-12a95d3f-53d0-4119-aa1f-478a64869183.png"/>
 
 ## 🍅 주요 기능 시연
+### 🌿 메인화면/카테고리
+<img src ="https://user-images.githubusercontent.com/15629036/246033479-0ee5d1f8-8f6d-431e-a282-27ee39fa523c.gif">
+
+### 🌿 회원가입/로그인
+<img src="https://user-images.githubusercontent.com/15629036/246042398-c94863eb-83cf-4ef1-9253-0b7666b85a23.gif">
+
+### 🌿 로그아웃
+<img src="https://user-images.githubusercontent.com/15629036/246042991-6904a683-974f-4bd0-90a6-b5af8467b0ba.gif">
+
+### 🌿 상품 등록/조회
+<img src="https://user-images.githubusercontent.com/15629036/246044123-7e359dcd-1e75-41ef-9d05-f6aef34a3208.gif">
+
+### 🌿 상품 수정
+<img src="https://user-images.githubusercontent.com/15629036/246045500-327dc275-63a0-4edd-a74a-aab00eedc13c.gif">
+
+### 🌿 상품 삭제
+<img src="https://user-images.githubusercontent.com/15629036/246045512-22d53011-f8a2-478e-a238-7ff1aacc9d7c.gif">
+
+### 🌿 장바구니 / 주문하기
+<img src="https://user-images.githubusercontent.com/15629036/246047938-45dbedca-7ed8-46a1-a164-cad9c6457156.gif">
+
+### 🌿 주문취소
+<img src="https://user-images.githubusercontent.com/15629036/246048881-372b6db8-33ec-4bb7-a47b-e4d808b7429b.gif">
+
+### 🌿 리뷰작성/관리
+<img src="https://user-images.githubusercontent.com/15629036/246049515-5ab76f48-ef8d-4bc7-8e08-a11ed3c6a71b.gif">
+
+### 🌿 관리자 회원관리
+<img src="https://user-images.githubusercontent.com/15629036/246051630-d141fb60-72be-4f0f-a0b9-4d4530f0d95f.gif">
+
+### 🌿 검색
+<img src="https://user-images.githubusercontent.com/15629036/246050703-61103a38-288a-4628-b9b8-6d600fc4220f.gif">
 
 
 
@@ -76,4 +108,9 @@ https://www.kurly.com/main
 
 ## 🥝 1차 프로젝트를 마무리 하면서 얻은 것들에 대해
 
-
+### 김소영
+- 멤버 등급 변경과 게시판 CRUD를 작성하며 Spring Security와 MVC, DTO에 대한 이해도를 높일 수 있었습니다.
+- 기간이 정해져있는 프로젝트에서 작업 분배를 기간에 따라 어떻게 정할지 고민할 수 있었습니다.
+- 역할이 분리되었을 때 적절히 업무를 나눌 수 있는 방법에 대해 고민할 수 있었습니다.
+- 프론트에 대한 경험을 쌓을 수 있었습니다.
+- 코드를 합치는 과정에서 발생하는 충돌들을 해결하며 협업 프로젝트에서 코드를 합칠 때 주의해야 할 점들을 배울 수 있었습니다.
