@@ -39,17 +39,8 @@
 <!-- 사용자 CSS 추가 -->
 <th:block layout:fragment="css">
     <style>
-        .input-group {
-            margin-bottom : 15px
-        }
-        .img-div {
-            margin-bottom : 10px
-        }
         .fieldError {
             color: #bd2130;
-        }
-        .mgb-15{
-            margin-bottom:15px;
         }
         .repImgDiv{
             height:auto;
@@ -66,6 +57,7 @@
 
         .detail-line {
             padding: 5px 3px;
+            border-top: 1px solid #efefef;
         }
 
         .detail-title {
@@ -77,6 +69,8 @@
         .detail-content {
             display: flex;
             align-items: center;
+            text-overflow: ellipsis;
+            width: 300px;
 
         }
         .item-detail-box {
@@ -95,10 +89,10 @@
                 구매 상품 요약
             </p>
             <div class="flex rounded" style="width:600px; border: 1px solid #efefef;">
-                <div class="repImgDiv px-4 py-4">
+                <div class="repImgDiv px-4 py-4 flex items-center">
                     <img th:src="${item.itemImgDtoList[0].imgUrl}" class = "rounded repImg thumbnail-img" th:alt="${item.itemNm}">
                 </div>
-                <div class="flex-grow px-4 py-4">
+                <div class="flex-grow px-4 py-4" style="width:400px;">
                     <div class="h4 text-2xl font-bold my-4" th:text="${item.itemNm}"></div>
 
                     <div class="item-detail-box">
@@ -144,7 +138,8 @@
                 <p th:if="${#fields.hasErrors('contents')}" th:errors="*{contents}" class="fieldError">Incorrect data</p>
 
                 <div style="width:800px; text-align: right" class="mt-3">
-                    <button th:formaction="@{ '/reviews/new/' + ${item.id} }" type="submit" class="btn btn-accent">리뷰 저장</button>
+                    <button th:formaction="@{'/reviews/new/' + ${item.id}}" type="submit" class="btn btn-accent">리뷰 저장</button>
+
                 </div>
                 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
 
