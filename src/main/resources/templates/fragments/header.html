@@ -15,7 +15,7 @@
 
         <!-- 2번째 블럭 시작 프로덕트 로고, 검색창, 장바구니 -->
         <div class="middle-search-box flex shrink-0 items-center justify-around">
-            <a class="title text-3xl mx-5" href="/" style="font-family: 'SEBANG_Gothic_Bold'; font-size: 2em;">Farmers</a>
+            <a class="title text-3xl" href="/" style="font-family: 'SEBANG_Gothic_Bold'; font-size: 2em;">Farmers</a>
             <div class="search-box flex shrink-0">
                 <form class="mx-10" action="/" method="get">
                     <div class="join">
@@ -29,37 +29,58 @@
                 </form>
             </div>
             <!-- 장바구니-->
-            <div class="flex items-center hover:text-green-500">
-                <a class="btn btn-circle" href="/cart"><span class="material-symbols-outlined">shopping_cart</span></a>
+            <div class="flex items-center">
+                <a class="btn btn-circle hover:text-green-500" href="/cart"><span class="material-symbols-outlined">shopping_cart</span></a>
             </div>
         </div>
 
         <!-- 3번째 블럭 시작 각종 카테고리 -->
-        <div class="join w-full flex justify-center mt-5 font-bold text-base">
-            <div class="category-box flex justify-center shrink-0">
-                <ul class="menu-horizontal gap-20">
-                    <li class="hover:text-accent" sec:authorize="hasAnyAuthority('ROLE_ADMIN', 'ROLE_VENDOR')">
-                        <a href="/vendor/item/new">상품 등록</a>
+        <div class="join w-full flex justify-center mt-3 font-bold text-base">
+            <div class="category-box flex w-full justify-center shrink-0">
+                <ul class="flex items-center w-full justify-between" style="width:870px;">
+                    <li class="hover:text-accent" >
+                        <a class="nav-link" href="/">전체 카테고리</a>
                     </li>
-
-                    <li class="hover:text-accent" sec:authorize="hasAnyAuthority('ROLE_ADMIN', 'ROLE_VENDOR')">
-                        <a href="/vendor/items">내 상품 관리</a>
+                    <li class="hover:text-accent" >
+                        <a class="nav-link" th:href="@{/classify/AGRICULTURE(classifyItem='AGRICULTURE')}">농산물</a>
                     </li>
-
-                    <li class="hover:text-accent" sec:authorize="hasAnyAuthority('ROLE_ADMIN')">
-                        <a href="/admin/items">전체 상품 관리</a>
+                    <li class="hover:text-accent" >
+                        <a class="nav-link" th:href="@{/classify/MARINE(classifyItem='MARINE')}">수산물</a>
                     </li>
-
-                    <li class="hover:text-accent" sec:authorize="isAuthenticated()">
-                        <a href="/orders">구매이력</a>
+                    <li class="hover:text-accent" >
+                        <a class="nav-link" th:href="@{/classify/LIVESTOCK(classifyItem='LIVESTOCK')}">축산물</a>
                     </li>
+                    <li class="dropdown">
+                        <label tabindex="0" class="btn btn-outline w-40">마이 페이지</label>
+                        <ul tabindex="0" class="dropdown-content menu p-2 text-base font-normal shadow bg-base-100 rounded-box w-52">
+                            <li class="hover:text-accent" sec:authorize="hasAnyAuthority('ROLE_ADMIN', 'ROLE_VENDOR')">
+                                <a href="/vendor/item/new">상품 등록</a>
+                            </li>
 
-                    <li class="hover:text-accent" sec:authorize="hasAnyAuthority('ROLE_ADMIN')">
-                        <a href="/admin/member">회원 관리</a>
-                    </li>
+                            <li class="hover:text-accent" sec:authorize="hasAnyAuthority('ROLE_ADMIN', 'ROLE_VENDOR')">
+                                <a href="/vendor/items">내 상품 관리</a>
+                            </li>
 
-                    <li class="hover:text-accent" sec:authorize="isAuthenticated()">
-                        <a href="/reviews">리뷰 관리</a>
+                            <li class="hover:text-accent" sec:authorize="hasAnyAuthority('ROLE_ADMIN')">
+                                <a href="/admin/items">전체 상품 관리</a>
+                            </li>
+
+                            <li class="hover:text-accent" sec:authorize="isAuthenticated()">
+                                <a href="/orders">구매이력</a>
+                            </li>
+
+                            <li class="hover:text-accent" sec:authorize="hasAnyAuthority('ROLE_ADMIN')">
+                                <a href="/admin/member">회원 관리</a>
+                            </li>
+
+                            <li class="hover:text-accent" sec:authorize="isAuthenticated()">
+                                <a href="/reviews">리뷰 관리</a>
+                            </li>
+
+                            <li class="hover:text-accent" sec:authorize="isAnonymous()">
+                                <a href="">로그인 후 이용해주세요.</a>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
             </div>

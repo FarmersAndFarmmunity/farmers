@@ -1,8 +1,10 @@
 package com.shop.farmers.boundedContext.item.controller;
 
-import com.shop.farmers.base.mvcConfig.WebMvcConfig;
+import com.shop.farmers.boundedContext.item.constant.ItemClassifyStatus;
+import com.shop.farmers.boundedContext.item.dto.ItemClassifyDto;
 import com.shop.farmers.boundedContext.item.dto.ItemFormDto;
 import com.shop.farmers.boundedContext.item.dto.ItemSearchDto;
+import com.shop.farmers.boundedContext.item.dto.MainItemDto;
 import com.shop.farmers.boundedContext.item.entity.Item;
 import com.shop.farmers.boundedContext.item.service.ItemService;
 import com.shop.farmers.boundedContext.review.entity.Review;
@@ -114,8 +116,6 @@ public class ItemController {
         return "item/itemMng";
     }
 
-
-
     // 수정 기능
     @PostMapping(value = "/vendor/item/{itemId}")
     public String itemUpdate(@Valid ItemFormDto itemFormDto, BindingResult bindingResult, @RequestParam("itemImgFile") List<MultipartFile> itemImgFileList, Model model){
@@ -151,7 +151,7 @@ public class ItemController {
         return "redirect:/";
     }
 
-    @GetMapping(value = "/item/{itemId}")
+    @GetMapping("/item/{itemId}")
     public String itemDtl(Model model, @PathVariable Long itemId) {
         ItemFormDto itemFormDto = itemService.getItemDtl(itemId);
         List<Review> reviewList = reviewService.getList(itemId);

@@ -1,6 +1,8 @@
 package com.shop.farmers.boundedContext.home.controller;
 
 import com.shop.farmers.base.security.CustomUserDetailsService;
+import com.shop.farmers.boundedContext.item.constant.ItemClassifyStatus;
+import com.shop.farmers.boundedContext.item.dto.ItemClassifyDto;
 import com.shop.farmers.boundedContext.item.dto.ItemSearchDto;
 import com.shop.farmers.boundedContext.item.dto.MainItemDto;
 import com.shop.farmers.boundedContext.item.service.ItemService;
@@ -17,6 +19,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.security.Principal;
 import java.util.Optional;
@@ -27,11 +31,14 @@ public class MainController {
     private final ItemService itemService;
     private final CustomUserDetailsService customUserDetailsService;
 
-    @GetMapping(value = "/")
-    public String main(ItemSearchDto itemSearchDto, Optional<Integer> page, Model model, Principal principal){
-        Pageable pageable = PageRequest.of(page.isPresent()? page.get() : 0, 8);
-        Page<MainItemDto> items = itemService.getMainItemPage(itemSearchDto, pageable);
+    @GetMapping(value = {"/", "/classify/{itemClassifyStatus}"})
+    public String main(ItemClassifyDto itemClassifyDto, ItemSearchDto itemSearchDto, Optional<Integer> page, Model model, Principal principal, @PathVariable("itemClassifyStatus") Optional<ItemClassifyStatus> itemClassifyStatus){
+        itemClassifyStatus.ifPresent(itemClassifyDto::setItemClassifyStatus); //URL의 itemClassifyStatus 값이 존재할 때 실행
+
+        Pageable pageable = PageRequest.of(page.isPresent()? page.get() : 0, 6);
+        Page<MainItemDto> items = itemService.getMainItemPage(itemClassifyDto, itemSearchDto, pageable);
         model.addAttribute("items", items);
+        model.addAttribute("itemClassifyDto", itemClassifyDto);
         model.addAttribute("itemSearchDto", itemSearchDto);
         model.addAttribute("maxPage", 5);
 
@@ -42,7 +49,6 @@ public class MainController {
         }
 
         return "main";
-
     }
 
     // 권한 조회
