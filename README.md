@@ -57,11 +57,11 @@ https://www.kurly.com/main
 | <img src ="https://avatars.githubusercontent.com/u/65449174?v=4" width="150" /> | <img src ="https://avatars.githubusercontent.com/u/62341313?v=4" width="150" /> | <img src ="https://avatars.githubusercontent.com/u/15629036?v=4" width="150" /> | <img src ="https://avatars.githubusercontent.com/u/109645958?v=4" width="150" /> |
 | 주문 서비스 구현<br/>토스 페이먼츠 연동<br/> 배포                                                | 장바구니 서비스<br/>리뷰 CRUD<br/>프론트 작업                                                 | 회원 관리 서비스<br/>상품 CRUD 구현<br/>프론트 작업                                             | 소셜 로그인 구현<br/>카테고리 별 상품 필터링 기능 구현                                                |
 
-## 🍈 기술스택
+## 🍈 사용 기술스택
 
 ---
 
-
+<img src ="https://user-images.githubusercontent.com/62341313/246035274-12a95d3f-53d0-4119-aa1f-478a64869183.png"/>
 
 ## 🍅 주요 기능 시연
 
