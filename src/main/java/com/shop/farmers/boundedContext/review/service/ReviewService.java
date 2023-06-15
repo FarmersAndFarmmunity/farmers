@@ -29,20 +29,6 @@ public class ReviewService {
 
     private final OrderService orderService;
 
-    public ItemFormDto registerReview(Long itemId, String memberEmail, String contents){
-        /*
-        1. member
-            - member exists
-        2. item
-            - item 구매
-        3. save
-         */
-        Member member = memberService.findByEmail(memberEmail);
-//        itemService.getItemDtl()
-
-        return null;
-    }
-
     public boolean validateOrder(String email, Long orderId, Long itemId) {
         Member curMember = memberService.findByEmail(email);
         Order order = orderService.findById(orderId)

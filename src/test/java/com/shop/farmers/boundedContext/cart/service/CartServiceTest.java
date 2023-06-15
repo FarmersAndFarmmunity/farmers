@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 @Transactional
-@TestPropertySource(locations = "classpath:application-test.yml")
+@ActiveProfiles("test")
 class CartServiceTest {
 
     @Autowired
