@@ -64,8 +64,11 @@ https://www.kurly.com/main
 
 
 
-## 🍑 팀 규칙
+## 🍑 팀 규칙 및 문서
 
+#### [wiki](https://mixolydian-chair-95a.notion.site/Wiki-8eb6df760d7b4420a7c9dfb548d14309?pvs=4)
+#### [그라운드 룰](https://mixolydian-chair-95a.notion.site/ccf511340b0d41aba181cb3df36ea70e?pvs=4)
+#### [커밋 메시지 컨벤션](https://mixolydian-chair-95a.notion.site/8be7125abb664ffb917b3d5214596745?pvs=4)
 
 
 
