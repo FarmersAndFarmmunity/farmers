@@ -107,9 +107,9 @@
     </div>
 
     <div class="row">
-      <th:block th:each="item, status: ${items.getContent()}">
-        <div class="item-box-new grid grid-cols-4 gap-5" th:if="${item.itemClassifyStatus == itemClassifyDto.itemClassifyStatus}")>
-          <div class="item-new">
+      <div class="item-box-new grid grid-cols-4 gap-5")>
+        <th:block th:each="item, status: ${items.getContent()}">
+          <div class="item-new" th:if="${item.itemClassifyStatus == itemClassifyDto.itemClassifyStatus}">
             <div class="card">
               <a th:href="'/item/' +${item.id}" class="text-dark">
                 <img th:src="${item.imgUrl}" class="card-img-top" th:alt="${item.itemNm}" height="400">
@@ -121,8 +121,8 @@
               </a>
             </div>
           </div>
-        </div>
-      </th:block>
+        </th:block>
+      </div>
     </div>
   </div>
 </div>
