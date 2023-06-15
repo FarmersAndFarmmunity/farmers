@@ -3,23 +3,6 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<th:block layout:fragment="script">
-    <script th:inline="javascript">
-        $(document).ready(function(){
-            $("#searchBtn").on("click",function(e) {
-                e.preventDefault();
-                page(0);
-            });
-        });
-
-        function page(page){
-            var classifyItem = $("#classifyItem").val();
-
-            location.href="/" + page + "?classifyItem=" + classifyItem;
-        }
-    </script>
-</th:block>
-
     <div th:fragment="header">
         <!-- 네비게이션 바 구현 -->
         <nav class="navbar navbar-expand-sm bg-primary navbar-dark">
