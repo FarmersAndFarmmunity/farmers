@@ -20,6 +20,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.security.Principal;
 import java.util.Optional;
@@ -29,20 +30,10 @@ import java.util.Optional;
 public class MainController {
     private final ItemService itemService;
     private final CustomUserDetailsService customUserDetailsService;
-    private ItemClassifyStatus itemClassifyStatus;
 
-    @GetMapping(value = {"/", "/item/{itemClassifyStatus}"})
-    public String main(ItemClassifyDto itemClassifyDto, ItemSearchDto itemSearchDto, Optional<Integer> page, Model model, Principal principal){
-        itemClassifyDto = new ItemClassifyDto();
-        if (itemClassifyStatus != null) {
-            if (itemClassifyStatus.equals("AGRICULTURE")) {
-                itemClassifyDto.setItemClassifyStatus(ItemClassifyStatus.AGRICULTURE);
-            } else if (itemClassifyStatus.equals("MARINE")) {
-                itemClassifyDto.setItemClassifyStatus(ItemClassifyStatus.MARINE);
-            } else if (itemClassifyStatus.equals("LIVESTOCK")) {
-                itemClassifyDto.setItemClassifyStatus(ItemClassifyStatus.LIVESTOCK);
-            }
-        }
+    @GetMapping(value = {"/", "/classify/{itemClassifyStatus}"})
+    public String main(ItemClassifyDto itemClassifyDto, ItemSearchDto itemSearchDto, Optional<Integer> page, Model model, Principal principal, @PathVariable("itemClassifyStatus") Optional<ItemClassifyStatus> itemClassifyStatus){
+        itemClassifyStatus.ifPresent(itemClassifyDto::setItemClassifyStatus); //URL의 itemClassifyStatus 값이 존재할 때 실행
 
         Pageable pageable = PageRequest.of(page.isPresent()? page.get() : 0, 6);
         Page<MainItemDto> items = itemService.getMainItemPage(itemClassifyDto, itemSearchDto, pageable);
@@ -58,7 +49,6 @@ public class MainController {
         }
 
         return "main";
-
     }
 
     // 권한 조회

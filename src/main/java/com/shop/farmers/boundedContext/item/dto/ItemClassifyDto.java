@@ -8,5 +8,7 @@ import lombok.Setter;
 public class ItemClassifyDto {
     private ItemClassifyStatus itemClassifyStatus;
 
-    //private String classifyQuery = "";
+    public void setItemClassifyStatus(ItemClassifyStatus itemClassifyStatus) {
+        this.itemClassifyStatus = itemClassifyStatus;
+    }
 }
