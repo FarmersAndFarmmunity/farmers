@@ -2,7 +2,9 @@
 
 ---
 
-배포링크
+[배포링크](https://www.duswnsxnxn.com/)
+
+---
 
 <br>
 
