@@ -26,8 +26,12 @@ body {
 }
 .content {
     margin-bottom:100px;
-    margin-top:20px;
+    margin-top:5px;
     width: 1000px;
+}
+
+.table {
+    z-index: -10;
 }
 
 /* 폰트 선언 구역 */
