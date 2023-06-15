@@ -8,7 +8,6 @@
 
 ## 🥕 프로젝트 아이디어 기획
 
----
 
 ### 개발 아이디어
 
@@ -29,7 +28,6 @@ https://www.kurly.com/main
 
 ### 1차 프로젝트 목표
 
----
 
 **김소영**
 
@@ -50,18 +48,16 @@ https://www.kurly.com/main
 
 ## 🌽 팀원
 
----
 
 | [김연준](https://github.com/duswnsxnxn)                                            | [김영재](https://github.com/Kim-youngjae)                                          | [김소영](https://github.com/whale22)                                               | [소예은](https://github.com/sohhhyeeun)                                             |
 |---------------------------------------------------------------------------------|---------------------------------------------------------------------------------|---------------------------------------------------------------------------------|----------------------------------------------------------------------------------|
 | <img src ="https://avatars.githubusercontent.com/u/65449174?v=4" width="150" /> | <img src ="https://avatars.githubusercontent.com/u/62341313?v=4" width="150" /> | <img src ="https://avatars.githubusercontent.com/u/15629036?v=4" width="150" /> | <img src ="https://avatars.githubusercontent.com/u/109645958?v=4" width="150" /> |
 | 주문 서비스 구현<br/>토스 페이먼츠 연동<br/> 배포                                                | 장바구니 서비스<br/>리뷰 CRUD<br/>프론트 작업                                                 | 회원 관리 서비스<br/>상품 CRUD 구현<br/>프론트 작업                                             | 소셜 로그인 구현<br/>카테고리 별 상품 필터링 기능 구현                                                |
 
-## 🍈 기술스택
-
----
+## 🍈 사용 기술스택
 
 
+<img src ="https://user-images.githubusercontent.com/62341313/246035274-12a95d3f-53d0-4119-aa1f-478a64869183.png"/>
 
 ## 🍅 주요 기능 시연
 ### 🌿 메인화면/카테고리
@@ -97,17 +93,17 @@ https://www.kurly.com/main
 ### 🌿 검색
 <img src="https://user-images.githubusercontent.com/15629036/246050703-61103a38-288a-4628-b9b8-6d600fc4220f.gif">
 
----
 
 
 
-## 🍑 팀 규칙
+## 🍑 팀 규칙 및 문서
 
----
+#### [wiki](https://mixolydian-chair-95a.notion.site/Wiki-8eb6df760d7b4420a7c9dfb548d14309?pvs=4)
+#### [그라운드 룰](https://mixolydian-chair-95a.notion.site/ccf511340b0d41aba181cb3df36ea70e?pvs=4)
+#### [커밋 메시지 컨벤션](https://mixolydian-chair-95a.notion.site/8be7125abb664ffb917b3d5214596745?pvs=4)
 
 
 
 ## 🥝 1차 프로젝트를 마무리 하면서 얻은 것들에 대해
 
----
 
