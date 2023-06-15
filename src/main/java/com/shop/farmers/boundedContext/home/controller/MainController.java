@@ -35,7 +35,7 @@ public class MainController {
     public String main(ItemClassifyDto itemClassifyDto, ItemSearchDto itemSearchDto, Optional<Integer> page, Model model, Principal principal, @PathVariable("itemClassifyStatus") Optional<ItemClassifyStatus> itemClassifyStatus){
         itemClassifyStatus.ifPresent(itemClassifyDto::setItemClassifyStatus); //URL의 itemClassifyStatus 값이 존재할 때 실행
 
-        Pageable pageable = PageRequest.of(page.isPresent()? page.get() : 0, 6);
+        Pageable pageable = PageRequest.of(page.isPresent()? page.get() : 0, 8);
         Page<MainItemDto> items = itemService.getMainItemPage(itemClassifyDto, itemSearchDto, pageable);
         model.addAttribute("items", items);
         model.addAttribute("itemClassifyDto", itemClassifyDto);
