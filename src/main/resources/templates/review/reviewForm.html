@@ -39,91 +39,113 @@
 <!-- 사용자 CSS 추가 -->
 <th:block layout:fragment="css">
     <style>
-        .input-group {
-            margin-bottom : 15px
-        }
-        .img-div {
-            margin-bottom : 10px
-        }
         .fieldError {
             color: #bd2130;
+        }
+        .repImgDiv{
+            height:auto;
         }
         .repImg{
             width:100%;
             height:400px;
         }
-        .mgb-15{
-            margin-bottom:15px;
+
+        .thumbnail-img {
+            width:150px;
+            height:150px;
         }
-        .mgt-30{
-            margin-top:30px;
+
+        .detail-line {
+            padding: 5px 3px;
+            border-top: 1px solid #efefef;
         }
-        .mgt-50{
-            margin-top:50px;
+
+        .detail-title {
+            width:100px;
+            display: flex;
+            align-items: center;
         }
-        .repImgDiv{
-            margin-right:15px;
-            height:auto;
-            width:50%;
+
+        .detail-content {
+            display: flex;
+            align-items: center;
+            text-overflow: ellipsis;
+            width: 300px;
+
         }
-        .wd50{
-            height:auto;
-            width:50%;
+        .item-detail-box {
+            text-overflow : ellipsis;
         }
     </style>
 </th:block>
 
 <div layout:fragment="content">
+    <p class="text-3xl font-bold my-4 ml-3 pb-3" >
+        리뷰 작성
+    </p>
+    <div class="flex flex-col items-center w-full">
+        <div class="flex flex-col justify-center items-center" style="width:800px;">
+            <p class="text-2xl font-bold my-4 ml-3 pb-3" style="border-bottom:1px solid #efefef;">
+                구매 상품 요약
+            </p>
+            <div class="flex rounded" style="width:600px; border: 1px solid #efefef;">
+                <div class="repImgDiv px-4 py-4 flex items-center">
+                    <img th:src="${item.itemImgDtoList[0].imgUrl}" class = "rounded repImg thumbnail-img" th:alt="${item.itemNm}">
+                </div>
+                <div class="flex-grow px-4 py-4" style="width:400px;">
+                    <div class="h4 text-2xl font-bold my-4" th:text="${item.itemNm}"></div>
 
-    <div class="d-flex" style="margin-left:25%;margin-right:25%">
-        <div class="repImgDiv">
-            <img th:src="${item.itemImgDtoList[0].imgUrl}" class = "rounded repImg" th:alt="${item.itemNm}">
-        </div>
-        <div class="wd50">
-            <span th:if="${item.itemSellStatus == T(com.shop.farmers.boundedContext.item.constant.ItemSellStatus).SELL}" class="badge badge-primary mgb-15">
-                판매중
-            </span>
-            <span th:unless="${item.itemSellStatus == T(com.shop.farmers.boundedContext.item.constant.ItemSellStatus).SELL}" class="badge btn-danger mgb-15" >
-                품절
-            </span>
-            <div class="h4" th:text="${item.itemNm}"></div>
-            <hr class="my-4">
+                    <div class="item-detail-box">
+                        <div class="h4 text-danger text-left">
+                            <dl class="detail-line price-box flex flex-row">
+                                <dt class="detail-title font-bold">
+                                    <span th:text="|구매 가격|"></span>
+                                </dt>
+                                <dd class="detail-content">
+                                    <input type="hidden" th:value="${item.price}" id="price" name="price">
+                                    <span th:text="${item.price}"></span>원
+                                </dd>
+                            </dl>
 
-            <div class="text-right">
-                <div class="h4 text-danger text-left">
-                    <input type="hidden" th:value="${item.price}" id="price" name="price">
-                    <span th:text="${item.price}"></span>원
+                            <dl class="detail-line price-box flex flex-row">
+                                <dt class="detail-title font-bold">
+                                    <span th:text="|상품 상세|"></span>
+                                </dt>
+                                <dd class="detail-content">
+                                    <input type="hidden" th:value="${item.itemDetail}" id="itemDetail" name="itemDetail">
+                                    <span th:text="${item.itemDetail}"></span>
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <hr class="my-4">
         </div>
-    </div>
 
+        <form role="form" method="post" enctype="multipart/form-data" th:object="${reviewFormDto}">
+            <div class="flex flex-col justify-center items-center" style="width:800px;">
+                <p class="text-2xl font-bold mt-10 mb-4 ml-3 pb-3" style="border-bottom:1px solid #efefef; width:fit-content;">
+                    리뷰 쓰기
+                </p>
+                <div class="review-form-box flex w-full justify-center"></div>
+                <input type="hidden" th:field="*{id}">
+                <div class="flex items-center w-full">
+                    <div class="text-base font-bold w-32 text-center">
+                        <span >리뷰 내용</span>
+                    </div>
+                    <textarea class="textarea  textarea-bordered w-full" aria-label="With textarea" th:field="*{contents}"></textarea>
+                </div>
+                <p th:if="${#fields.hasErrors('contents')}" th:errors="*{contents}" class="fieldError">Incorrect data</p>
 
-    <form role="form" method="post" enctype="multipart/form-data" th:object="${reviewFormDto}" style="margin-left:25%;margin-right:25%">
-        <p class="h2">
-            리뷰 등록
-        </p>
+                <div style="width:800px; text-align: right" class="mt-3">
+                    <button th:formaction="@{'/reviews/new/' + ${item.id}}" type="submit" class="btn btn-accent">리뷰 저장</button>
 
-        <input type="hidden" th:field="*{id}">
+                </div>
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
 
-
-        <div class="input-group">
-            <div class="input-group-prepend">
-                <span class="input-group-text">상품 리뷰 작성</span>
             </div>
-            <textarea class="form-control" aria-label="With textarea" th:field="*{contents}"></textarea>
-        </div>
-        <p th:if="${#fields.hasErrors('contents')}" th:errors="*{contents}" class="fieldError">Incorrect data</p>
-
-
-        <div style="text-align: center">
-            <button th:formaction="@{ '/reviews/new/' + ${item.id} }" type="submit" class="btn btn-primary">리뷰 저장</button>
-        </div>
-        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-
-    </form>
-
+        </form>
+    </div>
 </div>
 
 </html>

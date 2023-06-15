@@ -37,6 +37,7 @@ public class MainController {
 
         Pageable pageable = PageRequest.of(page.isPresent()? page.get() : 0, 6);
         Page<MainItemDto> items = itemService.getMainItemPage(itemClassifyDto, itemSearchDto, pageable);
+
         model.addAttribute("items", items);
         model.addAttribute("itemClassifyDto", itemClassifyDto);
         model.addAttribute("itemSearchDto", itemSearchDto);

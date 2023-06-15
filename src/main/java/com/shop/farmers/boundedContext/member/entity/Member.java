@@ -58,7 +58,7 @@ public class Member extends BaseEntity {
     public static Member createSocialMember(String providerTypeCode, String username){
         Member member = new Member();
         member.setUsername(username);
-        member.setEmail(username + providerTypeCode);
+        member.setEmail(username.split("__")[1] + "@" + providerTypeCode.toLowerCase() + ".com");
         member.setAddress("");
         member.setPassword("");
         member.setProviderTypeCode(providerTypeCode);

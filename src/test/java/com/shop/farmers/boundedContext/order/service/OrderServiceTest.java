@@ -25,7 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
-@TestPropertySource(locations = "classpath:application-test.yml")
+@ActiveProfiles("test")
 @Transactional
 class OrderServiceTest {
 
@@ -71,11 +71,13 @@ class OrderServiceTest {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(EntityExistsException::new); // 주문 번호로 조회해서 주문을 찾음
 
-//        List<OrderItem> orderItems = order.getOrderItems();
-
         int totalPrice = orderDto.getCount() * item.getPrice(); // 계산한 총 물건의 합
 
-        assertThat(totalPrice).isEqualTo(order.getTotalPrice()); // 계산한 총 물건의 합 == order.totalPrice 이 같아야 한다
+        long orderTotalPrice = order.getTotalPrice();
+        // order.getTotalPrice()의 반환형이 Long이라서 테스트 실패해서 타임캐스팅 코드 추가해줌
+        int convertedOrderTotalPrice = (int) orderTotalPrice;
+
+        assertThat(totalPrice).isEqualTo(convertedOrderTotalPrice); // 계산한 총 물건의 합 == order.totalPrice 이 같아야 한다
     }
 
     @Test
@@ -91,6 +93,9 @@ class OrderServiceTest {
 
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(EntityNotFoundException::new); // 생성한 주문 엔티티 조회
+
+        order.payDone(); // 결제까지 완료해야 주문 상품 재고가 반영됨
+
         orderService.cancelOrder(orderId); // 해당 주문 취소
 
         assertEquals(OrderStatus.CANCEL, order.getOrderStatus()); // 취소 상태라면 통과
