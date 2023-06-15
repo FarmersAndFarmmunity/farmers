@@ -3,7 +3,9 @@ package com.shop.farmers.boundedContext.item.repository;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Wildcard;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.shop.farmers.boundedContext.item.constant.ItemClassifyStatus;
 import com.shop.farmers.boundedContext.item.constant.ItemSellStatus;
+import com.shop.farmers.boundedContext.item.dto.ItemClassifyDto;
 import com.shop.farmers.boundedContext.item.dto.ItemSearchDto;
 import com.shop.farmers.boundedContext.item.dto.MainItemDto;
 import com.shop.farmers.boundedContext.item.dto.QMainItemDto;
@@ -113,8 +115,19 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
         return StringUtils.isEmpty(searchQuery) ? null : QItem.item.itemNm.like("%" + searchQuery + "%");
     }
 
+    private BooleanExpression classifyItemStatusEq(ItemClassifyStatus itemClassifyStatus) {
+        if (itemClassifyStatus == ItemClassifyStatus.AGRICULTURE) {
+            return QItem.item.itemClassifyStatus.eq(ItemClassifyStatus.AGRICULTURE);
+        } else if (itemClassifyStatus == ItemClassifyStatus.MARINE) {
+            return QItem.item.itemClassifyStatus.eq(ItemClassifyStatus.MARINE);
+        } else if (itemClassifyStatus == ItemClassifyStatus.LIVESTOCK) {
+            return QItem.item.itemClassifyStatus.eq(ItemClassifyStatus.LIVESTOCK);
+        }
+        return null;
+    }
+
     @Override
-    public Page<MainItemDto> getMainItemPage(ItemSearchDto itemSearchDto, Pageable pageable) {
+    public Page<MainItemDto> getMainItemPage(ItemClassifyDto itemClassifyDto, ItemSearchDto itemSearchDto, Pageable pageable) {
         QItem item = QItem.item;
         QItemImg itemImg = QItemImg.itemImg;
 
@@ -125,11 +138,13 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                                 item.itemNm,
                                 item.itemDetail,
                                 itemImg.imgUrl,
-                                item.price)
+                                item.price,
+                                item.itemClassifyStatus)
                 )
                 .from(itemImg)
                 .join(itemImg.item, item)
                 .where(itemImg.repimgYn.eq("Y"))
+                .where(classifyItemStatusEq(itemClassifyDto.getItemClassifyStatus()))
                 .where(itemNmLike(itemSearchDto.getSearchQuery()))
                 .orderBy(item.id.desc())
                 .offset(pageable.getOffset())
@@ -141,11 +156,13 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                 .from(itemImg)
                 .join(itemImg.item, item)
                 .where(itemImg.repimgYn.eq("Y"))
+                .where(classifyItemStatusEq(itemClassifyDto.getItemClassifyStatus()))
                 .where(itemNmLike(itemSearchDto.getSearchQuery()))
                 .fetchOne()
                 ;
 
         return new PageImpl<>(content, pageable, total);
     }
+
 
 }
