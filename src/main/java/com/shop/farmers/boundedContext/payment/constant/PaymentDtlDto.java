@@ -1,13 +1,9 @@
 package com.shop.farmers.boundedContext.payment.constant;
 
-import com.shop.farmers.boundedContext.item.dto.ItemFormDto;
-import com.shop.farmers.boundedContext.item.entity.Item;
 import com.shop.farmers.boundedContext.payment.entity.Payment;
-import jakarta.persistence.Column;
 import lombok.Getter;
 import lombok.Setter;
 import org.modelmapper.ModelMapper;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 

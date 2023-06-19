@@ -2,8 +2,6 @@ package com.shop.farmers.boundedContext.payment.entity;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.shop.farmers.base.baseEntity.BaseEntity;
-import com.shop.farmers.base.baseEntity.BaseTimeEntity;
-import com.shop.farmers.boundedContext.cart.entity.Cart;
 import com.shop.farmers.boundedContext.member.entity.Member;
 import com.shop.farmers.boundedContext.order.entity.Order;
 import jakarta.persistence.*;

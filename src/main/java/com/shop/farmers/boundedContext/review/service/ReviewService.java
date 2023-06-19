@@ -1,7 +1,5 @@
 package com.shop.farmers.boundedContext.review.service;
 
-import com.shop.farmers.boundedContext.item.dto.ItemFormDto;
-import com.shop.farmers.boundedContext.item.service.ItemService;
 import com.shop.farmers.boundedContext.member.entity.Member;
 import com.shop.farmers.boundedContext.member.service.MemberService;
 import com.shop.farmers.boundedContext.order.entity.Order;

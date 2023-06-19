@@ -3,7 +3,7 @@ package com.shop.farmers.boundedContext.item.dto;
 import com.shop.farmers.boundedContext.item.entity.ItemImg;
 import lombok.Getter;
 import lombok.Setter;
-import org.modelmapper.ModelMapper; //멤버 변수가 많아졌을 때 도와주는 라이브러리
+import org.modelmapper.ModelMapper;
 
 @Getter
 @Setter

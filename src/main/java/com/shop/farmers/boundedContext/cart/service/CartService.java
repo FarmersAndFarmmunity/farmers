@@ -2,6 +2,7 @@ package com.shop.farmers.boundedContext.cart.service;
 
 import com.shop.farmers.boundedContext.cart.dto.CartDetailDto;
 import com.shop.farmers.boundedContext.cart.dto.CartItemDto;
+import com.shop.farmers.boundedContext.cart.dto.CartOrderDto;
 import com.shop.farmers.boundedContext.cart.entity.Cart;
 import com.shop.farmers.boundedContext.cart.entity.CartItem;
 import com.shop.farmers.boundedContext.cart.repository.CartItemRepository;
@@ -12,7 +13,6 @@ import com.shop.farmers.boundedContext.member.entity.Member;
 import com.shop.farmers.boundedContext.member.repository.MemberRepository;
 import com.shop.farmers.boundedContext.order.dto.OrderDto;
 import com.shop.farmers.boundedContext.order.service.OrderService;
-import com.shop.farmers.boundedContext.cart.dto.CartOrderDto;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
