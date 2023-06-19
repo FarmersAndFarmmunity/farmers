@@ -2,7 +2,6 @@ package com.shop.farmers.boundedContext.item.service;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class S3UploadService {
+public class S3FileService {
 
     private final AmazonS3 amazonS3;
 
@@ -33,5 +32,14 @@ public class S3UploadService {
         }
 
         return amazonS3.getUrl(bucket, imgName).toString();
+    }
+
+    public void deleteFile(String originalFilename)  {
+        try {
+            amazonS3.deleteObject(bucket, originalFilename);
+        } catch (Exception e) {
+            log.error("Can not delete image, ", e);
+            throw new RuntimeException("cannot delete image");
+        }
     }
 }
