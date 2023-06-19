@@ -5,24 +5,19 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.util.UUID;
 
 @Service
 @Log // 자동으로 로깅 코드를 생성해주는 기능을 제공
 public class FileService {
 
-    public String uploadFile(String uploadPath, String originalFileName,
+    public String uploadFile(String uploadPath, String savedFileName,
                              byte[] fileData) throws Exception{
-        UUID uuid = UUID.randomUUID();
-        String extension = originalFileName.substring(originalFileName
-                .lastIndexOf("."));
-        // UUID로 받은 값과 원래 파일의 이름의 확장자를 조합해서 저장될 파일 이름을 만듭니다.
-        String savedFileName = uuid.toString() + extension;
+
         String fileUploadFullUrl = uploadPath + "/" + savedFileName;
         FileOutputStream fos = new FileOutputStream(fileUploadFullUrl);
         fos.write(fileData); // 매개변수로 입력받은 내용을 파일에 씀
         fos.close();
-        return savedFileName;
+        return "/images/item/" + savedFileName;
     }
 
     public void deleteFile(String filePath) throws Exception { // 삭제할 파일 경로를 매개변수로 받음

@@ -2,12 +2,12 @@ package com.shop.farmers.boundedContext.item.service;
 
 import com.shop.farmers.boundedContext.item.entity.ItemImg;
 import com.shop.farmers.boundedContext.item.repository.ItemImgRepository;
+import com.shop.farmers.boundedContext.item.util.BuildFileName;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,6 +21,7 @@ public class ItemImgService {
     private final ItemImgRepository itemImgRepository;
 
     private final FileService fileService;
+    private final S3UploadService s3UploadService;
 
     public void saveItemImg(ItemImg itemImg, MultipartFile itemImgFile) throws Exception {
         String oriImgName = itemImgFile.getOriginalFilename();
@@ -30,8 +31,8 @@ public class ItemImgService {
 
         // 파일 업로드
         if (!(oriImgName == null || "".equals(oriImgName))) { // TODO: isEmpty() -> Deprecated
-            imgName = fileService.uploadFile(itemImgLocation, oriImgName, itemImgFile.getBytes());
-            imgUrl = "/images/item/" + imgName;
+            imgName = BuildFileName.buildFileName(oriImgName);
+            imgUrl = s3UploadService.uploadFile(itemImgFile, imgName);
         }
 
         itemImg.updateItemImg(oriImgName, imgName, imgUrl);
