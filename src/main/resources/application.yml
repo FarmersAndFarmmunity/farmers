@@ -75,4 +75,3 @@ custom:
   postForPage: 10
   site:
     baseUrl: http://localhost:8080
-

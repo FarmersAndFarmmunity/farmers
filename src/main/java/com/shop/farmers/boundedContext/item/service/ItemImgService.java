@@ -1,5 +1,6 @@
 package com.shop.farmers.boundedContext.item.service;
 
+import com.shop.farmers.base.aws.AwsS3Uploader;
 import com.shop.farmers.boundedContext.item.entity.ItemImg;
 import com.shop.farmers.boundedContext.item.repository.ItemImgRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -21,19 +22,26 @@ public class ItemImgService {
     private final ItemImgRepository itemImgRepository;
 
     private final FileService fileService;
+    private final AwsS3Uploader awsS3Uploader;  // AwsS3Uploader 의존 추가
 
     public void saveItemImg(ItemImg itemImg, MultipartFile itemImgFile) throws Exception {
         String oriImgName = itemImgFile.getOriginalFilename();
 
         String imgName = "";
         String imgUrl = "";
+        String itemImgUrl = "";
 
         // 파일 업로드
         if (!(oriImgName == null || "".equals(oriImgName))) { // TODO: isEmpty() -> Deprecated
             imgName = fileService.uploadFile(itemImgLocation, oriImgName, itemImgFile.getBytes());
+
+            // 프로필 이미지 업로드를 위한 awsS3Uploader 메서드 호출
+            itemImgUrl = awsS3Uploader.uploadImage(itemImgFile, imgName);
+
             imgUrl = "/images/item/" + imgName;
         }
 
+        // TODO: 추후 itemImg 에 S3 경로 또한 테이블 속성으로 추가 고려
         itemImg.updateItemImg(oriImgName, imgName, imgUrl);
         itemImgRepository.save(itemImg);
     }
