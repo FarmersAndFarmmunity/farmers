@@ -1,12 +1,11 @@
 package com.shop.farmers.boundedContext.item.controller;
 
-import com.shop.farmers.boundedContext.item.constant.ItemClassifyStatus;
-import com.shop.farmers.boundedContext.item.dto.ItemClassifyDto;
+import com.shop.farmers.base.security.CustomUserDetailsService;
 import com.shop.farmers.boundedContext.item.dto.ItemFormDto;
 import com.shop.farmers.boundedContext.item.dto.ItemSearchDto;
-import com.shop.farmers.boundedContext.item.dto.MainItemDto;
 import com.shop.farmers.boundedContext.item.entity.Item;
 import com.shop.farmers.boundedContext.item.service.ItemService;
+import com.shop.farmers.boundedContext.member.constant.Role;
 import com.shop.farmers.boundedContext.review.entity.Review;
 import com.shop.farmers.boundedContext.review.service.ReviewService;
 import jakarta.persistence.EntityNotFoundException;
@@ -16,6 +15,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -39,6 +43,7 @@ public class ItemController {
 
     private final ReviewService reviewService;
 
+    private final CustomUserDetailsService customUserDetailsService;
     @GetMapping(value = "/vendor/item/new")
     public String itemForm(Model model){
         model.addAttribute("itemFormDto", new ItemFormDto());
@@ -65,21 +70,6 @@ public class ItemController {
         }
 
         return "redirect:/";
-    }
-
-    @GetMapping(value = "/vendor/item/{itemId}")
-    public String itemDtl(@PathVariable("itemId") Long itemId, Model model){
-
-        try {
-            ItemFormDto itemFormDto = itemService.getItemDtl(itemId);
-            model.addAttribute("itemFormDto", itemFormDto);
-        } catch(EntityNotFoundException e){
-            model.addAttribute("errorMessage", "존재하지 않는 상품 입니다.");
-            model.addAttribute("itemFormDto", new ItemFormDto());
-            return "item/itemForm";
-        }
-
-        return "item/itemForm";
     }
 
 
@@ -113,11 +103,28 @@ public class ItemController {
         model.addAttribute("itemSearchDto", itemSearchDto);
         model.addAttribute("maxPage", 5);
 
-        return "item/itemMng";
+        return "item/myItemMng";
     }
 
+    // 상품 등록 정보 조회
+    @GetMapping(value = {"/vendor/item/{itemId}", "/admin/item/{itemId}"})
+    public String itemDtl(@PathVariable("itemId") Long itemId, Model model, Principal principal){
+        try {
+            checkAuthority(itemId, principal); // 작성자 본인이거나 관리자가 아니면 예외 처리
+            ItemFormDto itemFormDto = itemService.getItemDtl(itemId);
+            model.addAttribute("itemFormDto", itemFormDto);
+        } catch(EntityNotFoundException e){
+            model.addAttribute("errorMessage", "존재하지 않는 상품 입니다.");
+            model.addAttribute("itemFormDto", new ItemFormDto());
+            return "item/itemForm";
+        }
+
+        return "item/itemForm";
+    }
+
+
     // 수정 기능
-    @PostMapping(value = "/vendor/item/{itemId}")
+    @PostMapping(value = { "/vendor/item/{itemId}", "/admin/item/{itemId}"})
     public String itemUpdate(@Valid ItemFormDto itemFormDto, BindingResult bindingResult, @RequestParam("itemImgFile") List<MultipartFile> itemImgFileList, Model model){
 
         if(bindingResult.hasErrors()){
@@ -140,9 +147,10 @@ public class ItemController {
     }
 
     // 삭제 기능
-    @PostMapping("/vendor/item/delete/{itemId}")
-    public String deleteItem(@PathVariable Long itemId, Model model) throws Exception {
+    @PostMapping(value = {"/vendor/item/delete/{itemId}", "/admin/item/delete/{itemId}"})
+    public String deleteItem(@PathVariable Long itemId, Model model, Principal principal) throws Exception {
         try {
+            checkAuthority(itemId, principal); // 작성자 본인이거나 관리자가 아니면 예외 처리
             itemService.deleteItem(itemId);
         } catch (Exception e) {
             model.addAttribute("errorMessage", "상품 삭제 중 에러가 발생했습니다.");
@@ -159,5 +167,13 @@ public class ItemController {
         model.addAttribute("reviews", reviewList);
         model.addAttribute("item", itemFormDto);
         return "item/itemDtl";
+    }
+
+    public boolean checkAuthority(Long itemId, Principal principal){
+        UserDetails user = customUserDetailsService.loadUserByUsername(principal.getName());
+        if(user.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN")) || itemService.findById(itemId).get().getCreatedBy().equals(principal.getName())){
+            return true;
+        }
+        throw new AccessDeniedException("접근 권한이 없습니다.");
     }
 }
