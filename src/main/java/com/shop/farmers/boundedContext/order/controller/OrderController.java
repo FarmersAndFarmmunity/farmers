@@ -1,7 +1,6 @@
 package com.shop.farmers.boundedContext.order.controller;
 
 import com.shop.farmers.boundedContext.order.dto.OrderDtlDto;
-import com.shop.farmers.boundedContext.order.dto.OrderItemDtlDto;
 import com.shop.farmers.boundedContext.order.dto.OrderDto;
 import com.shop.farmers.boundedContext.order.dto.OrderHistDto;
 import com.shop.farmers.boundedContext.order.service.OrderService;

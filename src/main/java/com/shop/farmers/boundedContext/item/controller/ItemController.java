@@ -1,10 +1,7 @@
 package com.shop.farmers.boundedContext.item.controller;
 
-import com.shop.farmers.boundedContext.item.constant.ItemClassifyStatus;
-import com.shop.farmers.boundedContext.item.dto.ItemClassifyDto;
 import com.shop.farmers.boundedContext.item.dto.ItemFormDto;
 import com.shop.farmers.boundedContext.item.dto.ItemSearchDto;
-import com.shop.farmers.boundedContext.item.dto.MainItemDto;
 import com.shop.farmers.boundedContext.item.entity.Item;
 import com.shop.farmers.boundedContext.item.service.ItemService;
 import com.shop.farmers.boundedContext.review.entity.Review;

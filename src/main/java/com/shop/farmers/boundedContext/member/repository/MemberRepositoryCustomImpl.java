@@ -3,7 +3,6 @@ package com.shop.farmers.boundedContext.member.repository;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Wildcard;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.shop.farmers.boundedContext.item.entity.QItem;
 import com.shop.farmers.boundedContext.member.constant.Role;
 import com.shop.farmers.boundedContext.member.dto.MemberSearchDto;
 import com.shop.farmers.boundedContext.member.entity.Member;

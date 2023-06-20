@@ -2,12 +2,11 @@ package com.shop.farmers.boundedContext.item.service;
 
 import com.shop.farmers.boundedContext.item.entity.ItemImg;
 import com.shop.farmers.boundedContext.item.repository.ItemImgRepository;
+import com.shop.farmers.boundedContext.item.util.BuildFileName;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,14 +14,12 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 @Transactional
 public class ItemImgService {
-    @Value("${custom.itemImgLocation}")
-    private String itemImgLocation;
 
     private final ItemImgRepository itemImgRepository;
 
-    private final FileService fileService;
+    private final S3FileService s3FileService;
 
-    public void saveItemImg(ItemImg itemImg, MultipartFile itemImgFile) throws Exception {
+    public void saveItemImg(ItemImg itemImg, MultipartFile itemImgFile){
         String oriImgName = itemImgFile.getOriginalFilename();
 
         String imgName = "";
@@ -30,8 +27,8 @@ public class ItemImgService {
 
         // 파일 업로드
         if (!(oriImgName == null || "".equals(oriImgName))) { // TODO: isEmpty() -> Deprecated
-            imgName = fileService.uploadFile(itemImgLocation, oriImgName, itemImgFile.getBytes());
-            imgUrl = "/images/item/" + imgName;
+            imgName = BuildFileName.buildFileName(oriImgName);
+            imgUrl = s3FileService.uploadFile(itemImgFile, imgName);
         }
 
         itemImg.updateItemImg(oriImgName, imgName, imgUrl);
@@ -46,24 +43,22 @@ public class ItemImgService {
                     .orElseThrow(EntityNotFoundException::new);
 
             if (!StringUtils.isEmpty(savedItemImg.getImgName())) {
-                fileService.deleteFile(itemImgLocation + "/" + savedItemImg.getImgName());
+                s3FileService.deleteFile(savedItemImg.getImgName());
             }
 
             String oriImgName = itemImgFile.getOriginalFilename();
-            String imgName = fileService.uploadFile(itemImgLocation, oriImgName, itemImgFile.getBytes());
-            String imgUrl = "/images/item/" + imgName;
+            String imgName = BuildFileName.buildFileName(oriImgName);
+            String imgUrl = s3FileService.uploadFile(itemImgFile, imgName);
             savedItemImg.updateItemImg(oriImgName, imgName, imgUrl);
         }
     }
 
-
-    public void deleteItemImg(Long itemImgId) throws Exception {
+    public void deleteItemImg(Long itemImgId){
         ItemImg savedItemImg = itemImgRepository.findById(itemImgId)
                 .orElseThrow(EntityNotFoundException::new);
 
         if (!StringUtils.isEmpty(savedItemImg.getImgName())) {
-            fileService.deleteFile(itemImgLocation + "/" + savedItemImg.getImgName());
+            s3FileService.deleteFile(savedItemImg.getImgName());
         }
-
     }
 }

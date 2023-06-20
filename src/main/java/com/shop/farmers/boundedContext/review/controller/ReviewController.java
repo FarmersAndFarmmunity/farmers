@@ -11,7 +11,6 @@ import com.shop.farmers.boundedContext.review.entity.Review;
 import com.shop.farmers.boundedContext.review.service.ReviewService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
