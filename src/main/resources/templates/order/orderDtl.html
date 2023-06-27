@@ -19,6 +19,7 @@
         const orderName = /*[[ ${order.orderName} ]]*/ null;
         const totalPrice = /*[[ ${order.totalPrice} ]]*/ null;
         const CLIENT_KEY = /*[[ ${order.CLIENT_KEY} ]]*/ null;
+        const baseUrl = /*[[ ${order.baseUrl} ]]*/ null;
     </script>
 
     <script>
@@ -43,8 +44,8 @@
                 orderName: orderName,
                 customerName: customerName,
                 customerEmail: customerEmail,
-                successUrl: 'http://localhost:8080/' + orderId +'/success',
-                failUrl: 'http://localhost:8080/' + orderId +'/fail',
+                successUrl: baseUrl + '/' + orderId +'/success',
+                failUrl: baseUrl + '/' + orderId +'/fail',
             };
 
             tossPayments.requestPayment(method, paymentData);
